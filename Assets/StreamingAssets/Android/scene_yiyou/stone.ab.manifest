@@ -1,0 +1,56 @@
+ManifestFileVersion: 0
+CRC: 797671871
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 2173f1fe435cf4a1721fe94602b74f20
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 68ed2168e6b5e522bd9dff562f20e774
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/AB_Res/Scene_yiyou/stone/FBX/textures/text01.png
+- Assets/AB_Res/Scene_yiyou/stone/FBX/Materials/stone03-zw01_01.mat
+- Assets/AB_Res/Scene_yiyou/stone/FBX/textures/stone03_Emission.tga
+- Assets/AB_Res/Scene_yiyou/stone/FBX/Materials/stone03-stone03.mat
+- Assets/AB_Res/Scene_yiyou/stone/FBX/stone03.fbm/Disophyros_bark.tif
+- Assets/AB_Res/Scene_yiyou/stone/FBX/stone03.fbm/Plants_A_nmp.tif
+- Assets/AB_Res/Scene_yiyou/stone/FBX/stone03.fbm/Coverground1.tif
+- Assets/AB_Res/Scene_yiyou/stone/FBX/Materials/stone03-zw02_01.mat
+- Assets/AB_Res/Scene_yiyou/stone/FBX/stone03.fbm/dm01_L.tga
+- Assets/AB_Res/Scene_yiyou/stone/FBX/textures/stone03_Height.tga
+- Assets/AB_Res/Scene_yiyou/stone/FBX/stone03.fbm/stone03_L.tga
+- Assets/AB_Res/Scene_yiyou/stone/FBX/textures/stone03_Metallic.tga
+- Assets/AB_Res/Scene_yiyou/stone/FBX/stone03.fbm/Coverground1_nmp.tif
+- Assets/AB_Res/Scene_yiyou/stone/FBX/textures/stone03_Albedo.tga
+- Assets/AB_Res/Scene_yiyou/stone/FBX/stone03.fbm/05 - Default_Base_Color.png
+- Assets/AB_Res/Scene_yiyou/stone/FBX/stone03.fbm/Disophyros_bark_nmp.tif
+- Assets/AB_Res/Scene_yiyou/stone/FBX/stone03.fbm/Disophyros_leafs.tif
+- Assets/AB_Res/Scene_yiyou/stone/FBX/textures/stone03_Occlusion.tga
+- Assets/AB_Res/Scene_yiyou/stone/FBX/Materials/stone03-dm01.mat
+- Assets/AB_Res/Scene_yiyou/stone/FBX/Materials/stone03-zw01_04.mat
+- Assets/AB_Res/Scene_yiyou/stone/FBX/textures/stone03_Normal.tga
+- Assets/AB_Res/Scene_yiyou/stone/FBX/Materials/stone03-stone03_01.mat
+- Assets/AB_Res/Scene_yiyou/stone/FBX/Materials/stone03-zw01_02.mat
+- Assets/AB_Res/Scene_yiyou/stone/FBX/stone03.FBX
+- Assets/AB_Res/Scene_yiyou/stone/FBX/Materials/stone03-zw01_03.mat
+- Assets/AB_Res/Scene_yiyou/stone/FBX/stone03.fbm/oleander.tif
+Dependencies:
+- F:/Project/qionghai/code/Unity/ar_qionglu/Assets/StreamingAssets/Android/scene_yiyou/shaders.ab

@@ -1,0 +1,10 @@
+{
+    "folders":     ["/SDK"],
+    "sysFramework" :["JavaScriptCore.framework"],
+    "buildSettings": { 
+        "OTHER_LDFLAGS" : ["-lz","-lstdc++","-licucore","-lsqlite3"]
+    }
+    "fileFlags" :{
+    	"JSONKit.m" : "-fno-objc-arc"
+    }
+}

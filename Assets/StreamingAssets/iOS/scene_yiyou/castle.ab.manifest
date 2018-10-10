@@ -1,0 +1,47 @@
+ManifestFileVersion: 0
+CRC: 2010007374
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: f67241c062934c06bc0a97447ef3cd71
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 9a5bd8eedb07050e03d4c12661c1b408
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/AB_Res/Scene_yiyou/Castle/Castle/Materials/SoilSand_D01.mat
+- Assets/AB_Res/Scene_yiyou/Castle/Castle/Materials/sand_02.mat
+- Assets/AB_Res/Scene_yiyou/Castle/Castle/Castle02.fbm/sand_02.jpg
+- Assets/AB_Res/Scene_yiyou/Castle/Castle/Castle02.fbm/Dune_L.tga
+- Assets/AB_Res/Scene_yiyou/Castle/Castle/Castle02.fbm/SoilSand_02_N.jpg
+- Assets/AB_Res/Scene_yiyou/Castle/Castle/Materials/transparent_white.mat
+- Assets/AB_Res/Scene_yiyou/Castle/Castle/Materials/SoilSand_D.mat
+- Assets/AB_Res/Scene_yiyou/Castle/Castle/Castle02.fbm/SandVRayCompleteMap02.tga
+- Assets/AB_Res/Scene_yiyou/Castle/Castle/Castle02.FBX
+- Assets/AB_Res/Scene_yiyou/Castle/Castle/Castle02.fbm/transparent_white.png
+- Assets/AB_Res/Scene_yiyou/Castle/Castle/Materials/SoilSand_D02.mat
+- Assets/AB_Res/Scene_yiyou/Castle/Castle/Castle02.fbm/SoilSand_D.jpg
+- Assets/AB_Res/Scene_yiyou/Castle/Castle/Materials/SandVRayCompleteMap02.mat
+- Assets/AB_Res/Scene_yiyou/Castle/Castle/Castle02.fbm/SoilSand_01_N.psd
+- Assets/AB_Res/Scene_yiyou/Castle/Castle/Castle02.fbm/Castle_L.tga
+Dependencies:
+- F:/Project/qionghai/code/Unity/ar_qionglu/Assets/StreamingAssets/iOS/scene_yiyou/shaders.ab

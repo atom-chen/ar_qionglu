@@ -1,0 +1,41 @@
+ManifestFileVersion: 0
+CRC: 3944333830
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 0455b41abacefdb127fab9640da699ea
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 68ed2168e6b5e522bd9dff562f20e774
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- "Assets/AB_Res/Scene_yiyou/Flag/model/Flag04.fbm/\u5927\u7586\u65E0\u4EBA\u673A_L.tga"
+- Assets/AB_Res/Scene_yiyou/Flag/model/Flag04.FBX
+- "Assets/AB_Res/Scene_yiyou/Flag/model/Materials/\u5927\u7586\u65E0\u4EBA\u673A_01.mat"
+- 'Assets/AB_Res/Scene_yiyou/Flag/model/Materials/Material #22291.mat'
+- "Assets/AB_Res/Scene_yiyou/Flag/model/Flag04.fbm/\u65E0\u4EBA\u673A\u65D7\u5E1C_L.tga"
+- "Assets/AB_Res/Scene_yiyou/Flag/model/Materials/\u5927\u7586\u65E0\u4EBA\u673A_02.mat"
+- "Assets/AB_Res/Scene_yiyou/Flag/model/Materials/\u65E0\u4EBA\u673A\u98D8\u5E26.mat"
+- Assets/AB_Res/Scene_yiyou/Flag/model/Flag04.fbm/dajiang_01.jpg
+- Assets/AB_Res/Scene_yiyou/Flag/model/Flag04.fbm/dajiang_02.jpg
+- "Assets/AB_Res/Scene_yiyou/Flag/model/Flag04.fbm/\u65E0\u4EBA\u673A\u98D8\u5E26.jpg"
+- "Assets/AB_Res/Scene_yiyou/Flag/model/Flag04.fbm/\u6247\u53F6\u724701_L.tga"
+- "Assets/AB_Res/Scene_yiyou/Flag/model/Materials/\u6247\u53F6\u724701.mat"
+Dependencies: []

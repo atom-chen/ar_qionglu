@@ -1,0 +1,17 @@
+ManifestFileVersion: 0
+CRC: 3580933163
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: ee02582fcce1ef587671295a17e9b944
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 7e9ee104d6bb707fb2602b751e6f78b1
+HashAppended: 0
+ClassTypes:
+- Class: 48
+  Script: {instanceID: 0}
+Assets:
+- Assets/AB_Res/Scene_yiyou/Shaders/ARShadow.shader
+- Assets/AB_Res/Scene_yiyou/Shaders/2-sided Alpha Cutout.shader
+Dependencies: []

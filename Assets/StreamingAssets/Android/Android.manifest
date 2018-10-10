@@ -1,0 +1,32 @@
+ManifestFileVersion: 0
+CRC: 2591980343
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: scene_yiyou/deng.ab
+      Dependencies: {}
+    Info_1:
+      Name: scene_yiyou/castle.ab
+      Dependencies:
+        Dependency_0: scene_yiyou/shaders.ab
+    Info_2:
+      Name: scene_yiyou/flag.ab
+      Dependencies: {}
+    Info_3:
+      Name: scene_yiyou/stone.ab
+      Dependencies:
+        Dependency_0: scene_yiyou/shaders.ab
+    Info_4:
+      Name: scene_yiyou/bird flocks.ab
+      Dependencies: {}
+    Info_5:
+      Name: scene_yiyou/shaders.ab
+      Dependencies: {}
+    Info_6:
+      Name: scene_yiyou/prefabs.ab
+      Dependencies:
+        Dependency_0: scene_yiyou/deng.ab
+        Dependency_1: scene_yiyou/castle.ab
+        Dependency_2: scene_yiyou/flag.ab
+        Dependency_3: scene_yiyou/stone.ab
+        Dependency_4: scene_yiyou/bird flocks.ab

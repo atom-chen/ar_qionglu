@@ -1,0 +1,9 @@
+﻿{
+    "folders":     ["/SDK"],
+    "buildSettings": { 
+        "OTHER_LDFLAGS" : ["-lz"]
+    }
+    "URLSchemes" : {
+      "CFBundleURLSchemes": [ "com.visizen.artravel", "scheme2" ]
+    }
+}

@@ -1,0 +1,19 @@
+ManifestFileVersion: 0
+CRC: 3332362692
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 44a720f322e966ebf97a7341aaeb4939
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 46daa0ab816e68f527f38fb18aec3007
+HashAppended: 0
+ClassTypes:
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+Assets:
+- Assets/AB_Res/Scene_yiyou/Animation/Fire.controller
+- Assets/AB_Res/Scene_yiyou/Animation/Fire.anim
+Dependencies: []

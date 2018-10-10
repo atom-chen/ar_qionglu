@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1443714175836530}
+  m_IsPrefabParent: 1
+--- !u!1 &1443714175836530
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4994831721281678}
+  - component: {fileID: 114952313180558004}
+  m_Layer: 0
+  m_Name: YiyouStaticDataManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4994831721281678
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1443714175836530}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114952313180558004
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1443714175836530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 331e0d56c0161e94094449fd555950d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hupoSprite:
+  - {fileID: 21300000, guid: d876e4403fe30f646aed6d338666a0d6, type: 3}
+  - {fileID: 21300000, guid: 16daf769e5399fc448de3c2ca092a6aa, type: 3}
+  senlinSprite:
+  - {fileID: 21300000, guid: 16daf769e5399fc448de3c2ca092a6aa, type: 3}
+  shatanSprite:
+  - {fileID: 21300000, guid: 6c4b546a2ac2c234eb1bdfc22d7e3ae1, type: 3}
+  yewanSprite:
+  - {fileID: 21300000, guid: d5661d4a781a99b46a5826b87f0d7f29, type: 3}
+  gekongchuanaiSprite:
+  - {fileID: 21300000, guid: f24062e1340af4647ac6b09f97c11e52, type: 3}
+  guzhenSprite: []
+  xuediSprite: []
+  caoyuanSprite: []
+  shanchuanSprite: []
+  zitiSprite:
+  - {fileID: 21300000, guid: 45e5e64d867ee5a478fadfa7fbb74ab4, type: 3}
+  - {fileID: 21300000, guid: fecd566a364e8d744b9819d796fc5c45, type: 3}
+  - {fileID: 21300000, guid: 6e6e1ad55ec739e4386c217700392bfa, type: 3}
+  - {fileID: 21300000, guid: 61a4256fc8e525e49be18ce2b8de9719, type: 3}
+  materialsList:
+  - {fileID: 2100000, guid: 9fe7ed010af54734eaf46ef5b80d444f, type: 2}
+  - {fileID: 2100000, guid: de50211b3a419bb45804a7003b2635e3, type: 2}
+  - {fileID: 2100000, guid: ff1b69132bc5b954dbcd429846ceaa0d, type: 2}
+  haiouMaterialsList:
+  - {fileID: 2100000, guid: 3b3484f9768bcd94e832b83b0ac8d6a9, type: 2}
+  - {fileID: 2100000, guid: 31492ed1301cbf34ebb8744156d4cefc, type: 2}
+  - {fileID: 2100000, guid: e8fb81b6eed8ac14d821e70e40150c50, type: 2}
+  - {fileID: 2100000, guid: 456de513015768342ab501df3319b474, type: 2}
+  - {fileID: 2100000, guid: 6730ab8cf61e17b4993b54d48fae9aef, type: 2}
+  modelName: 
+  ShowModel: {fileID: 0}
+  modelText: 

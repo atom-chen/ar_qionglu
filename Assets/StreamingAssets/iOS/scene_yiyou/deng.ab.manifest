@@ -1,0 +1,55 @@
+ManifestFileVersion: 0
+CRC: 935728096
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 99a12a1e4bf92868de996af42ef7ea94
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 925e5c132fd0e480f7270c06c2b99f66
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
+  Script: {instanceID: 0}
+Assets:
+- Assets/AB_Res/Scene_yiyou/deng/fire/fx_fire.prefab
+- Assets/AB_Res/Scene_yiyou/deng/deng/Materials/dizuo.mat
+- Assets/AB_Res/Scene_yiyou/deng/deng/maps/bg.png
+- Assets/AB_Res/Scene_yiyou/deng/deng/DoubleFace.mat
+- Assets/AB_Res/Scene_yiyou/deng/deng/2.mat
+- Assets/AB_Res/Scene_yiyou/deng/fire/Textures/Effects/fx_flame_01_d.tif
+- Assets/AB_Res/Scene_yiyou/deng/deng/Materials/kongmingzhizuihou.mat
+- Assets/AB_Res/Scene_yiyou/deng/deng/Materials/zi.mat
+- Assets/AB_Res/Scene_yiyou/deng/deng/maps/kongmingzhibantou1024.png
+- Assets/AB_Res/Scene_yiyou/deng/fire/Materials/Effects/mat_fx_fire_01.mat
+- Assets/AB_Res/Scene_yiyou/deng/deng/DoubleFace.shader
+- Assets/AB_Res/Scene_yiyou/deng/deng/Materials/huoyan-005.mat
+- Assets/AB_Res/Scene_yiyou/deng/deng/Materials/kongzi.mat
+- Assets/AB_Res/Scene_yiyou/deng/deng/kongmingdeng.FBX
+- Assets/AB_Res/Scene_yiyou/deng/deng/1.mat
+- Assets/AB_Res/Scene_yiyou/deng/deng/maps/kongmingdi.tga
+- Assets/AB_Res/Scene_yiyou/deng/fire/Textures/Effects/ParticleFlamesSheet.png
+- Assets/AB_Res/Scene_yiyou/deng/deng/maps/huoyan-005.png
+Dependencies: []

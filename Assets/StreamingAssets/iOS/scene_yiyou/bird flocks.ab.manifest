@@ -1,0 +1,55 @@
+ManifestFileVersion: 0
+CRC: 1372703808
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 0a9648ee7ff57040e4373b4fc0d9cd53
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 880db6d2b43b689cd3cad59db981a7e2
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 111
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
+  Script: {instanceID: 0}
+Assets:
+- Assets/AB_Res/Scene_yiyou/Bird Flocks/Shaders/StandardNoCull.shader
+- Assets/AB_Res/Scene_yiyou/Bird Flocks/Bird Flock Seagull/Textures/Gull-TEX_AO.tga
+- Assets/AB_Res/Scene_yiyou/Bird Flocks/Included Assets/Unluck Software Feather Particles/Prefabs/Feather
+  PS.prefab
+- Assets/AB_Res/Scene_yiyou/Bird Flocks/Bird Flock Seagull/Textures/Gull-TEX_SPEC.tga
+- Assets/AB_Res/Scene_yiyou/Bird Flocks/Shaders/Normal-Diffuse-NoCull.shader
+- Assets/AB_Res/Scene_yiyou/Bird Flocks/Bird Flock Seagull/Models/seagullMDL@idle.fbx
+- Assets/AB_Res/Scene_yiyou/Bird Flocks/Bird Flock Seagull/Materials/Seagull TEX.mat
+- Assets/AB_Res/Scene_yiyou/Bird Flocks/Bird Flock Seagull/Textures/Gull-TEX.png
+- Assets/AB_Res/Scene_yiyou/Bird Flocks/Included Assets/Unluck Software Feather Particles/Materials/Feather
+  MAT.mat
+- Assets/AB_Res/Scene_yiyou/Bird Flocks/Included Assets/Unluck Software Feather Particles/Textures/FeatherSequence
+  TEX.png
+- Assets/AB_Res/Scene_yiyou/Bird Flocks/Bird Flock Seagull/Textures/Gull TEX.tif
+- Assets/AB_Res/Scene_yiyou/Bird Flocks/Bird Flock Seagull/Textures/Gull-TEX_NORM.png
+- Assets/AB_Res/Scene_yiyou/Bird Flocks/Bird Flock Seagull/Models/seagullMDL@flap.fbx
+- Assets/AB_Res/Scene_yiyou/Bird Flocks/Included Assets/Unluck Software Feather Particles/Prefabs/Feather
+  PS 1.prefab
+- Assets/AB_Res/Scene_yiyou/Bird Flocks/Bird Flock Seagull/Models/seagullMDL@soar.fbx
+- Assets/AB_Res/Scene_yiyou/Bird Flocks/Included Assets/Unluck Software Feather Particles/Textures/FeatherWorkfile.tif
+Dependencies: []

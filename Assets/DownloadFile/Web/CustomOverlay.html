@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>我的足迹</title>
+    <style type="text/css">
+        html {
+            height: 100%
+        }
+
+        body {
+            height: 100%;
+            margin: 0px;
+            padding: 0px
+        }
+
+        #allmap {
+            height: 100%
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=YPFhLMn0AZgjAtydA3qhZ4snPc6vQtjn"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/EventWrapper/1.2/src/EventWrapper.js"></script>
+
+
+</head>
+<body>
+
+    <div id="allmap"></div>
+
+
+</body>
+</html>
+<script type="text/javascript">
+    var map = new BMap.Map("allmap", {
+        minZoom: 7, maxZoom: 18,// 百度地图:设置最大最小缩放级别级别越大越精细
+        enableMapClick: false,// 取消地图本身的可点击，
+        enableHighResolution: true//使用高清图
+    });
+    //设置地图的中心点
+    var centerpoint = new BMap.Point(104.074666, 30.646894);
+    //设初始化地图。
+    // 如果center类型为Point时，zoom必须赋值，范围3-19级，
+    // 若调用高清底图（针对移动端开发）时，zoom可赋值范围为3-18级。
+    map.centerAndZoom(centerpoint, 13);
+    map.enableScrollWheelZoom(true);//启用滚轮放大缩小，默认禁用
+    map.enableDragging();   //启用地图拖拽，默认启用
+
+	var CustomOverlayArray = [];
+	map.addEventListener("zoomend", function(){	
+			for(var i=0;i<CustomOverlayArray.length;i++)
+			 {
+						CustomOverlayArray[i].draw();
+			 }
+		});
+function PointOverlap(jingdu,weidu,imagepath,count,index)
+	{	
+		var mySquare = new CustomOverlay(new BMap.Point(jingdu, weidu),imagepath,count,index);   
+		CustomOverlayArray.push(mySquare);
+		map.addOverlay(mySquare);
+	}
+
+function  UpdateCount(index,count)
+	{
+		for(var i=0;i<CustomOverlayArray.length;i++)
+			 {
+				 if(CustomOverlayArray[i]._index==index)
+					 {
+						 ChangeCount(CustomOverlayArray[i],count);
+					 }				 
+					 break;
+			 }
+	}
+// 定义自定义覆盖物的构造函数  
+function CustomOverlay(point,imagepath,count,index){
+    this._center = point;
+    this._imagepath = imagepath;
+	this._count = count;
+	this._index = index;
+}
+// 继承API的BMap.Overlay
+    CustomOverlay.prototype = new BMap.Overlay();
+// 实现初始化方法  
+CustomOverlay.prototype.initialize = function(map){
+	var  image= this._imagepath;
+	var  index=this._index;
+	var  count=this._count;
+    // 保存map对象实例
+    this._map = map;
+    // 创建div元素，作为自定义覆盖物的容器
+    var div = document.createElement("div");
+    div.style.position = "absolute";
+    div.style.width = "60px";
+    div.style.height ="60px";
+	div.style.background = "url(1.png)   no-repeat   0px 0px / 30px 30px ";
+	//div.addEventListener("click", function(){	
+ //     console.log(index + "   " + count);
+ //       alert(index);
+	//		 window.location.href = "uniwebview://add?index=" +index;
+	//	});
+
+	var span = this._span = document.createElement("span");
+    div.appendChild(span);
+    span.appendChild(document.createTextNode(this._text)); 
+	span.style.fontSize = "20px";
+    span.style.color = "blue";
+
+    BMapLib.EventWrapper.addDomListener(div, "touchend", function () {
+
+     
+        window.location.href = "uniwebview://result?index=" + index;
+    });
+    
+    // 将div添加到覆盖物容器中
+    map.getPanes().markerPane.appendChild(div);
+    // 保存div实例
+    this._div = div;
+    // 需要将div元素作为方法的返回值，当调用该覆盖物的show、
+    // hide方法，或者对覆盖物进行移除时，API都将操作此元素。
+    return div;
+}
+// 实现绘制方法   
+    CustomOverlay.prototype.draw = function () { 
+
+// 根据地理坐标转换为像素坐标，并设置给容器    
+    var image = this._imagepath;
+    var position = this._map.pointToOverlayPixel(this._center);
+	var imagefactor= 60*0.5*map.getZoom()/15+ "px";
+	var fontfactor= 20*map.getZoom()/15+ "px";
+	this. _div.style.width =imagefactor;
+    this._div.style.height = imagefactor;
+    this._div.style.background = "url(" + image+") no-repeat 0px 0px / " + "   " + imagefactor + "   " + imagefactor;
+	this._div.style.left = position.x  + "px";    
+    this._div.style.top = position.y  + "px";  
+	var  span=this._div.getElementsByTagName("span")[0];
+	span.innerHTML =  this._count;
+	span.style.fontSize = fontfactor;
+}
+ function ChangeCount(overlap,count)
+	{	
+		var  span=overlap._div.getElementsByTagName("span")[0];
+		overlap._count=count;
+	    span.innerHTML = count.toString();
+	 	span.style.fontSize = 20*map.getZoom()/15+"px";
+	}
+	
+	//以下为测试用的
+function AddOverLay() {
+		var mySquare1 = new CustomOverlay(new BMap.Point(104.074666, 30.646894), "1.png",1,1);   
+		var mySquare2 = new CustomOverlay(new BMap.Point(104.0581, 30.59404), "1.png",3,3);   
+	    CustomOverlayArray.push(mySquare1);
+	    CustomOverlayArray.push(mySquare2);
+		map.addOverlay(mySquare1);	
+		map.addOverlay(mySquare2);
+    }
+
+
+
+    //以下为测试
+// 添加自定义覆盖物   
+  //AddOverLay();
+//最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
+	//var markerClusterer = new BMapLib.MarkerClusterer(map, {markers:CustomOverlayArray,styles:myStyles});
+</script>

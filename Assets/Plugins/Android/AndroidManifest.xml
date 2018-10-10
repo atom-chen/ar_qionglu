@@ -1,0 +1,144 @@
+﻿<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.visizen.artravel"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  	<!--此权限用于进行网络定位-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!--此权限用于访问GPS定位-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
+  
+  <uses-permission android:name="android.permission.BLUETOOTH" />
+  <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+  
+      <uses-permission android:name="android.permission.CAMERA" />
+  <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+  <uses-permission android:name="android.permission.GET_TASKS" />
+  <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+  
+  <uses-permission android:name="android.permission.INTERNET" />
+
+  
+      <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+  
+  <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
+    <!-- SD卡读取权限，用户写入离线定位数据-->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+
+  <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+  <uses-permission android:name="android.permission.RECEIVE_SMS" />
+  <uses-permission android:name="android.permission.READ_SMS" />
+  <uses-permission android:name="android.permission.READ_CONTACTS" />
+  <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+      <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+      <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+  
+  
+  <uses-sdk
+      android:minSdkVersion="23"
+      android:targetSdkVersion="23" />
+<!--	android:name="com.unity3d.player.UnityPlayerActivity" -->
+  <application
+    android:name="com.mob.MobApplication"
+  android:label="AR游"
+    android:allowBackup="true"
+    android:icon="@drawable/ic_launcher">
+    <activity android:name="com.secondfury.galleryscreenshot.MainActivity" />
+    <activity
+      		
+  android:name=".activity.LocationActivity"
+			android:label="@string/app_name"
+			android:screenOrientation="fullSensor"
+			android:launchMode="singleTask"
+			android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+        <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+      </intent-filter>
+      <meta-data android:name="unityplayer.UnityActivity" android:value="true" />
+    </activity>
+    <activity
+        android:name="com.mob.tools.MobUIShell"
+        android:configChanges="keyboardHidden|orientation|screenSize"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar"
+        android:windowSoftInputMode="stateHidden|adjustResize" >
+
+      <!-- 新浪回调 -->
+      <intent-filter>
+        <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+        <category android:name="android.intent.category.DEFAULT" />
+      </intent-filter>
+
+    </activity>
+
+    <!--
+            如果集成QQ分享，或者使用QQ客户端来进行QQ空间的分享，须要在此处添加一个回调activity，
+            对ACTION_VIEW事件的过滤器，其中的scheme是“tencent”前缀再开发者应用的加上appId。如
+            果此过滤器不设置，则分享结束以后不能得到正确的回调
+        -->
+    <activity
+        android:name="cn.sharesdk.tencent.qq.ReceiveActivity"
+        android:launchMode="singleTask"
+        android:noHistory="true">
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="tencent1107697201" />
+      </intent-filter>
+    </activity>
+
+    <!-- 微信分享回调 -->
+    <activity
+        android:name="com.visizen.artravel.wxapi.WXEntryActivity"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar"
+        android:configChanges="keyboardHidden|orientation|screenSize"
+        android:exported="true" />
+
+
+    <!-- galleryscreenshot -->
+    <activity android:name="com.secondfury.galleryscreenshot.MainActivity" />
+    
+   <!--        <activity android:name=".activity.AppActivity" />
+        <activity android:name=".activity.BaiduMap" />
+        <activity android:name=".activity.payment.CartActivity" />
+        <activity android:name=".activity.payment.CommodityActivity" />
+        <activity android:name=".activity.payment.OrderActivity" />
+        <activity android:name=".activity.payment.PaymentActivity" />
+        <activity android:name=".activity.ARGuideActivity"/>
+    --> 
+    
+    <meta-data android:name="Mob-AppKey" android:value="moba6b6c6d6"/>
+    <meta-data android:name="Mob-AppSecret" android:value="b89d2427a3bc7ad1aea1e1e8c1d36bf3"/>
+          <meta-data  android:name="com.baidu.lbsapi.API_KEY" android:value="HGAcjPhWKCFhY8QeimsHjlVSkXIEwweD" />
+        <meta-data android:name="unityplayer.UnityActivity"  android:value="true" />
+   <service android:name=".service.BackServer" />
+        
+        <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"/>
+
+        <receiver android:name=".map.receiver.BDMapReceiver" >
+            <intent-filter>
+                <action android:name="SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_ERROR" />
+                <action android:name="SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR" />
+                <action android:name="SDKInitializer.SDK_BROADTCAST_INTENT_EXTRA_INFO_KEY_ERROR_CODE" />
+                <action android:name="SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_OK" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".NetworkStatusChangeReceiver" >
+            <intent-filter>
+                <action android:name="android.NET.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+  
+  </application>
+
+</manifest>

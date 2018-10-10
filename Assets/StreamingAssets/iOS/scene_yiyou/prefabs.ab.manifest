@@ -1,0 +1,76 @@
+ManifestFileVersion: 0
+CRC: 3399200914
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 419bd6e2cfc9aa81a1c1d3e1aea85c3f
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 87be6f70824141b3de603266d9612df3
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 82
+  Script: {instanceID: 0}
+- Class: 83
+  Script: {instanceID: 0}
+- Class: 84
+  Script: {instanceID: 0}
+- Class: 111
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: e13c71554ba260b4986968ebae0813df, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 8a39497597a410c41a3105da89e0e193, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3746d127e367591429ed84861f9a86b4, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 45a957781318ada4ab008240730a5648, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: cd9d939aac59d254d8c5a59333305830, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: f93af70c32c36c14ea238421ab046f15, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4d0390bd8b8ffd640b34fe25065ff1df, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: b9189fdd6238f9b4b88946d272168074, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+- Class: 183
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
+  Script: {instanceID: 0}
+Assets:
+- Assets/AB_Res/Scene_yiyou/Prefabs/kongmingdengGo.prefab
+- Assets/AB_Res/Scene_yiyou/Prefabs/shabao.prefab
+- Assets/AB_Res/Scene_yiyou/Prefabs/haiou.prefab
+- Assets/AB_Res/Scene_yiyou/Prefabs/shitou.prefab
+- Assets/AB_Res/Scene_yiyou/Prefabs/Seagull.prefab
+- Assets/AB_Res/Scene_yiyou/Prefabs/wurenji.prefab
+- Assets/AB_Res/Scene_yiyou/Prefabs/kongmingdeng.prefab
+Dependencies:
+- F:/Project/qionghai/code/Unity/ar_qionglu/Assets/StreamingAssets/iOS/scene_yiyou/deng.ab
+- F:/Project/qionghai/code/Unity/ar_qionglu/Assets/StreamingAssets/iOS/scene_yiyou/castle.ab
+- F:/Project/qionghai/code/Unity/ar_qionglu/Assets/StreamingAssets/iOS/scene_yiyou/flag.ab
+- F:/Project/qionghai/code/Unity/ar_qionglu/Assets/StreamingAssets/iOS/scene_yiyou/stone.ab
+- F:/Project/qionghai/code/Unity/ar_qionglu/Assets/StreamingAssets/iOS/scene_yiyou/bird
+  flocks.ab
