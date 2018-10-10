@@ -41,7 +41,8 @@ public class YiyouStaticDataManager : SingletonMono<YiyouStaticDataManager>
 
     [Header("字体Sprites")]
     public List<Sprite> zitiSprite = new List<Sprite>();
-
+    [Header("字体点击后Sprites")]
+    public List<Sprite> zitiClickSprite = new List<Sprite>();
 
     [Header("写字材质球Sprites")]
     public List<Material> materialsList = new List<Material>();
@@ -117,7 +118,10 @@ public class YiyouStaticDataManager : SingletonMono<YiyouStaticDataManager>
         {
             spriteDic.Add("ziti", zitiSprite);
         }
-
+        if (    zitiClickSprite.Count!=0)
+        {
+            spriteDic.Add("ziticlick", zitiClickSprite);
+        }
     }
     /// <summary>
     /// 获得九大场景对应的sprite   List，以及字体的List
@@ -134,7 +138,8 @@ public class YiyouStaticDataManager : SingletonMono<YiyouStaticDataManager>
     /// 
     /// 
     /// 10  ziti
-    /// 11  caiziqiu
+    /// 11  ziticlick
+    /// 12  caiziqiu
     /// </summary>
     /// <param name="sceneName"></param>
     /// <returns></returns>

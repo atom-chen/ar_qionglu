@@ -265,15 +265,17 @@ public     GoodsWriteEnum goodsEnum = GoodsWriteEnum.None;
             if (fontGoList.Count==0)
             {
                 List<Sprite> fontSpriteList = YiyouStaticDataManager.Instance.GetSprites("ziti");
+                List<Sprite> fontSpriteClickList = YiyouStaticDataManager.Instance.GetSprites("ziticlick");
                 if (fontSpriteList != null)
                 {
-                    foreach (var item in fontSpriteList)
+                    for (int i = 0; i < fontSpriteList.Count; i++)
                     {
                         GameObject obj = GameObject.Instantiate<GameObject>(fontUIItem);
                         obj.transform.parent = fontUIParent.transform;
-                        obj.GetComponent<FontItemUI>().Init(item);
+                        obj.GetComponent<FontItemUI>().Init(fontSpriteList[i], fontSpriteClickList[i]);
                         fontGoList.Add(obj);
                     }
+   
                 }
             }
 

@@ -6,6 +6,21 @@ public class FontItemUI : SingletonMono<SelectItemUI>
 {
     Image bgImage;
     Image tipImage;
+    Button bgButton;
+    public UnityEngine.UI.Button BgButton
+    {
+        get {
+            if (bgButton == null)
+            {
+
+                bgButton = bgImage.GetComponent<Button>();
+                bgButton.onClick.AddListener(BgImageClick);
+            }
+            return bgButton;
+
+        }
+        set { bgButton = value; }
+    }
     public UnityEngine.UI.Image BgImage
     {
         get
@@ -13,7 +28,8 @@ public class FontItemUI : SingletonMono<SelectItemUI>
             if (bgImage == null)
             {
                 bgImage = gameObject.transform.Find("BgImage").GetComponent<Image>();
-                bgImage.GetComponent<Button>().onClick.AddListener(BgImageClick);
+                BgButton = bgImage.GetComponent<Button>();
+             
             }
             return bgImage;
 
@@ -39,9 +55,16 @@ public class FontItemUI : SingletonMono<SelectItemUI>
     }
 
 
-    public void Init(Sprite sps)
+    public void Init(Sprite sps,Sprite  clicksps)
     {
+        BgButton.transition = Selectable.Transition.SpriteSwap;
         BgImage.sprite = sps;
+        SpriteState spriteState = new SpriteState();
+        spriteState.highlightedSprite = sps;
+        spriteState.pressedSprite = clicksps;
+        spriteState.disabledSprite = sps;
+        BgButton.spriteState = spriteState;
+
         TipImage.gameObject.SetActive(false);
     }
     private void BgImageClick()

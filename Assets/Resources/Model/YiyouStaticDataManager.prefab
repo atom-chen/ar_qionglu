@@ -71,6 +71,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: fecd566a364e8d744b9819d796fc5c45, type: 3}
   - {fileID: 21300000, guid: 6e6e1ad55ec739e4386c217700392bfa, type: 3}
   - {fileID: 21300000, guid: 61a4256fc8e525e49be18ce2b8de9719, type: 3}
+  zitiClickSprite:
+  - {fileID: 21300000, guid: eb459557ed1f1834bb78e87942150b94, type: 3}
+  - {fileID: 21300000, guid: 121b08b6c7c4afe449579844e512c033, type: 3}
+  - {fileID: 21300000, guid: 5bd880ae7faadb84894a1167e23e188d, type: 3}
+  - {fileID: 21300000, guid: dbe6de97c672ddc45853c1930692f4aa, type: 3}
   materialsList:
   - {fileID: 2100000, guid: 9fe7ed010af54734eaf46ef5b80d444f, type: 2}
   - {fileID: 2100000, guid: de50211b3a419bb45804a7003b2635e3, type: 2}
