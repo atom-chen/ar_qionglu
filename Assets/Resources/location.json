@@ -1,0 +1,1024 @@
+{
+	"status": 200,
+	"message": "请求成功",
+	"data": [{
+		"id": 1,
+		"baseEntity": {
+			"id":88 ,
+			"name": "二食堂门口",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.068215",
+			"locationY": "30.598145",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 3,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},
+	{
+		"id": 2,
+		"baseEntity": {
+			"id": 88,
+			"name": "一食堂大门口",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.069054",
+			"locationY": "30.597827",
+			"height": "470",
+			"address": "https://www.baidu.com"
+			},
+			"type": 3,
+			"versionFiles": "",
+			"versionName": "",
+			"platform": "",
+			"typeId": 6,
+			"typeName": ""
+			},
+		{
+		"id": 3,
+		"baseEntity": {
+			"id": 88,
+			"name": "足球场中线处",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.069204",
+			"locationY": "30.599468",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 5,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},
+	{
+		"id": 4,
+		"baseEntity": {
+			"id": 88,
+			"name": "成职院北门",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.067907",
+			"locationY": "30.600184",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 5,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},		
+	{
+		"id": 5,
+		"baseEntity": {
+			"id": 88,
+			"name": "迷你超市",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.067993",
+			"locationY": "30.600562",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 6,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},			
+		{
+		"id": 6,
+		"baseEntity": {
+			"id": 88,
+			"name": "宜宾燃面",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.067394",
+			"locationY": "30.600829",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 3,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},	
+	{
+		"id": 7,
+		"baseEntity": {
+			"id": 88,
+			"name": "益州大道公交站",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.066901",
+			"locationY": "30.601301",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 4,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},
+	{
+		"id": 8,
+		"baseEntity": {
+			"id":88 ,
+			"name": "南华立交桥上",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.067221",
+			"locationY": "30.603827",
+			"height": "477",
+			"address": "https://www.baidu.com"
+		},
+		"type": 6,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},
+	{
+		"id": 9,
+		"baseEntity": {
+			"id": 88,
+			"name": "三环南华立交外侧公交站",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.068514",
+			"locationY": "30.603972",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 4,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},
+	{
+		"id": 10,
+		"baseEntity": {
+			"id": 88,
+			"name": "食屋缘",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.069838",
+			"locationY": "30.602056",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 3,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},		
+	{
+		"id": 11,
+		"baseEntity": {
+			"id": 88,
+			"name": "云南过桥米线",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.069415",
+			"locationY": "30.602013",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 3,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},			
+		{
+		"id": 12,
+		"baseEntity": {
+			"id": 88,
+			"name": "麻子家常菜",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.070366",
+			"locationY": "30.601707",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 3,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},	
+	{
+		"id": 13,
+		"baseEntity": {
+			"id": 88,
+			"name": "our hours全时",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.069231",
+			"locationY": "30.601008",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 2,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},
+	{
+		"id": 14,
+		"baseEntity": {
+			"id":88 ,
+			"name": "理想中心",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.069644",
+			"locationY": "30.601744",
+			"height": "470",
+			"address": "https://www.baidu.com"
+			},
+			"type": 5,
+			"versionFiles": "",
+			"versionName": "",
+			"platform": "",
+			"typeId": 6,
+			"typeName": ""
+			},
+		{
+		"id": 15,
+		"baseEntity": {
+			"id":88 ,
+			"name": "御府茶缘",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.069029",
+			"locationY": "30.601193",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 6,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},
+	{
+		"id": 16,
+		"baseEntity": {
+			"id": 88,
+			"name": "地铁高新站B口",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.06988",
+			"locationY": "30.600289",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 6,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},		
+	{
+		"id": 17,
+		"baseEntity": {
+			"id": 88,
+			"name": "红旗超市",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.070321",
+			"locationY": "30.597541",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 6,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},			
+		{
+		"id": 18,
+		"baseEntity": {
+			"id": 88,
+			"name": "九方",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.070619",
+			"locationY": "30.595887",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 5,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},	
+	{
+		"id": 19,
+		"baseEntity": {
+			"id":88 ,
+			"name": "中航城市广场",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.072296",
+			"locationY": "30.597562",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 6,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},
+	{
+		"id": 20,
+		"baseEntity": {
+			"id": 88,
+			"name": "四川锦程消费金融公司",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.07189",
+			"locationY": "30.596764",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 6,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},
+	{
+		"id": 21,
+		"baseEntity": {
+			"id": 88,
+			"name": "中国银行",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.072431",
+			"locationY": "30.597331",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 6,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},
+	{
+		"id": 22,
+		"baseEntity": {
+			"id": 88,
+			"name": "时代晶科侧门",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.07029",
+			"locationY": "30.596417",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 6,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},		
+	{
+		"id": 23,
+		"baseEntity": {
+			"id":88 ,
+			"name": "时代晶科正门",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.068791",
+			"locationY": "30.597609",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 6,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},			
+		{
+		"id": 24,
+		"baseEntity": {
+			"id":88 ,
+			"name": "汉韵酒店",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.06807",
+			"locationY": "30.597428",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 2,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},	
+		{
+		"id": 25,
+		"baseEntity": {
+			"id": 88,
+			"name": "创客咖啡",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.067753",
+			"locationY": "30.597547",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 6,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},			
+		{
+		"id": 26,
+		"baseEntity": {
+			"id":88 ,
+			"name": "威视真7楼厕所",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.067377",
+			"locationY": "30.597506",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 1,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},
+		{
+		"id": 27,
+		"baseEntity": {
+			"id":88 ,
+			"name": "毛主席像",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.072313",
+			"locationY": "30.664878",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 5,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},			
+		{
+		"id": 28,
+		"baseEntity": {
+			"id":88 ,
+			"name": "西南财经大学",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.023562",
+			"locationY": "30.676697",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 5,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},	
+		{
+		"id": 29,
+		"baseEntity": {
+			"id": 88,
+			"name": "SM广场",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.118914",
+			"locationY": "30.674278",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 5,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},			
+		{
+		"id":30,
+		"baseEntity": {
+			"id":88 ,
+			"name": "锦城广场站A口",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.072815",
+			"locationY": "30.573807",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 6,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},
+			{
+		"id":31,
+		"baseEntity": {
+			"id":88 ,
+			"name": "火车北站",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.079975",
+			"locationY": "30.702457",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 5,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},
+		{
+		"id":32,
+		"baseEntity": {
+			"id":88 ,
+			"name": "运动技术学院",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.035142",
+			"locationY": "30.607161",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 6,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},
+		{
+		"id":33,
+		"baseEntity": {
+			"id":88 ,
+			"name": "红鼎坊火锅",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.068877",
+			"locationY": "30.626488",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 6,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	},	
+			{
+		"id":34,
+		"baseEntity": {
+			"id":88 ,
+			"name": "中加国际大厦",
+			"thumbnail": {
+				"id": 95,
+				"filename": "",
+				"md5": "69003b24c63e6ff26eb4be96c96f9865",
+				"extName": "png",
+				"size": 308415,
+				"address": ""
+			},
+			"sceneryArea": {
+				"id": 1,
+				"name": "邛泸",
+				"desc": ""
+			},
+			"locationX": "104.095678",
+			"locationY": "30.599568",
+			"height": "470",
+			"address": "https://www.baidu.com"
+		},
+		"type": 6,
+		"versionFiles": "",
+		"versionName": "",
+		"platform": "",
+		"typeId": 6,
+		"typeName": ""
+	}]
+}
