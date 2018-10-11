@@ -196,20 +196,49 @@ public class ScrollPage : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         }
         else
         {
+            int count = 0;
             foreach (var page in JsonClass.Instance.GuidPages)
             {
-                HttpManager.Instance.Download(page.Thumbnail, (() => { }));
+                if (File.Exists(page.Thumbnail.localPath))
+                {
+                    count++;
+                }
+            }
 
-                GuidePageItem item = GameObject.Instantiate<GuidePageItem>(pageItemPrefab);
-                item.transform.SetParent(Content.transform);
-                item.transform.localScale = Vector3.one;
-                item.transform.localPosition = Vector3.zero;
-                item.gameObject.SetActive(true);
-                //item.Url= page.
-                //item._init("Ads/" + ScenicDirectoryInfo.Name);
-                HttpManager.Instance.Download(page.Thumbnail, (() => { item._init(page.Thumbnail.localPath); }));
-                pageCount++;
-                SetContent(pageCount);
+            if (count >= JsonClass.Instance.GuidPages.Count)
+            {
+                foreach (var page in JsonClass.Instance.GuidPages)
+                {
+                        HttpManager.Instance.Download(page.Thumbnail, (() =>
+                        {
+                            count++;
+                            GuidePageItem item = GameObject.Instantiate<GuidePageItem>(pageItemPrefab);
+                            item.transform.SetParent(Content.transform);
+                            item.transform.localScale = Vector3.one;
+                            item.transform.localPosition = Vector3.zero;
+                            item.gameObject.SetActive(true);
+                            //item.Url= page.
+                            //item._init("Ads/" + ScenicDirectoryInfo.Name);
+                            item._init(page.Thumbnail.localPath);
+                            pageCount++;
+                            SetContent(pageCount);
+                        }));
+                }
+            }
+            else
+            {
+                foreach (var page in JsonClass.Instance.GuidPages)
+                {
+                    HttpManager.Instance.Download(page.Thumbnail, (() =>
+                    {
+
+                    }));
+                }
+                for (int i = 0; i < defautPanel.Length; i++)
+                {
+                    defautPanel[i].SetActive(true);
+                }
+                SetContent(3);
             }
         }
     }

@@ -18,6 +18,7 @@ public class ARScanManager : MonoBehaviour
 
     public EdgeDetection ed;
     public DOTweenAnimation scanImg;
+    public GameObject toastObj;
     private void Awake()
     {
         instance = this;
@@ -26,9 +27,10 @@ public class ARScanManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("ARScan") == 0)
         {
-            PlayerPrefs.SetInt("ARScan", 1);
-            ARScanGuide.SetActive(true);
-            Screen.orientation = ScreenOrientation.Portrait;
+            //PlayerPrefs.SetInt("ARScan", 1);
+            //ARScanGuide.SetActive(true);
+            //Screen.orientation = ScreenOrientation.Portrait;
+            Screen.orientation = ScreenOrientation.LandscapeLeft;
         }
         else
         {
@@ -36,14 +38,15 @@ public class ARScanManager : MonoBehaviour
         }
         //Invoke("LoadAllXML", 1);
         //Invoke("GetImageList", 1);
-
     }
-
+    public void ShowGameObjectPanel(GameObject obj)
+    {
+        obj.SetActive(!obj.activeSelf);
+    }
     public void scanImgTweenOver()
     {
         StartCoroutine(ImgTweenOver());
     }
-
     public bool IsTween = true;
     public bool isScan = false;
     IEnumerator ImgTweenOver()
@@ -63,7 +66,6 @@ public class ARScanManager : MonoBehaviour
         {
             StartCoroutine(ImgTweenOver());
         }
-
     }
     public void LoadAllXML()
     {
@@ -178,8 +180,20 @@ public class ARScanManager : MonoBehaviour
         ARScanGuide.SetActive(false);
         Screen.orientation = ScreenOrientation.LandscapeLeft;
     }
+
+    private bool isShooting;
     public void ShotPic()
     {
-        ScreenshotManager.SaveScreenshot("Scan");
+        if (!isShooting)
+        {
+            isShooting = true;
+            ScreenshotManager.SaveScreenshot("Scan");
+            toastObj.SetActive(true);
+            CoroutineWrapper.EXES(1.5f, () =>
+            {
+                isShooting = false;
+                toastObj.SetActive(false);
+            });
+        }
     }
 }

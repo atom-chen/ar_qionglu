@@ -12,9 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/main.unity
     guid: b23c22d8e746598489739a9ae8a9d87a
   - enabled: 1
-    path: Assets/Scenes/ARScan.unity
-    guid: eda085f0b5c247c49914d88cc3bf5120
-  - enabled: 1
     path: Assets/Scenes/gpsConvert.unity
     guid: e8312173f8c629f428d9ec8177fc35af
   - enabled: 1

@@ -207,7 +207,7 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
     private void SetScaleValue(float arg0)
     {
         WikiSLAMController.Instance.SetModelScale(scaleBar.value);
-        scaleText.text = (scaleBar.value*100).ToString("f2")+"%";
+        scaleText.text = ((int)(scaleBar.value * 100)).ToString("f2");
     }
 
     private void SetLightUpValue(float arg0)

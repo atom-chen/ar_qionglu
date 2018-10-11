@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Timeline;
@@ -986,20 +986,6 @@ public class AreaInfo
 //	无操作
 
 
-/// <summary>
-/// 系统通知的内容
-/// </summary>
-public class NotifyType
-{
-    /// <summary>
-    /// 消息类型
-    /// </summary>
-    public string action { get; set; }
-    /// <summary>
-    /// 对应的id
-    /// </summary>
-    public string id { get; set; }
-}
 
 #endregion
 

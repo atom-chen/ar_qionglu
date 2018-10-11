@@ -72,4 +72,10 @@ public class webrequest : MonoBehaviour {
             SceneManager.LoadScene("gpsConvert");
         }
     }
+
+    public void CloseWebView(GameObject obj)
+    {
+        obj.GetComponent<UniWebView>().Stop();
+        Destroy(obj,0.2f);
+    }
 }

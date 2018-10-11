@@ -38,7 +38,7 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
         CopyFile();
 
         yield return new WaitForSeconds(1f);
-        string reader = JsonManager.ReadJsonFromFilePath("PointMap.json");
+        string reader = JsonManager.ReadJsonFromFilePath(UnityHelper.LocalFilePath + "Web/", "PointMap.json");
         if (reader != null)
         {
 

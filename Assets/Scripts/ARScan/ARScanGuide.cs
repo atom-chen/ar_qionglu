@@ -167,6 +167,7 @@ public class ARScanGuide : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     /// </summary>
     void GetImageList()
     {
+        SetContent(5);
         return;
         //1.找到资源保存的文件夹
         string assetDirectory = PublicAttribute.LocalFilePath + "PageThumb/ARScan/QL";

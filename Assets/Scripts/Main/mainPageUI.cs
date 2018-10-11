@@ -23,11 +23,13 @@ public class mainPageUI : MonoBehaviour
     public Sprite[] HeadSpr;
     public Text[] photonTxt, UserName;
     private bool ischecking;
+    private bool[] firstDown = new bool[]{false,false, false, false, false, false, false, false, false };
     public static int HeadId
     {
         set {PlayerPrefs.SetInt("HeadId", value);}
         get { return PlayerPrefs.GetInt("HeadId");}
     }
+
     void Awake()
     {
         instance = this;
@@ -36,86 +38,138 @@ public class mainPageUI : MonoBehaviour
         {
             HeadImg[i].sprite = HeadSpr[HeadId];
         }
-        ///获取景区列表信息
-        HttpManager.Instance.GetAreaInfo((b =>
+
+        //获取景区列表信息
+        if (!firstDown[0])
         {
-            if (b)
+            HttpManager.Instance.GetAreaInfo((b =>
             {
-                HttpManager.Instance.DynamicResources();
-                SceneID = JsonClass.Instance.AreaInfoS[0];
-            }
-        }));
-        ///获取景点信息
-        HttpManager.Instance.GetScenicSpotInfo((b =>
-        {
-            if (b)
-            {
-                ///如果获取信息成功，开始下载缩略图
-                 foreach (var info in JsonClass.Instance.ScenicSpotInfoS)
+                if (b)
                 {
-                    HttpManager.Instance.Download(info.thumbnail, (() =>
-                    {
-                        SpotList.instance.CreateItems(info);
-                    }));
+                    firstDown[0] = true;
+                    HttpManager.Instance.DynamicResources();
+                    SceneID = JsonClass.Instance.AreaInfoS[0];
                 }
-            }
-        }));
-        ///获取主页特色景点缩略图
-        HttpManager.Instance.GetTraitScenicSpotInfo((b => {
-            if (b)
+            }));
+        }
+
+        //获取景点信息
+        if (!firstDown[1])
+        {
+            HttpManager.Instance.GetScenicSpotInfo((b =>
             {
-                Loom.QueueOnMainThread((() =>
+                if (b)
                 {
-                    ScrollList.instance.GetImageList(0);
+                    firstDown[1] = true;
+                    ///如果获取信息成功，开始下载缩略图
+                    foreach (var info in JsonClass.Instance.ScenicSpotInfoS)
+                    {
+                        HttpManager.Instance.Download(info.thumbnail, (() =>
+                        {
+                            SpotList.instance.CreateItems(info);
+                        }));
+                    }
+                }
+            }));
+        }
+        else
+        {
+            foreach (var info in JsonClass.Instance.ScenicSpotInfoS)
+            {
+                HttpManager.Instance.Download(info.thumbnail, (() =>
+                {
+                    SpotList.instance.CreateItems(info);
                 }));
             }
-        }));
-        ///获取主页商家缩略图
-        HttpManager.Instance.GetShopSInfo((b =>
+        }
+
+        //获取主页特色景点缩略图
+        if (!firstDown[2])
         {
-            if (b)
+            HttpManager.Instance.GetTraitScenicSpotInfo((b =>
             {
-                ///如果获取信息成功，开始下载缩略图
-                foreach (var info in JsonClass.Instance.ShopInfoS)
+                if (b)
                 {
-                    HttpManager.Instance.Download(info.thumbnail, (() =>
+                    firstDown[2] = true;
+                    Loom.QueueOnMainThread((() =>
                     {
-                        Debug.Log("Done");
+                        ScrollList.instance.GetImageList(0);
                     }));
                 }
-            }
-        }));
-        ///获取特产缩略图
-        HttpManager.Instance.GetLocalSpecialtyInfo((b =>
+            }));
+        }
+        else
         {
-            if (b)
-            {
-                ///如果获取信息成功，开始下载缩略图
-                foreach (var info in JsonClass.Instance.LocalSpecialtyS)
-                {
-                    HttpManager.Instance.Download(info.thumbnail, (() =>
-                    {
-                        Debug.Log("Done");
-                    }));
-                }
-            }
-        }));
-        ///获取到此一游道具
-        HttpManager.Instance.Visit_GetAll((b =>
+            ScrollList.instance.GetImageList(0);
+        }
+
+        //获取主页商家缩略图
+        if (!firstDown[3])
         {
-            //获取信息成功后
-            if (b)
+            HttpManager.Instance.GetShopSInfo((b =>
             {
-                //下载道具的缩略图信息
-                foreach (var info in JsonClass.Instance.VisitInfoS)
+                if (b)
                 {
-                    HttpManager.Instance.Download(info.Thumbnail, (() =>
+                    firstDown[3] = true;
+                    ///如果获取信息成功，开始下载缩略图
+                    foreach (var info in JsonClass.Instance.ShopInfoS)
                     {
-                          GoodList.instance.CreateItems(info);
-                    }));
+                        HttpManager.Instance.Download(info.thumbnail, (() => { Debug.Log("Done"); }));
+                    }
                 }
+            }));
+        }
+        else
+        {
+            
+        }
+
+        //获取特产缩略图
+        if (!firstDown[4])
+        {
+            HttpManager.Instance.GetLocalSpecialtyInfo((b =>
+            {
+                if (b)
+                {
+                    firstDown[4] = true;
+                    ///如果获取信息成功，开始下载缩略图
+                    foreach (var info in JsonClass.Instance.LocalSpecialtyS)
+                    {
+                        HttpManager.Instance.Download(info.thumbnail, (() => { Debug.Log("Done"); }));
+                    }
+                }
+            }));
+        }
+        else
+        {
+            
+        }
+
+        //获取到此一游道具
+        if (!firstDown[5])
+        {
+            HttpManager.Instance.Visit_GetAll((b =>
+            {
+                //获取信息成功后
+                if (b)
+                {
+                    firstDown[5] = true;
+                    //下载道具的缩略图信息
+                    foreach (var info in JsonClass.Instance.VisitInfoS)
+                    {
+                        HttpManager.Instance.Download(info.Thumbnail, (() => { GoodList.instance.CreateItems(info); }));
+                    }
+                }
+            }));
+        }
+        else
+        {
+            foreach (var info in JsonClass.Instance.VisitInfoS)
+            {
+                GoodList.instance.CreateItems(info);
             }
-        }));
+
+        }
     }
 
     void Start ()
@@ -132,6 +186,12 @@ public class mainPageUI : MonoBehaviour
                 Debug.LogError("自动下载");
                 ischecking = true;
                 HttpManager.Instance.DynamicCheekUpdateByArea(SceneID.id);
+
+                //CoroutineWrapper.EXES(60, () =>
+                //{
+                //    ischecking = false;
+                //    CheckProgress();
+                //});
             }
         });
         HttpManager.Instance.DownloadPercent = f =>
@@ -139,25 +199,47 @@ public class mainPageUI : MonoBehaviour
 	        Debug.LogError("进度: " + f.ToString("#0.000"));
 	        fillamount = f;
         };
-	    HttpManager.Instance.GetUserInfoByToken((b =>
+
+        //HttpManager.Instance.GetUserInfoByToken((b =>
+        //{
+        //    if (b)
+        //    {
+        //        for (int i = 0; i < UserName.Length; i++)
+        //        {
+        //            UserName[i].text = PublicAttribute.UserInfo.NickName;
+        //           }
+
+        //        for (int i = 0; i < photonTxt.Length; i++)
+        //        {
+        //            photonTxt[i].text = PublicAttribute.UserInfo.PhoneNo;
+        //        }
+
+        //        Debug.Log(PublicAttribute.UserInfo.NickName + "       " + PublicAttribute.UserInfo.PhoneNo);
+	    //    }
+	    //}));
+
+	    for (int i = 0; i < UserName.Length; i++)
 	    {
-	        if (b)
-	        {
-	            for (int i = 0; i < UserName.Length; i++)
-	            {
-	                UserName[i].text = PublicAttribute.UserInfo.NickName;
-                }
+	        UserName[i].text = PublicAttribute.UserInfo.NickName;
+	    }
 
-	            for (int i = 0; i < photonTxt.Length; i++)
-	            {
-	                photonTxt[i].text = PublicAttribute.UserInfo.PhoneNo;
-	            }
-
-	            Debug.Log(PublicAttribute.UserInfo.NickName + "       " + PublicAttribute.UserInfo.PhoneNo);
-	        }
-	    }));
+	    for (int i = 0; i < photonTxt.Length; i++)
+	    {
+	        photonTxt[i].text = PublicAttribute.UserInfo.PhoneNo;
+	    }
     }
-  
+
+    public void CheckProgress()
+    {
+        if (fillamount < 1)
+        {
+            HttpManager.Instance.DynamicCheekUpdateByArea(SceneID.id);
+            CoroutineWrapper.EXES(60f, () =>
+            {
+                CheckProgress();
+            });
+        }
+    }
     private static void GetFillAmount(float amount)
     {
         fillamount = amount;
@@ -178,9 +260,9 @@ public class mainPageUI : MonoBehaviour
                 LoadScene(lastSceneName);
             }
         }
+
         if (Input.GetMouseButtonDown(1))
         {
-            ischecking = true;
             HttpManager.Instance.DynamicCheekUpdateByArea(SceneID.id);
         }
     }
@@ -236,6 +318,11 @@ public class mainPageUI : MonoBehaviour
             {
                 ischecking = true;
                 HttpManager.Instance.DynamicCheekUpdateByArea(SceneID.id);
+
+                //CoroutineWrapper.EXES(60f, () =>
+                //{
+                //    CheckProgress();
+                //});
             }
         }
     }
@@ -277,6 +364,8 @@ public class mainPageUI : MonoBehaviour
             HeadImg[i].sprite = HeadSpr[id];
         }
     }
+
+    //修改名字
     public void SetUserName(Text name)
     {
         HttpManager.Instance.ModifiUserNickName(name.text, (b =>
@@ -285,7 +374,7 @@ public class mainPageUI : MonoBehaviour
             {
                 for (int i = 0; i < UserName.Length; i++)
                 {
-                    UserName[i].text = PublicAttribute.UserInfo.NickName;
+                    UserName[i].text = name.text;
                 }
                 Debug.Log(b);
             }
@@ -293,9 +382,11 @@ public class mainPageUI : MonoBehaviour
             {
                 for (int i = 0; i < UserName.Length; i++)
                 {
-                    UserName[i].text = PublicAttribute.UserInfo.NickName;
+                    UserName[i].text = name.text;
                 }
             }
+
+            PublicAttribute.UserInfo.NickName = name.text;
         }));
     }
 }

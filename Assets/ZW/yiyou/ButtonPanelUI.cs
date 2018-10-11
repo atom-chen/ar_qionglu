@@ -277,6 +277,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     IEnumerator requestRecoding()
     {
         ui.alpha = 0;
+        RecordManager.Instance.thisUI.alpha = 1;
         isRec = true;
         yield return new WaitForSeconds(0.1f);
 #if UNITY_ANDROID
@@ -297,13 +298,14 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
 
 #endif
 
+        RecordManager.Instance.StartProcess();
     }
 
     public void stopRecoding()
     {
         ui.alpha = 1;
         Debug.Log("Rec::::::::::::::Stop");
-
+        RecordManager.Instance.thisUI.alpha =0;
         isRec = false;
 
 #if UNITY_ANDROID
@@ -351,20 +353,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     }
 
 #endif
-    private void Update()
-    {
-        if (isRec==true)
-        {
-            time += Time.deltaTime;
-            if (time>=timer)
-            {
-                isRec = false;
-                stopRecoding();
-                time = 0;
 
-            }
-        }
-    }
 #endregion
 
 

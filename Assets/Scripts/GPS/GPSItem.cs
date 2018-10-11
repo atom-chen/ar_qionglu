@@ -13,10 +13,6 @@ public class GPSItem : MonoBehaviour
     /// 实景点名称
     /// </summary>
     public string name;
-    /// <summary>
-    /// 实景点缩略图信息
-    /// </summary>
-    public Thumbnail thumbnail { get; set; }
 
     /// <summary>
     /// 实景点经度
@@ -32,11 +28,6 @@ public class GPSItem : MonoBehaviour
     /// 实景点海拔
     /// </summary>
     public string height;
-    /// <summary>
-    /// 所属的景区
-    /// </summary>
-    public SceneryArea sceneryArea { get; set; }
-
     /// <summary>
     /// 实景点详情
     /// </summary>

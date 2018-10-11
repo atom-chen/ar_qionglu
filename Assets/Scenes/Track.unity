@@ -473,6 +473,21 @@ Prefab:
       propertyPath: targetGameObject
       value: 
       objectReference: {fileID: 1598086374}
+    - target: {fileID: 114315527456060746, guid: a5b600fbee6b7b5438bdb0d92df3ce34,
+        type: 2}
+      propertyPath: isCamRotate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114315527456060746, guid: a5b600fbee6b7b5438bdb0d92df3ce34,
+        type: 2}
+      propertyPath: isCanScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114315527456060746, guid: a5b600fbee6b7b5438bdb0d92df3ce34,
+        type: 2}
+      propertyPath: isCanPan
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a5b600fbee6b7b5438bdb0d92df3ce34, type: 2}
   m_IsPrefabParent: 0

@@ -13,7 +13,7 @@ public class FontItemUI : SingletonMono<SelectItemUI>
             if (bgButton == null)
             {
 
-                bgButton = bgImage.GetComponent<Button>();
+                bgButton = BgImage.GetComponent<Button>();
                 bgButton.onClick.AddListener(BgImageClick);
             }
             return bgButton;

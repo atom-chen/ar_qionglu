@@ -33,12 +33,12 @@ public  class JsonManager
 
         return null;
     }
-    public static string ReadJsonFromFilePath(string fileName)
+    public static string ReadJsonFromFilePath(string  filePath,string fileName)
     {
 
             //1.找到资源保存的文件夹
-            string assetDirectory = PublicAttribute.LocalFilePath + "/Web/"+ fileName;
-
+       //     string assetDirectory = UnityHelper.LocalFilePath + "/Web/"+ fileName;
+            string assetDirectory = filePath  + fileName;
             StreamReader sr = new StreamReader(assetDirectory);
 
             if (sr == null)

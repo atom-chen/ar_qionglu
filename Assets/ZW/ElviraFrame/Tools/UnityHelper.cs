@@ -146,7 +146,7 @@ public static   class UnityHelper
     private static string localFilePath;
 
     /// <summary>
-    /// app文件存放路径
+    /// app文件存放路径,最后加了一个/
     /// </summary>
     public static string LocalFilePath
     {
@@ -171,6 +171,33 @@ public static   class UnityHelper
             return localFilePath;
         }
         set { localFilePath = value; }
+    }
+
+
+    public static  float GetDistance(Vector2 gps1, Vector2 gps2)
+    {
+
+        float R = 6371000f;
+  
+
+
+
+        var firstRadLat = gps1.y* Mathf.PI / 180.0f;
+        var firstRadLng = gps1.x * Mathf.PI / 180.0f;
+        var secondRadLat = gps2.y * Mathf.PI / 180.0f;
+        var secondRadLng = gps2.x * Mathf.PI / 180.0f;
+        var a = firstRadLat - secondRadLat;
+        var b = firstRadLng - secondRadLng;
+
+
+        var cal = 2 * Math.Asin(Math.Sqrt(Math.Pow(Math.Sin(a / 2), 2) + Math.Cos(firstRadLat) * Math.Cos(secondRadLat) * Math.Pow(Math.Sin(b / 2), 2))) * R;
+        float distance = (float)Math.Round(cal * 10000) / 10000;
+        return distance;
+
+
+
+
+
     }
 }
 

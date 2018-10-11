@@ -106,7 +106,6 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         }
         targethorizontal = pages[index];
     }
-
     void UpdatePages()
     {
         // 获取子对象的数量
@@ -120,7 +119,6 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
             }
         }
         count = temp;
-
         if (pages.Count != count)
         {
             if (count != 0)
@@ -162,10 +160,13 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                 return;
             }
 
+            if (pageCount[0]> 0)
+            {
+                return;
+            }
+            Debug.LogWarning("GG::::"+JsonClass.Instance.TraitScenicSpotInfoS.Count);
             for (int i = 0; i < JsonClass.Instance.TraitScenicSpotInfoS.Count; i++)
             {
-                pageCount[0]++;
-                SetContent(pageCount[0]);
                 ListItem item = GameObject.Instantiate<ListItem>(pageItemPrefab);
                 item.transform.SetParent(ShowContent[0].transform);
                 item.transform.localScale = Vector3.one;
@@ -180,6 +181,8 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                 {
                     Loom.QueueOnMainThread((() =>
                     {
+                        pageCount[0]++;
+                        SetContent(pageCount[0]);
                         item.gameObject.SetActive(true);
                         item._init(item.thumbnail.localPath);
                     }));
@@ -197,9 +200,13 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                 });
                 return;
             }
+            if (pageCount[1] > 0)
+            {
+                return;
+            }
+
             for (int i = 0; i < JsonClass.Instance.LocalSpecialtyS.Count; i++)
             {
-                pageCount[1]++;
                 //SetContent(pageCount);
                 ListItem item = GameObject.Instantiate<ListItem>(pageItemPrefab);
                 item.transform.SetParent(ShowContent[1].transform);
@@ -215,6 +222,8 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                 {
                     Loom.QueueOnMainThread((() =>
                     {
+                        pageCount[1]++;
+                        SetContent(pageCount[1]);
                         item.gameObject.SetActive(true);
                         item._init(item.thumbnail.localPath);
                     }));
@@ -232,10 +241,16 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                 });
                 return;
             }
+
+            if (pageCount[2] > 0)
+            {
+                return;
+            }
+        
             for (int i = 0; i < JsonClass.Instance.ShopInfoS.Count; i++)
             {
-                pageCount[2]++;
-                //SetContent(pageCount);
+
+                //
                 ListItem item = GameObject.Instantiate<ListItem>(pageItemPrefab);
                 item.transform.SetParent(ShowContent[2].transform);
                 item.transform.localScale = Vector3.one;
@@ -249,6 +264,8 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                 {
                     Loom.QueueOnMainThread((() =>
                     {
+                        pageCount[2]++;
+                        SetContent(pageCount[2]);
                         item.gameObject.SetActive(true);
                         item._init(item.thumbnail.localPath);
                     }));
@@ -310,7 +327,11 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                 {
                     GetImageList(i);
                     ShowContent[i].gameObject.SetActive(true);
-                    SetContent(pageCount[i]);
+                    if (pageCount[i]>0)
+                    {
+                        SetContent(pageCount[i]);
+                    }
+
                 }
                 else
                 {

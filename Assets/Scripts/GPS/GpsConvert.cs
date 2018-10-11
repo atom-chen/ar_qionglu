@@ -8,6 +8,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using LitJson;
+using System.Runtime.InteropServices;
+using UnityEngine.EventSystems;
 
 public class GpsPoint
 {
@@ -19,6 +21,9 @@ public class GpsPoint
 
 public class GpsConvert : MonoBehaviour
 {
+    [DllImport("__Internal")]
+    private static extern string GetLocation();//测试接收字符串
+
     public static GpsConvert instance;
     [SerializeField]
     private GPSItem obj;
@@ -103,21 +108,88 @@ public class GpsConvert : MonoBehaviour
     private DateTime lastDateTime;
 
     public static double lat = 0, lng = 0, height = 0;
+
+    private Vector3 point;
+
+    public string localFilePath;
+
+    public Dropdown dd;
+
+    public GameObject GPSHelp;
     // Use this for initialization
     private void Awake()
     {
         instance = this;
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            localFilePath = Application.persistentDataPath + "/location.json";
+        }
+        else if (Application.platform == RuntimePlatform.WindowsEditor)
+        {
+            localFilePath = Application.dataPath + "/StreamingAssets/location.json";
+        }
         n = (equatorialRadius - polarRadius) / (equatorialRadius + polarRadius);
         rm = POW(equatorialRadius * polarRadius, 1 / 2.0);
         e = Math.Sqrt(1 - POW(polarRadius / equatorialRadius, 2));
         e1sq = e * e / (1 - e * e);
-        getLocation();
+        //getLocation();
+        point = getLocation();
     }
     void Start()
     {
+        if (PlayerPrefs.GetInt("GPS") == 0)
+        {
+            PlayerPrefs.SetInt("GPS", 1);
+            GPSHelp.SetActive(true);
+        }
+        else
+        {
+            GPSHelp.SetActive(false);
+        }
+        dd.value = 3;
         GetPoint();
         StartCoroutine(StartGPS());
     }
+    private float timer = 1f;
+    private void Update()
+    {
+        timer -= Time.deltaTime;
+        if (timer < 0)
+        {
+            RefreshGPS();
+            timer = 5;
+        }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            SetCamGpsPoint(104.068216, 30.598146, 447, "cam");
+        }
+
+
+        if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
+        {
+#if UNITY_EDITOR
+            if (EventSystem.current.IsPointerOverGameObject())
+
+#elif UNITY_ANDROID || UNITY_IPHONE
+             if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+#endif
+                Debug.Log("当前触摸在UI上");
+            else
+            {
+                if (IsShowDirectSpot)
+                {
+                    Debug.Log("当前触摸在空白处");
+                    IsShowDirectSpot = false;
+                    foreach (GPSItem item in GPSItems)
+                    {
+                        if (item.icon != null)
+                            item.icon.ChangeFade(1f);
+                    }
+                }
+            }
+        }
+    }
+    public bool canRefreshGPS = true;
     private void StopGPS()
     {
         Input.location.Stop();
@@ -156,60 +228,74 @@ public class GpsConvert : MonoBehaviour
         }
         else
         {
-            // lat = Input.location.lastData.latitude;
-            // lng = Input.location.lastData.longitude;
-            // height = Input.location.lastData.altitude;
 
-            //  SetCamGpsPoint(Input.location.lastData.longitude, Input.location.lastData.latitude, Input.location.lastData.altitude, "cam");
-
-
-            lat = getLocation().y;
-            lng = getLocation().x;
-            height = getLocation().z;
-
+            lat = point.y;
+            lng = point.x;
+            height = point.z;
+            if (point.x < 10 || point.y < 10)
+                yield break;
             SetCamGpsPoint(lng, lat, height, "cam");
             yield return new WaitForSeconds(100);
         }
     }
+
     private void RefreshGPS()
     {
-        lat = getLocation().y;
-        lng = getLocation().x;
-        height = getLocation().z;
+        if (canRefreshGPS)
+        {
+            point = getLocation();
+            lat = point.y;
+            lng = point.x;
+            height = point.z;
+            if (point.x < 10 || point.y < 10)
+            {
+                Debug.LogError("没获取到坐标");
+                return;
+            }
 
-        SetCamGpsPoint(lng, lat, height, "cam");
+            ReSetCam(lng, lat, height, "cam");
+        }
+    }
+
+    public void ChangeState()
+    {
+        canRefreshGPS = !canRefreshGPS;
     }
     public Vector3 getLocation()
     {
 #if UNITY_EDITOR
         return new Vector3(104.0597f, 30.59437f, 576.7651f);
+
 #elif UNITY_ANDROID
 
         AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
         String location = jo.Call<String>("getLocation");
-        debugLog(location);
 
         Debug.Log("GPS::::::::::" + location);
 
 
         JsonData zb = JsonMapper.ToObject(location);
         float x = float.Parse(zb["longitude"].ToString());
-        float y =float.Parse(zb["latitude"].ToString());
+        float y = float.Parse(zb["latitude"].ToString());
         float z = float.Parse(zb["altitude"].ToString());
         return new Vector3(x,y,z);
-
-
-#elif UNITY_IOS||UNITY_IPHONE
-        return new Vector3(104.0597f, 30.59437f, 576.7651f);
-#endif
-    }
-
-    public void debugLog(String msg)
+#elif UNITY_IOS
+      string IosGet = GetLocation();
+      Debug.Log(IosGet);
+    if (IosGet.Length < 5)
     {
-        AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-        AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
-        jo.Call("logTest", msg);
+         return new Vector3(0f, 0f, 0f);
+    }
+    else
+    {
+        JsonData zb = JsonMapper.ToObject(IosGet);
+        float x = float.Parse(zb["longitude"].ToString());
+        float y = float.Parse(zb["latitude"].ToString());
+        float z = float.Parse(zb["altitude"].ToString());
+        return new Vector3(x,y,z);
+    }
+#endif
     }
     private void OnDisable()
     {
@@ -228,41 +314,67 @@ public class GpsConvert : MonoBehaviour
         CamGPS.height = height;
         CreatePoints("all");
     }
-    void GetPoint()
+
+    public void ReSetCam(double lng, double lat, double height, string name)
     {
-        foreach (var GPSinfo in mainPageUI.curScenicInfo.ResourcesInfos)
+        CamGPS.name = name;
+        CamGPS.lng = lng;
+        CamGPS.lat = lat;
+        CamGPS.height = height;
+
+
+        double camx, camz, x, z;
+        Vector3 objPos;
+        GpsConvertXZ(CamGPS.lng, CamGPS.lat, out camx, out camz);
+        foreach (GPSItem item in GPSItems)
         {
-            if (GPSinfo.ResourcesKey == "scenery_guide")
-                if (GPSinfo.DIS.Count <= 0)
-                {
-                    Invoke("GetPoint", 1);
-                }
-                else
-                {
-                    foreach (var fileitem in GPSinfo.DIS)
-                    {
-                        Debug.Log(fileitem.typeName);
-                        GPSItem item = GameObject.Instantiate<GPSItem>(obj);
-                        item.address = fileitem.baseEntity.address;
-                        item.locationX = fileitem.baseEntity.locationX;
-                        item.locationY = fileitem.baseEntity.locationY;
-                        item.thumbnail = fileitem.baseEntity.thumbnail;
-                        item.id = fileitem.baseEntity.id;
-                        item.name = fileitem.baseEntity.name;
-                        item.height = fileitem.baseEntity.height;
-                        item.sceneryArea = fileitem.baseEntity.sceneryArea;
-                        item.content = fileitem.baseEntity.content;
-                        item.typeName = fileitem.typeName;
-                        GPSItems.Add(item);
-                    }
-                }
+            if (item.locationX.Length < 2 || item.locationY.Length < 2)
+            {
+                Debug.Log("没坐标");
+            }
+            else
+            {
+                GpsConvertXZ(float.Parse(item.locationX), float.Parse(item.locationY), out x, out z);
+                objPos = new Vector3((float)(x - camx), (float)(float.Parse(item.height) - CamGPS.height),
+                    (float)(z - camz));
+                item.gameObject.SetActive(true);
+                item.transform.position = objPos;
+            }
         }
     }
-    private void Update()
+    void GetPoint()
     {
-        if (Input.GetKeyUp(KeyCode.Space))
+        string jsonText;
+#if UNITY_IOS
+         jsonText = Resources.Load<TextAsset>("location").ToString();
+#elif UNITY_ANDROID
+        if (File.Exists(localFilePath))
         {
-            SetCamGpsPoint(102.278882, 27.842102, 576.7651, "cam");
+            StreamReader sr = new StreamReader(localFilePath);
+            jsonText = sr.ReadToEnd();
+            sr.Close();
+            sr.Dispose();
+        }
+        else
+        {
+            jsonText = Resources.Load<TextAsset>("location").ToString();
+        }
+#endif
+        Debug.Log(jsonText);
+        JsonData jsonData = JsonMapper.ToObject(jsonText);
+        for (int i = 0; i < jsonData["data"].Count; i++)
+        {
+            JsonData baseEntity = jsonData["data"][i]["baseEntity"];
+            GPSItem item = GameObject.Instantiate<GPSItem>(obj);
+
+
+            item.id = jsonData["data"][i]["id"].ToString();
+            item.locationX = baseEntity["locationX"].ToString();
+            item.locationY = baseEntity["locationY"].ToString();
+            item.name = baseEntity["name"].ToString();
+            item.height = baseEntity["height"].ToString();
+            item.typeName = jsonData["data"][i]["type"].ToString();
+            GPSItems.Add(item);
         }
     }
     public static List<GameObject> icon = new List<GameObject>();
@@ -287,6 +399,8 @@ public class GpsConvert : MonoBehaviour
                     item.gameObject.SetActive(true);
                     item.transform.position = objPos;
                     //info.text += "distance：" + (int)Vector3.Distance(Camera.main.transform.position, newGO.transform.position) + "\n";
+                    if (item.GetComponent<IconFollow>() != null)
+                        Destroy(item.GetComponent<IconFollow>());
                     item.gameObject.AddComponent<IconFollow>();
                     item.icon = item.GetComponent<IconFollow>();
                 }
@@ -299,42 +413,51 @@ public class GpsConvert : MonoBehaviour
     }
 
     private bool IsShowDirectSpot;
+
     public void ShowDirectSpot(string id)
     {
-        foreach (GPSItem item in GPSItems)
+        if (!IsShowDirectSpot)
         {
-            if (item.id == id)
+            foreach (GPSItem item in GPSItems)
             {
-                IsShowDirectSpot = true;
-                if (item.icon != null)
-                    item.icon.ShowDirectSpot();
-            }
-            else
-            {
-                //Debug.Log(item.id);
-                if (item.icon != null)
-                    item.icon.ChangeFade(0.3f);
+                if (item.id == id)
+                {
+                    IsShowDirectSpot = true;
+                    if (item.icon != null)
+                        item.icon.ShowDirectSpot();
+                }
+                else
+                {
+                    //Debug.Log(item.id);
+                    if (item.icon != null)
+                        item.icon.ChangeFade(0.3f);
+                }
             }
         }
     }
+
     public void ChangeDropDown(Dropdown Drop)
     {
         Debug.Log(Drop.value);
         switch (Drop.value)
         {
+            case 3:
+                IconFollow.showDistance = 99999;
+                break;
             case 0:
-                CreatePoints("all");
+                IconFollow.showDistance = 500;
                 break;
             case 1:
-                CreatePoints("景区");
+                IconFollow.showDistance = 1000;
                 break;
             case 2:
-                CreatePoints("特产");
-                break;
-            case 3:
-                CreatePoints("商家");
+                IconFollow.showDistance = 1500;
                 break;
         }
+    }
+    public void ShowGameObjectPanel(GameObject obj)
+    {
+        obj.SetActive(!obj.activeSelf);
     }
     public void BackMain()
     {
@@ -349,7 +472,7 @@ public class GpsConvert : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene("main");
+
         }
 
     }
@@ -379,7 +502,7 @@ public class GpsConvert : MonoBehaviour
         x = (lng / 180.0) * 20037508.34;
     }
 
-#region GPS坐标计算
+    #region GPS坐标计算
     public String convertLatLonToUTM(double latitude, double longitude)
     {
         validate(latitude, longitude);
@@ -504,9 +627,9 @@ public class GpsConvert : MonoBehaviour
     {
         return Math.Tan(value);
     }
-#endregion
+    #endregion
 
-#region 获取时间戳
+    #region 获取时间戳
 
     public string getTime(string _time)
     {
@@ -563,7 +686,7 @@ public class GpsConvert : MonoBehaviour
         lastDateTime = DateTime2;
         return dateDiff;
     }
-#endregion
+    #endregion
 }
 public class LatZones
 {

@@ -371,6 +371,7 @@ public class PlaneManager : SingletonMono<PlaneManager>
 
         showGameObject.gameObject.SetActive(false);
         GroundPlaneUI.Instance.SelectModelPanel.gameObject.SetActive(false);
+        RecordManager.Instance.thisUI.alpha = 0;
         GroundPlaneUI.Instance.SetIntroductionText("请将镜头朝向地面");
     }
     protected virtual void SetMterials(GoodsWriteEnum goodsWriteEnum)

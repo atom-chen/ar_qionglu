@@ -1388,6 +1388,7 @@ public class HttpManager : Singleton<HttpManager>
                     string userName = date["userExtDto"]["userNickName"].ToString();
                     Debug.Log(userName);
                     var userHeadPhoto = date["userExtDto"]["userHeadPhoto"];
+
                     string downloadUrl = PublicAttribute.URL + "resource?filename=" + userHeadPhoto["md5"].ToString() + "." +
                                          userHeadPhoto["extName"].ToString() + "&type=user_photo&token=" + PublicAttribute.Token;
                     Debug.Log(downloadUrl);
@@ -1398,10 +1399,10 @@ public class HttpManager : Singleton<HttpManager>
                            {
                                Texture2D tex = httpResponse.DataAsTexture2D;
 
-                               //FileStream fs = new FileStream(PublicAttribute.LocalFilePath + "APP/icon.png", FileMode.Create);
-                               //fs.Write(httpResponse.Data, 0, httpResponse.Data.Length);
-                               //fs.Flush();
-                               //fs.Close();
+                               FileStream fs = new FileStream(PublicAttribute.LocalFilePath + "APP/icon.png", FileMode.Create);
+                               fs.Write(httpResponse.Data, 0, httpResponse.Data.Length);
+                               fs.Flush();
+                               fs.Close();
 
                                Sprite sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0f, 0f));
                                PublicAttribute.UserInfo = new UserInfo()

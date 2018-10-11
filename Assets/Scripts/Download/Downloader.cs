@@ -397,9 +397,17 @@ public class Downloader
                     }
                     else
                     {
-                        //Debug.Log("失败" + file.Key.downUrl + "    " + file.Value.endpoint + "    " + file.Value.objectName);
+                        Debug.Log("失败" + file.Key.downUrl + "    " + file.Value.endpoint + "    " + file.Value.objectName);
                     }
-                    //Debug.Log("总共  " + list.Count + "    当前  " + cureentDownCount);
+                    Debug.Log("总共  " + list.Count + "    当前  " + cureentDownCount);
+                    HttpManager.Instance.DownloadPercent((float)cureentDownCount / (float)list.Count);
+                    if (cureentDownCount == list.Count)
+                    {
+                        if (callback != null)
+                        {
+                            callback();
+                        }
+                    }
                     et.Stop();
                 }));
             }), ThreadPriority.Highest);
@@ -481,7 +489,6 @@ public class Downloader
         }, ((originalRequest, response) =>
              {
                  FileStream fs = null;
-
                  if (response == null || !response.IsSuccess)
                  {
                      DebugManager.Instance.LogError("请求失败！");

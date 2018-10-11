@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class Root : MonoBehaviour
 {
+
+
+    static  int  id=0;
     private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
@@ -21,12 +24,18 @@ public class Root : MonoBehaviour
 
     public static MobLinkScene tempScene = null;
 
-
-    public void Notify(string message)
+    /// <summary>
+    /// 推送的回调
+    /// </summary>
+    /// <param name="message"></param>
+    public void Notify(string backid)
     {
-        Debug.Log("点击了通知!!!,传回的消息是    " + message);
-        NotifyType nt =  JsonMapper.ToObject<NotifyType>(message);
-        Debug.Log("action :  "+   nt.action+  "id:"+nt.id);
+        Debug.Log("点击了通知!!!,传回的消息是    " + backid);
+        NotifyCallBack nt =  JsonMapper.ToObject<NotifyCallBack>(backid);
+        id = int.Parse(backid);
+
+        //TODO
+        //跳转到gpsConvert
     }
 
 

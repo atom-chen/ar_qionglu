@@ -310,7 +310,7 @@ namespace ElviraFrame
             // fall-back to default behavior for anything else
             return null;
         }
-
+        public bool isCanPan, isCanScale, isCamRotate;
         private void Start()
         {
           
@@ -319,15 +319,19 @@ namespace ElviraFrame
          //   CreateDoubleTapGesture();
            // CreateTapGesture();
             CreateSwipeGesture();
-            CreatePanGesture();
-            CreateScaleGesture();
-            CreateRotateGesture();
+            if (isCanPan)
+                 CreatePanGesture();
+            if (isCanScale)
+                CreateScaleGesture();
+            if (isCamRotate)
+                CreateRotateGesture();
             CreateLongPressGesture();
 
             // pan, scale and rotate can all happen simultaneously
             panGesture.AllowSimultaneousExecution(scaleGesture);
             panGesture.AllowSimultaneousExecution(rotateGesture);
-            scaleGesture.AllowSimultaneousExecution(rotateGesture);
+            if (isCanScale)
+                scaleGesture.AllowSimultaneousExecution(rotateGesture);
 
             // prevent the one special no-pass button from passing through,
             //  even though the parent scroll view allows pass through (see FingerScript.PassThroughObjects)

@@ -202,9 +202,9 @@ public class PublicAttribute
     }
 
     /// <summary>
-    /// 公共访问URL   ;  "http://192.168.30.49:7070/"；"http://192.168.20.2:9090/";http://115.28.222.129:7070/
+    /// 公共访问URL   ;  "http://192.168.30.49:7070/"；"http://192.168.20.2:9090/";http://115.28.222.129:7070/   "http://ar.vszapp.com:7070/";
     /// </summary>
-    public static string URL = "http://115.28.222.129:7070/";
+    public static string URL = "http://ar.vszapp.com:7070/";
 
     /// <summary>
     /// 经度

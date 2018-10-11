@@ -32,11 +32,11 @@ public class Targets : MonoBehaviour
     }
     public void ShowInfo()
     {
-        if (ARScanManager.instance.IsTween)
-        {
-            Invoke("ShowInfo", 0.1f);
-            return;
-        }
+        //if (ARScanManager.instance.IsTween)
+        //{
+        //    Invoke("ShowInfo", 0.1f);
+        //    return;
+        //}
 
         ARScanManager.instance.isScan = true;
         //foreach (var ChangeInfo in mainPageUI.curScenicInfo.ResourcesInfos)
@@ -177,7 +177,6 @@ public class Targets : MonoBehaviour
                 break;
             case 5:
                 //扫一扫-小渔村
-                StopCoroutine(target5());
                 Target5Lost();
                 break;
             case 6:
@@ -223,7 +222,6 @@ public class Targets : MonoBehaviour
                 break;
         }
     }
-
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -235,7 +233,7 @@ public class Targets : MonoBehaviour
                 Debug.Log("碰撞对象: " + hit.collider.name);
                 switch (id)
                 {
-                    case 7:
+                    case 3:
                         if (hit.collider.name == "id1")
                         {
                             webrequest.instance.LoadWeb("https://www.baidu.com/");
@@ -247,6 +245,10 @@ public class Targets : MonoBehaviour
                         else if (hit.collider.name == "id3")
                         {
                             webrequest.instance.LoadWeb("https://www.taobao.com/");
+                        }
+                        else if (hit.collider.name == "id4")
+                        {
+                            webrequest.instance.LoadWeb("https://www.youku.com/");
                         }
                         break;
                 }
@@ -278,6 +280,8 @@ public class Targets : MonoBehaviour
                     vp.Stop();
                 break;
             case 10:
+                if (vp.clip != null)
+                    vp.Stop();
                 women.gameObject.SetActive(false);
                 women.Play("Idle");
                 break;
@@ -295,9 +299,10 @@ public class Targets : MonoBehaviour
     IEnumerator target1()
     {
         women.gameObject.SetActive(true);
+        women.Play("start");
         yield return new WaitForSeconds(2);
-        aud.Play();
         women.Play("speak");
+        aud.Play();
         line[0].SetActive(false);
         line[1].SetActive(true);
         for (int i = 0; i < 4; i++)
@@ -311,11 +316,10 @@ public class Targets : MonoBehaviour
         for (int i = 4; i < target1tex.Length; i++)
         {
             mat.mainTexture = target1tex[i];
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(7f);
         }
         women.Play("Idle");
     }
-
     private float speaktime = 1;
     IEnumerator PlayAnimOneShot()
     {
@@ -331,6 +335,7 @@ public class Targets : MonoBehaviour
     {
         yield return new WaitForSeconds(2);
         women.gameObject.SetActive(true);
+        women.Play("start");
         yield return new WaitForSeconds(2);
         women.Play("speak");
         for (int i = 0; i < 4; i++)
@@ -409,11 +414,19 @@ public class Targets : MonoBehaviour
         yield return new WaitForSeconds(2f);
         Target5Lost();
         StartCoroutine(target5());
-
     }
 
     void Target5Lost()
     {
+        StopCoroutine(target5());
+        ships[0].transform.DOKill();
+        ships[1].transform.DOKill();
+        ships[2].transform.DOKill();
+
+        ships[0].transform.localPosition = new Vector3(-0.9f,-2.8f,0);
+        ships[1].transform.localPosition = new Vector3(-0.9f, -2.8f, 0);
+        ships[2].transform.localPosition = new Vector3(-0.9f, -2.8f, 0);
+
         points[0].SetActive(false);
         points[1].SetActive(false);
         points[2].SetActive(false);
@@ -423,6 +436,7 @@ public class Targets : MonoBehaviour
     }
     IEnumerator target6()
     {
+        women.Play("start");
         yield return new WaitForSeconds(4);
         women.Play("speak");
         for (int i = 0; i < 4; i++)
