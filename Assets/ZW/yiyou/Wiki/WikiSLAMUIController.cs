@@ -158,17 +158,18 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
 
         intensityBar.minValue = 0.1f;
         intensityBar.maxValue = 2f;
+        intensityBar.value = 1f;
 
         leftBar.minValue = -180f;
         leftBar.maxValue = 180f;
-
+        leftBar.value = 0f;
         upBar.minValue = -45f;
         upBar.maxValue = 45f;
-
+        upBar.value = 0f;
         scaleBar.minValue = 0.3f;
         scaleBar.maxValue = 1.3f;
 
-
+        scaleBar.value = 1f;
         intensityText = intensityBar.transform.GetComponentInChildren<Text>();
         //lightLeftText = leftBar.transform.GetComponentInChildren<Text>();
         //lightUpText = upBar.transform.GetComponentInChildren<Text>();
@@ -207,7 +208,7 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
     private void SetScaleValue(float arg0)
     {
         WikiSLAMController.Instance.SetModelScale(scaleBar.value);
-        scaleText.text = ((int)(scaleBar.value * 100)).ToString("f2");
+        scaleText.text = ((int)((0.01+scaleBar.value )* 100)).ToString()+"%";
     }
 
     private void SetLightUpValue(float arg0)
@@ -225,7 +226,7 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
     private void SetIntensityValue(float arg0)
     {
         WikiSLAMController.Instance.SetIntensityValue(intensityBar.value);
-        intensityText.text =( intensityBar.value/50).ToString("f2")+"%";
+        intensityText.text =( intensityBar.value).ToString("f2");
     }
 
     public void ShowSliderPanel(ChangeSliderEnum  changeSliderEnum)

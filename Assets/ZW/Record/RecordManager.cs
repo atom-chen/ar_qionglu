@@ -47,7 +47,7 @@ public class RecordManager : SingletonMono<RecordManager>
     {
         RecordButton.onClick.AddListener(RecordClick);
         thisUI = this.GetComponent<CanvasGroup>();
-        //thisUI.alpha = 0;
+       thisUI.alpha = 0;
     }
 
     private void RecordClick()

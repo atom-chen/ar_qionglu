@@ -175,7 +175,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 2
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -210,6 +210,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e456062ea032853468db6452898557f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bgImage: {fileID: 114571003351764648}
+  tipImage: {fileID: 114483006850603164}
 --- !u!222 &222414768318473598
 CanvasRenderer:
   m_ObjectHideFlags: 1

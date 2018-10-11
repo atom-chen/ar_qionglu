@@ -245,6 +245,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
         ShowShotImage.texture = null;
         EffectPanelUI.Instance.EffectPanelGo.gameObject.SetActive(false);
         ui.alpha = 0;
+        RecordManager.Instance.thisUI.alpha = 0;
         FingerTouchEL.Instance.targetGameObject = null;
         YiyouStaticDataManager.Instance.OnSilenceGameObject(0f);
         yield return new WaitForSeconds(0.1f);

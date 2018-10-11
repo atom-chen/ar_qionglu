@@ -196,7 +196,7 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
     {
         PlaneManager.Instance.SetModelScale(scaleBar.value);
 
-        scaleText.text = ((int)(scaleBar.value * 100)).ToString("f2");
+        scaleText.text = ((int)(scaleBar.value * 100)).ToString("f2")+"%";
     }
 
     private void SetLightUpValue(float arg0)
@@ -214,7 +214,7 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
     private void SetIntensityValue(float arg0)
     {
         PlaneManager.Instance.SetIntensityValue(intensityBar.value);
-        intensityText.text = (intensityBar.value / 50*100).ToString("f2") + "%";
+        intensityText.text = (intensityBar.value ).ToString("f2");
     }
 
 

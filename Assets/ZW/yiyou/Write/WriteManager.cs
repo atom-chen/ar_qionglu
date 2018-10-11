@@ -24,7 +24,7 @@ public     GoodsWriteEnum goodsEnum = GoodsWriteEnum.None;
     public GameObject fontUIItem;
 
 
-    private List<GameObject> fontGoList = new List<GameObject>();
+    public List<GameObject> fontGoList = new List<GameObject>();
     public UnityEngine.GameObject Inputpanel
     {
         get
@@ -284,6 +284,19 @@ public     GoodsWriteEnum goodsEnum = GoodsWriteEnum.None;
 
 
     }
-
+    public void SetBtnClickState(GameObject  selectGo)
+    {
+        foreach (var item in fontGoList)
+        {
+            if (item.name==selectGo.name)
+            {
+                selectGo.GetComponent<FontItemUI>().ShowTip(true) ;
+            }
+            else
+            {
+                item.GetComponent<FontItemUI>().ShowTip(false);
+            }
+        }
+    }
 
 }

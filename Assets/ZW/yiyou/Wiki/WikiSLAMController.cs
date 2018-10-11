@@ -36,6 +36,17 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
   
     private bool _isTracking = false;
     Light mainLight;
+    public UnityEngine.Light MainLight
+    {
+        get {
+            if (mainLight==null)
+            {
+                mainLight = GameObject.FindGameObjectWithTag(Tags.Light).GetComponent<Light>();
+            }
+            return mainLight;
+        }
+        set { mainLight = value; }
+    }
     public InstantTrackingState CurrentState
     {
         get { return _currentState; }
@@ -80,7 +91,7 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
         StartCoroutine(CheckPlatformAssistedTrackingSupport());
 
 
-        mainLight = GameObject.FindGameObjectWithTag(Tags.Light).GetComponent<Light>();
+     
     }
 
     private IEnumerator CheckPlatformAssistedTrackingSupport()
@@ -158,20 +169,20 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
 
     internal void SetIntensityValue(float value)
     {
-        mainLight.intensity = value;
+        MainLight.intensity = value;
     }
 
     internal void SetLightLeftValue(float value)
     {
-        Vector3 rot = mainLight.transform.localEulerAngles;
-        mainLight.transform.localEulerAngles = new UnityEngine.Vector3(rot.x,value,rot.z);
+        Vector3 rot = MainLight.transform.localEulerAngles;
+        MainLight.transform.localEulerAngles = new UnityEngine.Vector3(rot.x,value,rot.z);
        
     }
 
     internal void SetLightUpValue(float value)
     {
-        Vector3 rot = mainLight.transform.parent.localEulerAngles;
-        mainLight.transform.parent.localEulerAngles = new UnityEngine.Vector3(value, rot.y, rot.z);
+        Vector3 rot = MainLight.transform.parent.localEulerAngles;
+        MainLight.transform.parent.localEulerAngles = new UnityEngine.Vector3(value, rot.y, rot.z);
     }
 
     internal void SetModelScale(float value)
