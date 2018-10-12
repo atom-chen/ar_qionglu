@@ -8,7 +8,7 @@ public class ChangAn : MonoBehaviour
     /// <summary>
     ///按钮长按录像 
     /// </summary>
-     float timer = 2f;
+     float timer = 3f;
     float lastTime = 0f;
     bool isLongPress = false;
 

@@ -162,23 +162,26 @@ namespace ElviraFrame.AB
         {
             try
             {
-                if (_DicSingleABLoaderCache.Count!=0)
-                {    //逐一释放所有加载过的AssetBundel 包中的资源
+                if (_DicSingleABLoaderCache!=null&&_DicSingleABLoaderCache.Count!=0)
+                {    
+                    //逐一释放所有加载过的AssetBundel 包中的资源
                 foreach (SingleABLoader item_sABLoader in _DicSingleABLoaderCache.Values)
                 {
                     item_sABLoader.DisposeALL();
                 }
-                }
-            
-                _DicSingleABLoaderCache.Clear();
-                _DicSingleABLoaderCache = null;
-
-                //释放其他对象占用资源
+                    _DicSingleABLoaderCache.Clear();
+                    _DicSingleABLoaderCache = null;
+         //释放其他对象占用资源
                 _DicABRelation.Clear();
                 _DicABRelation = null;
                 _CurrentABName = null;
                 _CurrentScenesName = null;
                 _LoadAllABPackageCompleteHandel = null;
+                }
+            
+    
+
+       
 
                 //卸载没有使用到的资源
                 Resources.UnloadUnusedAssets();

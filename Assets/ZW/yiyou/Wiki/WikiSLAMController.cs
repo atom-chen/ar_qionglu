@@ -185,12 +185,17 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
         MainLight.transform.parent.localEulerAngles = new UnityEngine.Vector3(value, rot.y, rot.z);
     }
 
-    internal void SetModelScale(float value)
+    internal void SetRotateValue(float value)
     {
         if (showGameObject!=null)
         {
-            showGameObject.transform.localScale = Vector3.one * value;
+            Vector3 rot = showGameObject.transform.localEulerAngles;
+            showGameObject.transform.localEulerAngles = new UnityEngine.Vector3(rot.x,value,rot.z);
         }
+
+
+
+
     }
 
     public void SetBtnList(List<GameObject>  gos)
@@ -437,8 +442,12 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
         {
         foreach (var model in _activeModels)
         {
-            model.SetActive(active);
-        }
+                if (model!=null)
+                {
+                    model.SetActive(active);
+
+                }
+            }
         }
 
 
@@ -471,11 +480,10 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
                     WikiSLAMUIController.Instance.ShowButtonPanel(true);
                 }
 
-            if (showGameObjectName == "shitou" || showGameObjectName == "shabao")
-            {
+         
                 WikiSLAMUIController.Instance.ShowEffectPanel(true);
 
-            }
+           
 
 
             if (showGameObjectName.Contains("haiou"))
@@ -556,7 +564,7 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
         if (showGameObject != null)
         {
             Destroy(showGameObject);
-
+            _activeModels.Remove(showGameObject);
         }
         Tracker.SetState(InstantTrackingState.Initializing);
       

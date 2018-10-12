@@ -30,7 +30,7 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
     protected PointerEventData m_PointerEventData;
     protected EventSystem m_EventSystem;
 
-    protected ProductPlacement m_ProductPlacement;
+
 
 
 
@@ -41,18 +41,18 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
 
     public GameObject inputSureButton, backButton, zujiButton, helpButton, cancelButton;
     public GameObject helpImage, sliderPanel;
-    public GameObject intensitySlider, lightSlider, scaleSlider;
+    public GameObject intensitySlider, lightSlider, rotateSlider;
 
 
     Slider intensityBar;
     Slider leftBar;
     Slider upBar;
-    Slider scaleBar;
+    Slider rotateBar;
 
 
     Button functionBtn;
 
-    Text intensityText, lightLeftText, lightUpText, scaleText;
+    Text intensityText, lightLeftText, lightUpText, rotateText;
 
 
     public UnityEngine.UI.Button FunctionBtn
@@ -115,7 +115,7 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
 
      
 
-        m_ProductPlacement = FindObjectOfType<ProductPlacement>();
+  
    
 
         m_GraphicRayCaster = FindObjectOfType<GraphicRaycaster>();
@@ -131,12 +131,12 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
         intensityBar = intensitySlider.gameObject.GetComponentInChildren<Slider>();
         leftBar = lightSlider.transform.Find("LeftSlider").GetComponent<Slider>();
         upBar = lightSlider.transform.Find("UpSlider").GetComponent<Slider>();
-        scaleBar = scaleSlider.gameObject.GetComponentInChildren<Slider>();
+        rotateBar = rotateSlider.gameObject.GetComponentInChildren<Slider>();
 
         intensityBar.onValueChanged.AddListener(SetIntensityValue);
         leftBar.onValueChanged.AddListener(SetLightLeftValue);
         upBar.onValueChanged.AddListener(SetLightUpValue);
-        scaleBar.onValueChanged.AddListener(SetScaleValue);
+        rotateBar.onValueChanged.AddListener(SetRotateValue);
 
 
         intensityBar.minValue = 0.1f;
@@ -148,15 +148,15 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
         upBar.minValue = -45f;
         upBar.maxValue = 45f;
 
-        scaleBar.minValue = 0.3f;
-        scaleBar.maxValue = 1.3f;
-
+        rotateBar.minValue = -180f;
+        rotateBar.maxValue = 180f;
+        rotateBar.value = 1f;
 
 
         intensityText = intensityBar.transform.GetComponentInChildren<Text>();
         //lightLeftText = leftBar.transform.GetComponentInChildren<Text>();
         //lightUpText = upBar.transform.GetComponentInChildren<Text>();
-        scaleText = scaleBar.transform.GetComponentInChildren<Text>();
+        rotateText = rotateBar.transform.GetComponentInChildren<Text>();
 
 
 
@@ -192,11 +192,11 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
 
     }
 
-    private void SetScaleValue(float arg0)
+    private void SetRotateValue(float arg0)
     {
-        PlaneManager.Instance.SetModelScale(scaleBar.value);
+        PlaneManager.Instance.SetModelRotate(rotateBar.value);
 
-        scaleText.text = ((int)(scaleBar.value * 100)).ToString("f2")+"%";
+        rotateText.text = ((int) rotateBar.value).ToString();
     }
 
     private void SetLightUpValue(float arg0)
@@ -229,22 +229,22 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
             case ChangeSliderEnum.Intensity:
                 intensitySlider.gameObject.SetActive(true);
                 lightSlider.gameObject.SetActive(false);
-                scaleSlider.gameObject.SetActive(false);
+                rotateSlider.gameObject.SetActive(false);
                 break;
             case ChangeSliderEnum.Light:
                 intensitySlider.gameObject.SetActive(false);
                 lightSlider.gameObject.SetActive(true);
-                scaleSlider.gameObject.SetActive(false);
+                rotateSlider.gameObject.SetActive(false);
                 break;
             case ChangeSliderEnum.Scale:
                 intensitySlider.gameObject.SetActive(false);
                 lightSlider.gameObject.SetActive(false);
-                scaleSlider.gameObject.SetActive(true);
+                rotateSlider.gameObject.SetActive(true);
                 break;
             case ChangeSliderEnum.None:
                 intensitySlider.gameObject.SetActive(false);
                 lightSlider.gameObject.SetActive(false);
-                scaleSlider.gameObject.SetActive(false);
+                rotateSlider.gameObject.SetActive(false);
 
                 break;
             default:
@@ -294,17 +294,19 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
                 InitUI();
 
             }
-
+            ShouZujiBtn(false);
         }
         else if (SelectModelPanel.gameObject.activeSelf == false)
         {
             InitUI();
-
+            ShouZujiBtn(false);
         }
         else
         {
             Debug.Log("33");
             StartCoroutine("LoadNext", "main");
+
+            Debug.Log("back");
         }
     }
     IEnumerator LoadNext(string  nextSceneName)
@@ -451,7 +453,7 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
     internal void ShowEffectPanel(bool  flag=true)
     {
         string modelName = YiyouStaticDataManager.Instance.ShowModel.name;
-        if (modelName == "shitou" || modelName == "shabao")
+        if (modelName != "haiou" )
         {
 
             EffectPanelGo.gameObject.SetActive(flag);
@@ -463,5 +465,12 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
     {
         ButtonPanelGo.gameObject.SetActive(true);
         ButtonPanelUI.Instance.Init();
+    }
+
+
+    public void ShouZujiBtn(bool  flag)
+    {
+        zujiButton.gameObject.SetActive(flag);
+        helpButton.gameObject.SetActive(!flag);
     }
 }

@@ -35,7 +35,9 @@ public class ImagePrefabs : MonoBehaviour {
     }
     private IEnumerator LoadImage(string iconPath)
     {
-        WWW www = new WWW(iconPath);
+        //WWW www = new WWW(UnityHelper.LocalFilePath+"Web/"+iconPath);
+        WWW www = new WWW("file://"+ UnityHelper.LocalFilePath + "Web/" + iconPath);
+        Debug.Log("UnityHelper.LocalFilePath+iconPath==="+ UnityHelper.LocalFilePath + "Web/" + iconPath);
         yield return www;
         if (www.error != null)
         {

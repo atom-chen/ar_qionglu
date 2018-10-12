@@ -23,7 +23,13 @@ public class ScrollContent : MonoBehaviour
     /// </summary>
     public void AddContentChildPanel(string  key,List<string>  paths)
     {
-        GameObject go = Instantiate<GameObject>(Resources.Load<GameObject>("ContentChildPanel"), this.transform);
+        Debug.Log("AddContentChildPanelkey===" + key);
+        foreach (var item in paths)
+        {
+       Debug.Log("AddContentChildPanelitempaths===" + item);
+        }
+ 
+        GameObject go = Instantiate<GameObject>(Resources.Load<GameObject>("Model/ContentChildPanel"), this.transform);
         go.GetComponent<ContentChildPanel>().AddImageChild( key,paths);
         childPanel.Add(go);
         Updateheight();

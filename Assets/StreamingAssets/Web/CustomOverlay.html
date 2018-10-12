@@ -49,6 +49,8 @@
 
 	var CustomOverlayArray = [];
 	map.addEventListener("zoomend", function(){	
+	
+	alert(map.getZoom());
 			for(var i=0;i<CustomOverlayArray.length;i++)
 			 {
 						CustomOverlayArray[i].draw();

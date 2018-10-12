@@ -19,14 +19,14 @@ public class ContentChildPanel : MonoBehaviour
     void Awake()
     {
         _Instance = this;
-        titleImage = this.transform.Find("titleImage").GetComponent<Image>();
-        titleImageToggle = this.transform.Find("titleImage/Toggle").GetComponent<Toggle>();
+        //titleImage = this.transform.Find("titleImage").GetComponent<Image>();
+        //titleImageToggle = this.transform.Find("titleImage/Toggle").GetComponent<Toggle>();
 
 
-        titleText = this.transform.Find("titleImage/titleText").GetComponent<Text>();
-        imagePanel = this.transform.Find("imagePanel");
+        //titleText = this.transform.Find("titleImage/titleText").GetComponent<Text>();
+        //imagePanel = this.transform.Find("imagePanel");
 
-        titleImageToggle.onValueChanged.AddListener(TitleImageToggleClick);
+        //titleImageToggle.onValueChanged.AddListener(TitleImageToggleClick);
     }
 
     private void TitleImageToggleClick(bool arg0)
@@ -67,13 +67,23 @@ public class ContentChildPanel : MonoBehaviour
     /// <param name="path"></param>
     public void AddImageChild(string key,List<string> paths)
     {
-        string[] keyArray = key.Split('|');
+        childCount = 0;
+        Debug.Log("AddImageChildkey===" + key);
+        foreach (var item in paths)
+        {
+            Debug.Log("AddImageChildpaths===" + item);
+        }
+
+
+
+       // string[] keyArray = key.Split('|');
         Debug.Log(key + "    "+paths.Count);
         
-        titleText.text =  keyArray[0] + "年" + keyArray[1] + "月" + keyArray[2] + "日";
+        //titleText.text =  keyArray[0] + "年" + keyArray[1] + "月" + keyArray[2] + "日";
+        titleText.text = key;
         for (int i = 0; i < paths.Count; i++)
         {
-            GameObject go = Instantiate<GameObject>(Resources.Load<GameObject>("ImagePrefabs"), imagePanel);
+            GameObject go = Instantiate<GameObject>(Resources.Load<GameObject>("Model/ImagePrefabs"), imagePanel);
             go.GetComponent<ImagePrefabs>().Init(paths[i]);
             childCount++;
         }

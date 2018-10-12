@@ -25,16 +25,16 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
 
     public GameObject inputSureButton, backButton, zujiButton,helpButton,cancelButton;
     public GameObject helpImage, sliderPanel;
-    public GameObject intensitySlider, lightSlider, scaleSlider;
+    public GameObject intensitySlider, lightSlider, rotateSlider;
 
 
     Slider intensityBar;
     Slider leftBar;
     Slider upBar;
-    Slider scaleBar;
+    Slider rotateBar;
 
 
-    Text intensityText, lightLeftText, lightUpText, scaleText;
+    Text intensityText, lightLeftText, lightUpText, rotateText;
     private GameObject buttonPanel;
 
 
@@ -148,12 +148,12 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
          intensityBar = intensitySlider.gameObject.GetComponentInChildren<Slider>();
          leftBar = lightSlider.transform.Find("LeftSlider").GetComponent<Slider>();
          upBar = lightSlider.transform.Find("UpSlider").GetComponent<Slider>();
-         scaleBar = scaleSlider.gameObject.GetComponentInChildren<Slider>();
+         rotateBar = rotateSlider.gameObject.GetComponentInChildren<Slider>();
 
         intensityBar.onValueChanged.AddListener(SetIntensityValue);
         leftBar.onValueChanged.AddListener(SetLightLeftValue);
         upBar. onValueChanged.AddListener(SetLightUpValue);
-        scaleBar.onValueChanged.AddListener(SetScaleValue);
+        rotateBar.onValueChanged.AddListener(SetRotateValue);
 
 
         intensityBar.minValue = 0.1f;
@@ -166,14 +166,14 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
         upBar.minValue = -45f;
         upBar.maxValue = 45f;
         upBar.value = 0f;
-        scaleBar.minValue = 0.3f;
-        scaleBar.maxValue = 1.3f;
+        rotateBar.minValue = -180f;
+        rotateBar.maxValue = 180f;
 
-        scaleBar.value = 1f;
+        rotateBar.value = 1f;
         intensityText = intensityBar.transform.GetComponentInChildren<Text>();
         //lightLeftText = leftBar.transform.GetComponentInChildren<Text>();
         //lightUpText = upBar.transform.GetComponentInChildren<Text>();
-        scaleText = scaleBar.transform.GetComponentInChildren<Text>();
+        rotateText = rotateBar.transform.GetComponentInChildren<Text>();
 
 
         ButtonPanel.gameObject.SetActive(false);
@@ -205,10 +205,10 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
 #endif
 
     }
-    private void SetScaleValue(float arg0)
+    private void SetRotateValue(float arg0)
     {
-        WikiSLAMController.Instance.SetModelScale(scaleBar.value);
-        scaleText.text = ((int)((0.01+scaleBar.value )* 100)).ToString()+"%";
+        WikiSLAMController.Instance.SetRotateValue(rotateBar.value);
+        rotateText.text = ((int)rotateBar.value).ToString();
     }
 
     private void SetLightUpValue(float arg0)
@@ -238,17 +238,17 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
             case ChangeSliderEnum.Intensity:
                 intensitySlider.gameObject.SetActive(true);
                 lightSlider.gameObject.SetActive(false);
-                scaleSlider.gameObject.SetActive(false);
+                rotateSlider.gameObject.SetActive(false);
                 break;
             case ChangeSliderEnum.Light:
                 intensitySlider.gameObject.SetActive(false);
                 lightSlider.gameObject.SetActive(true);
-                scaleSlider.gameObject.SetActive(false);
+                rotateSlider.gameObject.SetActive(false);
                 break;
             case ChangeSliderEnum.Scale:
                 intensitySlider.gameObject.SetActive(false);
                 lightSlider.gameObject.SetActive(false);
-                scaleSlider.gameObject.SetActive(true);
+                rotateSlider.gameObject.SetActive(true);
                 break;
 
             case ChangeSliderEnum.None:
@@ -256,7 +256,7 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
 
                 intensitySlider.gameObject.SetActive(false);
                 lightSlider.gameObject.SetActive(false);
-                scaleSlider.gameObject.SetActive(false);
+                rotateSlider.gameObject.SetActive(false);
 
                 break;
             default:
@@ -291,11 +291,11 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
 
     IEnumerator LoadNext(string nextSceneName)
     {
-        Debug.Log("ZujiBtnClick");
+     
         AssetBundleMgr.GetInstance().DisposeAllAssets("scene_yiyou");
         TrackDataManager.Instance.SaveStringToFile();
         GlobalParameter.isNeedRestore = false;
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         SceneManager.LoadScene(nextSceneName);
     }
 
@@ -326,7 +326,7 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
                 SetIntroductionText("请将镜头朝向地面并选择模型");
                 YiyouStaticDataManager.Instance.HandleClear();
             }
-
+            ShouZujiBtn(false);
         }
        else  if (SelectModelPanel.gameObject.activeSelf == false)
         {
@@ -340,6 +340,7 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
             WikiSLAMController.Instance.ResetScene();
             SetIntroductionText("请将镜头朝向地面并选择模型");
             YiyouStaticDataManager.Instance.HandleClear();
+            ShouZujiBtn(false);
         }
         else
         {
@@ -375,7 +376,7 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
     internal void ShowEffectPanel(bool v)
     {
         string modelName = YiyouStaticDataManager.Instance.ShowModel.name;
-        if (modelName == "shitou" || modelName == "shabao")
+        if (modelName != "haiou" )
         {
             EffectPanelGo.gameObject.SetActive(v);
 
@@ -387,5 +388,9 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
         ButtonPanelGo.gameObject.SetActive(v);
         ButtonPanelUI.Instance.Init();
     }
-
+    public void ShouZujiBtn(bool flag)
+    {
+        zujiButton.gameObject.SetActive(flag);
+        helpButton.gameObject.SetActive(!flag);
+    }
 }

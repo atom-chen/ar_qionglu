@@ -14,7 +14,7 @@ public class GroundPlaneUIRestore:GroundPlaneUI
   
 
 
-        m_ProductPlacement = FindObjectOfType<ProductPlacement>();
+   
      
 
         m_GraphicRayCaster = FindObjectOfType<GraphicRaycaster>();

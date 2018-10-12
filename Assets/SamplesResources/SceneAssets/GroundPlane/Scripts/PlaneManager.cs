@@ -23,7 +23,7 @@ public class PlaneManager : SingletonMono<PlaneManager>
     public MidAirPositionerBehaviour m_MidAirPositioner;
     //[HideInInspector]
     public GameObject showGameObject;
-    protected string showGameObjectName;
+    protected string showGameObjectName,lastName;
     public List<MeshRenderer> renderMaterialsList = new List<MeshRenderer>();
     public List<SkinnedMeshRenderer> skinMaterialsList = new List<SkinnedMeshRenderer>();
     public static bool GroundPlaneHitReceived;
@@ -163,9 +163,9 @@ public class PlaneManager : SingletonMono<PlaneManager>
             m_ContentPositioningBehaviour = m_PlaneFinder.GetComponent<ContentPositioningBehaviour>();
             m_ContentPositioningBehaviour.DuplicateStage = false;
             // Place object based on Ground Plane mode
-            if (showGameObject != null)
+            if (showGameObject != null&&lastName!=showGameObjectName)
             {
-
+                lastName = showGameObjectName;
                 showGameObject.gameObject.SetActive(true);
                 isPlaced = true;
                 if (showGameObjectName== "haiou")
@@ -290,6 +290,7 @@ public class PlaneManager : SingletonMono<PlaneManager>
         YiyouStaticDataManager.Instance.OnDestroyGameObject();
         modelName = goName;
         showGameObjectName = goName;
+
         YiyouStaticDataManager.Instance.modelName = goName;
 
 
@@ -371,6 +372,7 @@ public class PlaneManager : SingletonMono<PlaneManager>
 
         showGameObject.gameObject.SetActive(false);
         GroundPlaneUI.Instance.SelectModelPanel.gameObject.SetActive(false);
+      
         RecordManager.Instance.thisUI.alpha = 0;
         GroundPlaneUI.Instance.SetIntroductionText("请将镜头朝向地面");
     }
@@ -418,6 +420,7 @@ public class PlaneManager : SingletonMono<PlaneManager>
         Debug.Log("ResetScene() called.");
  
         showGameObjectName = "";
+        lastName = "";
         DeleteAnchors();
         m_GroundPlaneUI.Reset();
         YiyouStaticDataManager.Instance.OnDestroyGameObject();
@@ -583,12 +586,14 @@ public class PlaneManager : SingletonMono<PlaneManager>
         mainLight.transform.parent.localEulerAngles = new UnityEngine.Vector3(value, rot.y, rot.z);
     }
 
-    internal void SetModelScale(float value)
+    internal void SetModelRotate(float value)
     {
         if (showGameObject != null)
         {
-            showGameObject.transform.localScale = Vector3.one * value;
+            Vector3 rot = showGameObject.transform.localEulerAngles;
+            showGameObject.transform.localEulerAngles = new UnityEngine.Vector3(rot.x, value, rot.z);
         }
+
     }
     #endregion
 }

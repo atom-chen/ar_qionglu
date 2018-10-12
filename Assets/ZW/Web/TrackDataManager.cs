@@ -54,7 +54,7 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
         }
 
     }
-    private void CopyFile()
+    public  void CopyFile()
     {
         string htmlFilePath = PublicAttribute.LocalFilePath + "Web/";
         string htmlPath = PublicAttribute.LocalFilePath + "Web/a.txt";
@@ -70,25 +70,52 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
             sw.Close();
      
         }
+   string targetFile = htmlFilePath + "CustomOverlay.html";
 
-       string sourceFile = Application.streamingAssetsPath + "/Web/CustomOverlay.html";
-            string targetFile = htmlFilePath + "CustomOverlay.html";
-
-            if (!File.Exists(targetFile))
-            {
-                File.Copy(sourceFile, targetFile, true);
-
-            }
-
-            string jsonsourceFile = Application.streamingAssetsPath + "/Web/PointMap.json";
             string jsontargetFile = htmlFilePath + "PointMap.json";
-            if (!File.Exists(jsontargetFile))
-            {
-                File.Copy(jsonsourceFile, jsontargetFile, true);
-            }
+
+#if UNITY_ANDROID
+     //   WWW loadhtml = new WWW("jar:file://" + Application.dataPath + "!/assets/" + "CustomOverlay.html");  // 安卓下streamingAssets目录
+     //   WWW loadjson = new WWW("jar:file://" + Application.dataPath + "!/assets/" + "PointMap.json");  // 安卓下streamingAssets目录        
+
+     //   while (loadhtml.isDone)
+     //{        // 写到持久化目录
+     //       Debug.Log("loadhtml.text==" + loadhtml.text);
+     //   File.WriteAllText(targetFile, loadhtml.text);
+         
+     //   }
+
+  
+        StartCoroutine(Load(targetFile, "CustomOverlay.html"));
+       // StartCoroutine(Load(jsontargetFile, "PointMap.json"));
+
+#else
+        string sourceFile = Application.streamingAssetsPath + "/Web/CustomOverlay.html";
+     
+        string jsonsourceFile = Application.streamingAssetsPath + "/Web/PointMap.json";
+
+
+        File.Copy(sourceFile,targetFile,true);
+        File.Copy(jsonsourceFile,jsontargetFile,true);
+#endif
+
+
+
 
     }
+    IEnumerator Load(string targetFile,string  fileName)
+    {
 
+        WWW load = new WWW("jar:file://" + Application.dataPath + "!/assets/Web/" + fileName);  // 安卓下streamingAssets目录
+  // WWW load = new WWW(Application.streamingAssetsPath+"/Web/"+ fileName);  // 安卓下streamingAssets目录
+        yield return load;
+        if (load.isDone)
+        {
+            // 写到持久化目录
+            Debug.Log("load.text==" + load.text);
+            File.WriteAllText(targetFile, load.text);
+        }
+    }
     private void AddToLinkList(PointClass pointDataParams)
     {
         Debug.Log("AddToLinkList");
@@ -183,8 +210,8 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
         float y = float.Parse(zb["latitude"].ToString());
 
 
-        string jingdu = x.ToString("F8");
-        string weidu = y.ToString("F8");
+        string jingdu = x.ToString("F5");
+        string weidu = y.ToString("F5");
         Debug.Log("x========" + jingdu + ";;;;;;y============" + weidu+ ";;;;;;;;;;;imagepath" + imagepath);
 
         String date = System.DateTime.Now.ToString("yyyy/MM/dd");

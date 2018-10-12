@@ -26,15 +26,24 @@ public class GalleryImageManager : SingletonMono<GalleryImageManager>
     }
 
 
+    private void Update()
+    {
+        //if (Input.GetMouseButtonDown(1))
+        //{
+        //    SpawnImage("1");
+        //}
 
+    }
     /// <summary>
     /// 地图上点位点击之后的加载图片
     /// </summary>
     /// <param name="pathList"></param>
     public void SpawnImage(string id)
     {
-        ImageScrollView = Instantiate(Resources.Load<GameObject>("ImageScrollView"), Vector3.zero, Quaternion.identity, canvas.transform);
+        ImageScrollView = Instantiate(Resources.Load<GameObject>("Model/ImageScrollView"), Vector3.zero, Quaternion.identity, canvas.transform);
         ImageScrollView.name = "ImageScrollView";
+        ImageScrollView.GetComponent<RectTransform>().offsetMin =new Vector2(0,0);
+        ImageScrollView.GetComponent<RectTransform>().offsetMax = new Vector2(0, -90);
         content = ImageScrollView.GetComponent<ScrollRect>().content.gameObject;
         items = TrackDataManager.Instance.items;
         int index = GetItemPaths(id);
@@ -49,6 +58,7 @@ public class GalleryImageManager : SingletonMono<GalleryImageManager>
         {
             foreach (KeyValuePair<string, List<string>> imagepath in pathList[id])
             {
+                Debug.Log("imagepath.Key, imagepath.Value===" + imagepath.Key + ",,,," + imagepath.Value);
                 content.GetComponent<ScrollContent>().AddContentChildPanel(imagepath.Key, imagepath.Value);
             }
         }

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 using System.IO;
+using Object = UnityEngine.Object;
 /// <summary>
 /// 集成大量的通用算法
 /// </summary>
@@ -146,7 +147,7 @@ public static   class UnityHelper
     private static string localFilePath;
 
     /// <summary>
-    /// app文件存放路径,最后加了一个/
+    /// app文件存放路径,/DownloadFile/
     /// </summary>
     public static string LocalFilePath
     {
@@ -197,6 +198,48 @@ public static   class UnityHelper
 
 
 
+
+    }
+
+    public static T[] LoadAssets<T>(string path, string pattern) where T : Object
+    {
+        //string objPath = Application.dataPath + path;
+        //string[] directoryEntries;
+        //List<T> objList = new List<T>();
+        //try
+        //{
+        //    directoryEntries = System.IO.Directory.GetFileSystemEntries(objPath);
+
+        //    for (int i = 0; i < directoryEntries.Length; i++)
+        //    {
+        //        string p = directoryEntries[i];
+        //        string[] tempPaths = StringExtention.SplitWithString(p, "/Assets/");
+        //        if (tempPaths[1].EndsWith("." + pattern))
+        //        {
+        //            T tempTex = AssetDatabase.LoadAssetAtPath("Assets/" + tempPaths[1], typeof(T)) as T;
+        //            if (tempTex != null)
+        //                objList.Add(tempTex);
+        //        }
+
+        //    }
+        //}
+        //catch (System.IO.DirectoryNotFoundException)
+        //{
+        //    Debug.Log("The path encapsulated in the " + objPath + "Directory object does not exist.");
+        //}
+        //if (objList.Count > 0)
+        //    return objList.ToArray();
+        return null;
+
+
+    }
+
+
+    public static  IEnumerator CopyStreamingAssetsToLocalStorage()
+    {
+        WWW www = new WWW("");
+
+        yield return  www;
 
     }
 }

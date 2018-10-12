@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
+using ElviraFrame;
 public class TrackUIManager : SingletonMono<TrackUIManager> {
 
     public Text titleText;
@@ -15,25 +15,14 @@ public class TrackUIManager : SingletonMono<TrackUIManager> {
 
 
     GameObject showImage;
-    public GameObject ShowImage
-    {
-        get {
 
-            if (showImage == null)
-            {
-                showImage = transform.Find("ShowImage").gameObject ;
-            }
-            return showImage;
-        }
-        set { showImage = value; }
-    }
     public UnityEngine.UI.Button BackBtn
     {
         get {
             if (backBtn == null)
             {
                 backBtn = transform.Find("Title/BackButton").GetComponent<Button>();
-                backBtn.onClick.AddListener(BackBtnClick);
+              
             }
             return backBtn;
         }
@@ -42,10 +31,17 @@ public class TrackUIManager : SingletonMono<TrackUIManager> {
 
     private void BackBtnClick()
     {
+        //    if (FingerTouchEL.Instance.targetGameObject!=null)
+        //    {
+        //        Destroy(FingerTouchEL.Instance.targetGameObject);
+        //        FingerTouchEL.Instance.targetGameObject = null;
+        //    }
+        //else 
         if (curState==1)
         {
             Destroy(GalleryImageManager.Instance.ImageScrollView);
             WebView.Instance.CreateWebView();
+            SetTitleText("我的足迹", 0);
         }
         else
         {
@@ -75,22 +71,20 @@ public class TrackUIManager : SingletonMono<TrackUIManager> {
 
     private void Start()
     {
-        //   WebView.Instance.CreateWebView();
-
-
-        ShowImage.GetComponentInChildren<Button>().onClick.AddListener(CancelClick);
-        ShowImage.gameObject.SetActive(false);
+   
+        BackBtn.onClick.AddListener(BackBtnClick);
     }
 
-    private void CancelClick()
-    {
-        ShowImage.gameObject.SetActive(false);
-    }
+
 
     public void ShowBigImage(Sprite  sps)
     {
+        GameObject go = Instantiate<GameObject>(Resources.Load<GameObject>("Model/ShowImage"), this.transform);
 
-        ShowImage.gameObject.SetActive(true);
-        ShowImage.GetComponent<Image>().sprite = sps;
+        go.gameObject.SetActive(true);
+        go.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
+        go.GetComponent<RectTransform>().offsetMax = new Vector2(0, -90);
+        go.transform.Find("Image"). GetComponent<Image>().sprite = sps;
+        //FingerTouchEL.Instance.targetGameObject = go;
     }
 }

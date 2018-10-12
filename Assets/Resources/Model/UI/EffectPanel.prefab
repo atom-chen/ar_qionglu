@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 224314363997528072}
   - component: {fileID: 114294751684049142}
   m_Layer: 5
-  m_Name: ScaleToggle
+  m_Name: RotateToggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -361,7 +361,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: ab25f67081e715a459d6bd9d7f7c40cf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 65d1182a3eec68f4cae74eac974a851e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -543,7 +543,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 6786e3b11602dc14f87ee2b9b9b0cdf4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7821b4c62a0d80f46a095ace5d93dfab, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -894,7 +894,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u5927\u5C0F"
+  m_Text: "\u65CB\u8F6C"
 --- !u!114 &114958340060619002
 MonoBehaviour:
   m_ObjectHideFlags: 1

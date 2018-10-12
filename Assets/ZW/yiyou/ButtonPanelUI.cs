@@ -85,11 +85,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
             {
                 shotBtn = ButtonPanelGo.transform.Find("ShotBtn").GetComponent<Button>();
 
-                //shotBtn.onClick.AddListener(() =>
-                //{
-                //    StopAllCoroutines();
-                //    StartCoroutine("ShotBtnClick");
-                //});
+
             }
 
             return shotBtn;
@@ -194,7 +190,21 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
         FingerTouchEL.Instance.targetGameObject = YiyouStaticDataManager.Instance.ShowModel;
         YiyouStaticDataManager.Instance.OnSilenceGameObject(0.5f);
         EffectPanelUI.Instance.EffectPanelGo.gameObject.SetActive(true);
+#if UNITY_IOS || UNITY_IPHONE
+        GroundPlaneUI.Instance.ShouZujiBtn(false);
 
+#elif UNITY_ANDROID
+
+        if (SceneManager.GetActiveScene().name == "yiyou")
+        {
+            GroundPlaneUI.Instance.ShouZujiBtn(false);
+
+        }
+        else
+        {
+            WikiSLAMUIController.Instance.ShouZujiBtn(false);
+        }
+#endif
     }
 
     /// <summary>
@@ -280,7 +290,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
         ui.alpha = 0;
         RecordManager.Instance.thisUI.alpha = 1;
         isRec = true;
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.01f);
 #if UNITY_ANDROID
 
         AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
@@ -366,6 +376,11 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
         ScreenshotManager.OnScreenshotFinished += OnScreenshotFinished;
         ScreenshotManager.OnImageSavedName += OnImageSavedName;
         ShotBtn.gameObject.SetActive(true);
+        ShotBtn.onClick.AddListener(() =>
+        {
+            StopAllCoroutines();
+            StartCoroutine("ShotBtnClick");
+        });
         SaveBtn.gameObject.SetActive(false);
         ReshotBtn.gameObject.SetActive(false);
         ShareBtn.gameObject.SetActive(false);
@@ -480,7 +495,21 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
         SaveBtn.gameObject.SetActive(true);
         ReshotBtn.gameObject.SetActive(true);
         ShareBtn.gameObject.SetActive(false);
+#if UNITY_IOS||UNITY_IPHONE
+        GroundPlaneUI.Instance.ShouZujiBtn(true);
 
+#elif  UNITY_ANDROID
+
+        if (SceneManager.GetActiveScene().name=="yiyou")
+        {
+            GroundPlaneUI.Instance.ShouZujiBtn(true);
+
+        }
+        else
+        {
+            WikiSLAMUIController.Instance.ShouZujiBtn(true);
+        }
+#endif
     }
 
 

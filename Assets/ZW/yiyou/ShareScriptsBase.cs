@@ -162,13 +162,13 @@ public class ShareScriptsBase : SingletonMono<ShareScriptsBase>
         Debug.Log("path===" + path);
         ShareContent content = new ShareContent();
         content.SetImagePath(path);
-        content.SetText("AR凉山游1");
+        content.SetText("视觉美景+智能交互  只留精彩，不留遗憾 ");//AR凉山游1
         content.SetComment("AR凉山游2");
         content.SetSite("AR凉山游3");
-        content.SetSiteUrl("http://www.visizen.com");
+        content.SetSiteUrl("http://download.vszapp.com");
 
-        content.SetTitle("AR凉山游4");
-        content.SetTitleUrl("http://www.visizen.com");
+        content.SetTitle("AR凉山游");//AR凉山游4
+        content.SetTitleUrl("http://download.vszapp.com");
 
         content.SetShareType(ContentType.Image);
     

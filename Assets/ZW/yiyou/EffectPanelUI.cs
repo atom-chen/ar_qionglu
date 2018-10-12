@@ -15,7 +15,7 @@ public class EffectPanelUI : SingletonMono<EffectPanelUI>
 
 
     Button showButton, hideButton;
-    Toggle intensityToggle, lightToggle, scaleToggle;
+    Toggle intensityToggle, lightToggle, rotateToggle;
 
 
 
@@ -96,12 +96,12 @@ public class EffectPanelUI : SingletonMono<EffectPanelUI>
 
         intensityToggle = TogglePanel.transform.Find("IntensityToggle").GetComponent<Toggle>();
         lightToggle = TogglePanel.transform.Find("LightToggle").GetComponent<Toggle>();
-        scaleToggle= TogglePanel.transform.Find("ScaleToggle").GetComponent<Toggle>();
+        rotateToggle= TogglePanel.transform.Find("RotateToggle").GetComponent<Toggle>();
 
 
         intensityToggle.onValueChanged.AddListener(ShowIntensity);
         lightToggle.onValueChanged.AddListener(ShowLight);
-        scaleToggle.onValueChanged.AddListener(ShowScale);
+        rotateToggle.onValueChanged.AddListener(ShowRotate);
 
 
 
@@ -110,7 +110,7 @@ public class EffectPanelUI : SingletonMono<EffectPanelUI>
 
     }
 
-    private void ShowScale(bool arg0)
+    private void ShowRotate(bool arg0)
     {
         if (arg0)
         {
