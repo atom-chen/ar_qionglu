@@ -170,7 +170,7 @@ public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
                         item.id = fileitem.baseEntity.id;
                         item.name = fileitem.baseEntity.name;
-                        item.thumbnail = fileitem.baseEntity.thumbnail;
+                        item.thumbnail = fileitem.PageThumbnail;
                         item.locationX = fileitem.baseEntity.locationX;
                         item.locationY = fileitem.baseEntity.locationY;
                         item.height = fileitem.baseEntity.height;

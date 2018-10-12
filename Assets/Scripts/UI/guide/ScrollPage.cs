@@ -184,6 +184,12 @@ public class ScrollPage : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     /// </summary>
     void GetImageList()
     {
+        for (int i = 0; i < defautPanel.Length; i++)
+        {
+            defautPanel[i].SetActive(true);
+        }
+        SetContent(3);
+        return;
         if (JsonClass.Instance.GuidPages.Count <= 0)
         {
             Debug.LogError(" 不存在!");

@@ -472,9 +472,8 @@ public class GpsConvert : MonoBehaviour
         }
         else
         {
-
+            SceneManager.LoadScene("main");
         }
-
     }
     /// <summary>
     /// 
