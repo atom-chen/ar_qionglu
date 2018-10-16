@@ -328,8 +328,10 @@ namespace ElviraFrame
             CreateLongPressGesture();
 
             // pan, scale and rotate can all happen simultaneously
-            panGesture.AllowSimultaneousExecution(scaleGesture);
-            panGesture.AllowSimultaneousExecution(rotateGesture);
+            if (isCanPan)
+                panGesture.AllowSimultaneousExecution(scaleGesture);
+            if (isCamRotate)
+                panGesture.AllowSimultaneousExecution(rotateGesture);
             if (isCanScale)
                 scaleGesture.AllowSimultaneousExecution(rotateGesture);
 

@@ -42,72 +42,68 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
         if (reader != null)
         {
 
-            Debug.Log("reader不为空=====" + reader);
+            //Debug.Log("reader不为空=====" + reader);
             pointData = JsonMapper.ToObject<PointClass>(reader);
             AddToLinkList(pointData);
 
         }
         else
         {
-            Debug.Log("reader为空=====" + reader);
+         //   Debug.Log("reader为空=====" + reader);
 
         }
 
     }
     public  void CopyFile()
     {
-        string htmlFilePath = PublicAttribute.LocalFilePath + "Web/";
-        string htmlPath = PublicAttribute.LocalFilePath + "Web/a.txt";
-        
+
+        string htmlPath = UnityHelper.LocalFilePath + "Web/a.txt";
+        string pushcontentPath = UnityHelper.LocalFilePath + "Push/a.txt";
         if (!File.Exists(htmlPath))
         {
             if (!Directory.Exists(Path.GetDirectoryName(htmlPath)))
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(htmlPath));
             }
+            if (!Directory.Exists(Path.GetDirectoryName(pushcontentPath)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(pushcontentPath));
+            }
             FileStream fs = new FileStream(htmlPath, FileMode.OpenOrCreate);
             StreamWriter sw = new StreamWriter(fs);
             sw.Close();
      
         }
-   string targetFile = htmlFilePath + "CustomOverlay.html";
+   string htmltargetFile = UnityHelper.LocalFilePath + "Web/" + "CustomOverlay.html";
 
-            string jsontargetFile = htmlFilePath + "PointMap.json";
 
 #if UNITY_ANDROID
-     //   WWW loadhtml = new WWW("jar:file://" + Application.dataPath + "!/assets/" + "CustomOverlay.html");  // 安卓下streamingAssets目录
-     //   WWW loadjson = new WWW("jar:file://" + Application.dataPath + "!/assets/" + "PointMap.json");  // 安卓下streamingAssets目录        
-
-     //   while (loadhtml.isDone)
-     //{        // 写到持久化目录
-     //       Debug.Log("loadhtml.text==" + loadhtml.text);
-     //   File.WriteAllText(targetFile, loadhtml.text);
-         
-     //   }
-
-  
-        StartCoroutine(Load(targetFile, "CustomOverlay.html"));
-       // StartCoroutine(Load(jsontargetFile, "PointMap.json"));
+        StartCoroutine(Load(htmltargetFile, "CustomOverlay.html"));
 
 #else
         string sourceFile = Application.streamingAssetsPath + "/Web/CustomOverlay.html";
      
-        string jsonsourceFile = Application.streamingAssetsPath + "/Web/PointMap.json";
-
-
+   
         File.Copy(sourceFile,targetFile,true);
-        File.Copy(jsonsourceFile,jsontargetFile,true);
+
 #endif
 
 
 
 
     }
+    /// <summary>
+    /// 从移动端的streamingAssets目录下读取并且写到移动端app的安装目录下
+    /// </summary>
+    /// <param name="targetFile"></param>
+    /// <param name="fileName"></param>
+    /// <param name="suffix"></param>
+    /// <returns></returns>
     IEnumerator Load(string targetFile,string  fileName)
     {
 
         WWW load = new WWW("jar:file://" + Application.dataPath + "!/assets/Web/" + fileName);  // 安卓下streamingAssets目录
-  // WWW load = new WWW(Application.streamingAssetsPath+"/Web/"+ fileName);  // 安卓下streamingAssets目录
+
         yield return load;
         if (load.isDone)
         {
@@ -118,7 +114,7 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
     }
     private void AddToLinkList(PointClass pointDataParams)
     {
-        Debug.Log("AddToLinkList");
+     //   Debug.Log("AddToLinkList");
         if (pointDataParams == null)
         {
             return;

@@ -12,7 +12,7 @@ public class RecordManager : SingletonMono<RecordManager>
     Image processImage;
 
 
-  public  CanvasGroup thisUI;
+  private  CanvasGroup thisUI;
     public UnityEngine.UI.Image ProcessImage
     {
         get {
@@ -42,12 +42,30 @@ public class RecordManager : SingletonMono<RecordManager>
         }
         set { recordButton = value; }
     }
+
+    public void ShowCanvas(bool flag)
+    {
+        if (flag)
+        {
+            thisUI.alpha = 1;
+        }
+        else
+        {
+            thisUI.alpha = 0;
+
+        }
+
+        transform.GetComponentInChildren<Button>().enabled = flag;
+
+    }
+
     // Use this for initialization
     void Start ()
     {
         RecordButton.onClick.AddListener(RecordClick);
         thisUI = this.GetComponent<CanvasGroup>();
-       thisUI.alpha = 0;
+        ShowCanvas(true);
+
     }
 
     private void RecordClick()
@@ -76,7 +94,7 @@ public class RecordManager : SingletonMono<RecordManager>
             
                 timer = 0;
                 ButtonPanelUI.Instance.stopRecoding();
-                thisUI.alpha = 0;
+                ShowCanvas(false);
             }
         }
     }

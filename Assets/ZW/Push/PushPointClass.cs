@@ -38,6 +38,7 @@ public class PushMsg
     public string title;
     public string msg;
     public Vector2 pos;
+    public float distance;
     public PushMsg()
     {
 

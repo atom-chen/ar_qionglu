@@ -39,7 +39,7 @@ public  class JsonManager
             //1.找到资源保存的文件夹
        //     string assetDirectory = UnityHelper.LocalFilePath + "/Web/"+ fileName;
             string assetDirectory = filePath  + fileName;
-            StreamReader sr = new StreamReader(assetDirectory);
+            StreamReader sr = new StreamReader(@assetDirectory);
 
             if (sr == null)
         {

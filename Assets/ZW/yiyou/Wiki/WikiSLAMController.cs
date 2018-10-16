@@ -490,10 +490,14 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
                 {
                     showGameObject.GetComponent<Haiou>().Init();
                 }
+            else
+            {
+                UnityHelper.FaceToGoal(showGameObject.transform, Camera.main.gameObject.transform, 0.1f);
 
-       
-                FingerTouchEL.Instance.targetGameObject = showGameObject;
-                WriteManager.Instance.SetGoodsEnum(showGameObject.GetComponent<WriteItem>().goodsEnum);
+            }
+
+            FingerTouchEL.Instance.targetGameObject = showGameObject;
+            WriteManager.Instance.SetGoodsEnum(showGameObject.GetComponent<WriteItem>().goodsEnum);
                 _activeModels.Add(showGameObject);
             
         

@@ -166,8 +166,8 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
         sliderPanel.gameObject.SetActive(false);
         helpImage.gameObject.SetActive(false);
         FunctionBtn.onClick.AddListener(FunctionBtnClick);
-        RecordManager.Instance.thisUI.alpha = 0;
-    
+        RecordManager.Instance.ShowCanvas(false);
+
     }
     private void FunctionBtnClick()
     {

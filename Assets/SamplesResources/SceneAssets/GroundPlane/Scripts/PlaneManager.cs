@@ -175,6 +175,7 @@ public class PlaneManager : SingletonMono<PlaneManager>
                 else
                 {
                     FingerTouchEL.Instance.targetGameObject = showGameObject;
+                UnityHelper.FaceToGoal(showGameObject.transform, Camera.main.gameObject.transform, 0.1f);
 
                 }
 
@@ -373,7 +374,7 @@ public class PlaneManager : SingletonMono<PlaneManager>
         showGameObject.gameObject.SetActive(false);
         GroundPlaneUI.Instance.SelectModelPanel.gameObject.SetActive(false);
       
-        RecordManager.Instance.thisUI.alpha = 0;
+        RecordManager.Instance.ShowCanvas(false);
         GroundPlaneUI.Instance.SetIntroductionText("请将镜头朝向地面");
     }
     protected virtual void SetMterials(GoodsWriteEnum goodsWriteEnum)

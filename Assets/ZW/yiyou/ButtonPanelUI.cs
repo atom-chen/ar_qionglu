@@ -28,7 +28,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
 
 
     RawImage showShotImage;
-    public CanvasGroup ui;
+    public GameObject uiCanvas;
     Text resultTipText;
 
     string imageSavePath = string.Empty;
@@ -244,6 +244,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     public void ShotShotClick()
     {
 
+        if (isRec==false)
         StartCoroutine(ShotBtnClick());
 
     }
@@ -254,8 +255,8 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     {
         ShowShotImage.texture = null;
         EffectPanelUI.Instance.EffectPanelGo.gameObject.SetActive(false);
-        ui.alpha = 0;
-        RecordManager.Instance.thisUI.alpha = 0;
+        uiCanvas.gameObject.SetActive(false);
+        RecordManager.Instance.ShowCanvas(false);;
         FingerTouchEL.Instance.targetGameObject = null;
         YiyouStaticDataManager.Instance.OnSilenceGameObject(0f);
         yield return new WaitForSeconds(0.1f);
@@ -287,8 +288,8 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
 
     IEnumerator requestRecoding()
     {
-        ui.alpha = 0;
-        RecordManager.Instance.thisUI.alpha = 1;
+        uiCanvas.gameObject.SetActive(false);
+        RecordManager.Instance.ShowCanvas(true);
         isRec = true;
         yield return new WaitForSeconds(0.01f);
 #if UNITY_ANDROID
@@ -314,9 +315,9 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
 
     public void stopRecoding()
     {
-        ui.alpha = 1;
+        uiCanvas.gameObject.SetActive(true);
         Debug.Log("Rec::::::::::::::Stop");
-        RecordManager.Instance.thisUI.alpha =0;
+        RecordManager.Instance.ShowCanvas(false);
         isRec = false;
 
 #if UNITY_ANDROID
@@ -349,7 +350,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     /// <param name="msg"></param>
     public void onCaptureRecodeFailed(string msg)
     {
-        ui.alpha =1;
+        uiCanvas.gameObject.SetActive(true);
         isRec = false;
         Debug.Log("Rec::::::::::::::Failed");
 
@@ -358,7 +359,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
 #if UNITY_IOS || UNITY_IPHONE
     void recordFinishedHandler(Exception ex)
     {
-                ui.alpha =1;
+                uiCanvas.alpha =1;
         isRec = false;
         ShareREC.playLastRecording();
     }
@@ -468,13 +469,13 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     private void OnScreenshotTaken(Texture2D txt2D)
     {
         Debug.Log("截图之后回调");
-        if (ui == null)
+        if (uiCanvas == null)
         {
         }
         else
         {
-       
-            ui.alpha = 1;
+
+            uiCanvas.gameObject.SetActive(true);
 
         }
 
