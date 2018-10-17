@@ -26,3 +26,15 @@ public enum ChangeSliderEnum
 
 
 }
+
+
+
+public enum LoginUIState
+{
+    LoginPanel,
+    RegistPanel,
+    ForgetPwdPanel,
+    ChangePwPanel,
+    AgressPage,
+    BinDingPhonePage
+}

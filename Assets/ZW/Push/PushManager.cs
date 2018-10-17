@@ -23,6 +23,9 @@ public class DistanceComparer : IComparer<PushMsg>
 
 public class PushManager : MonoBehaviour
 {
+
+
+    public int pushState = 0;
 #if UNITY_IOS || UNITY_IPHONE
     public MobPush mobPush;
 #endif
@@ -49,6 +52,7 @@ public class PushManager : MonoBehaviour
         {
             Debug.Log("reader为空=====" + reader);
         }
+        GetCurerntLocation();
     }
 
     private void MobPushInit()
@@ -124,7 +128,7 @@ public class PushManager : MonoBehaviour
     /// </summary>
     /// <param name="gps1"></param>
     /// <returns></returns>
-    public List<int> GetNearEastPointList(Vector2 currentGps)
+    public List<PushMsg> GetNearEastPointList(Vector2 currentGps)
     {
         nearIndexList.Clear();
         if (pushPointIndexV2Dic.Count != 0)
@@ -141,7 +145,13 @@ public class PushManager : MonoBehaviour
         if (nearIndexList.Count != 0)
         {
             Debug.Log("nearIndexList.Count==" + nearIndexList.Count);
-            return nearIndexList.Sort(new DistanceComparer());
+
+            nearIndexList.Sort((x, y) => { return x.distance.CompareTo(y.distance); });
+            foreach (var item in nearIndexList)
+            {
+                Debug.Log(item.distance);
+            }
+            return  nearIndexList ;
         }
         return null;
     }
@@ -153,7 +163,7 @@ public class PushManager : MonoBehaviour
         if (nearIndexList.Count != 0)
         {
            
-               PushMsg newPushMsg = pushPointIndexV2Dic[nearIndexList[0].id];
+               PushMsg newPushMsg = pushPointIndexV2Dic[int.Parse(nearIndexList[0].id)];
             if (lastPushId != int.Parse(newPushMsg.id))
             {
                 NotifyCallBack notifyCallBack = new NotifyCallBack()
@@ -167,13 +177,54 @@ public class PushManager : MonoBehaviour
                 lastPushId = int.Parse(newPushMsg.id);
 #elif UNITY_IOS || UNITY_IPHONE
 
-            LocalNotifyStyle style = new LocalNotifyStyle();
-            style.setContent("Text");
-            style.setTitle("title");
-            lastPushId=newPushMsg.id;
+         pushState = 0;
+			LocalNotifyStyle style = new LocalNotifyStyle ();
+            Hashtable args = new Hashtable();
+            args["pushId"] = newPushMsg.id;
+   
+			style.setContent (newPushMsg.msg);
+			style.setTitle (newPushMsg.title);
+            style.addHashParams(args);
+      	mobPush.setMobPushLocalNotification (style);
+lastPushId=newPushMsg.id;		
 #endif
             }
         }
     }
 
+#if   UNITY_IOS||UNITY_IPHONE
+    	void OnNitifyHandler (int action, Hashtable resulte)
+	{
+		Debug.Log ("OnNitifyHandler");
+
+
+        if (action==ResponseState.MessageRecvice)
+        {
+            switch (pushState)
+            {
+                case 0:
+                    //自身的推送
+                    Debug.Log("推送推送推送推送推送推送推送");
+                    pushState = 1;
+                    break;
+                case 1:
+                    Debug.Log("点击推送点击推送点击推送点击推送点击推送");
+                    pushState = 0;
+  
+    JsonData jsonData=JsonMapper.ToObject(iOSMobPushImpl.reqJson)
+    string  result=resultJson["pushId"]. ToString();
+    if (string.IsNullOrEmpty(result))
+	{
+    Root root=GameObject.FindObjectOfType<Root>();
+    root.Notify(result);
+	}
+                    break;
+                default:
+                    break;
+            }
+        }
+   
+
+    }
+#endif
 }

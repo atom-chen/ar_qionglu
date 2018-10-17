@@ -1,4 +1,4 @@
-using cn.sharesdk.unity3d;
+﻿using cn.sharesdk.unity3d;
 using LitJson;
 using System.Collections;
 using System.Collections.Generic;

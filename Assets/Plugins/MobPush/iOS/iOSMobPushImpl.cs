@@ -10,6 +10,7 @@ namespace com.mob.mobpush
 	public class iOSMobPushImpl : MobPushImpl {
 
 		private static string _gameObjectName;
+        public static String reqJson = string.Empty;
 
 		[DllImport("__Internal")]
 		private static extern void __iosMobPushSetAPNsForProduction (bool isPro);
@@ -114,14 +115,14 @@ namespace com.mob.mobpush
 
 		public override void setMobPushLocalNotification (LocalNotifyStyle style)
 		{
-			String reqJson = style.getStyleParamsStr ();
+			 reqJson = style.getStyleParamsStr ();
 			Debug.Log("iOSImpl  ===>>>  setMobPushLocalNotification === " + reqJson);
 			__iosMobPushAddLocalNotification(reqJson);
 		}
 
 		public override void setCustomNotification (CustomNotifyStyle style)
 		{
-			String reqJson = style.getStyleParamsStr ();
+			 reqJson = style.getStyleParamsStr ();
 			Debug.Log("iOSImpl  ===>>>  setCustomNotification === " + reqJson);
 			__iosMobPushSetupNotification(reqJson);
 		}

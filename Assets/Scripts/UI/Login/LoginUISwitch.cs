@@ -158,6 +158,11 @@ public class LoginUISwitch : MonoBehaviour
     public Button BindingPage_GetSMSBtn;
     public Button BindingPage_BackBtn;
     #endregion
+
+    private void Start()
+    {
+        
+    }
     private void Awake()
     {
         //HttpManager.Instance.CheckToken((b =>
@@ -422,7 +427,7 @@ public class LoginUISwitch : MonoBehaviour
         {
             return false;
         }
-        if (str.Length<6||str.Length>12)
+        if (str.Length<6||str.Length>21)
         {
             return false;
         }

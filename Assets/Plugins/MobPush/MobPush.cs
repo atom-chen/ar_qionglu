@@ -5,10 +5,10 @@ using System;
 
 namespace com.mob.mobpush{
 	public class MobPush : MonoBehaviour {
-        //这里的key和secret已经修改成项目的了
-        //public string appKey = "276c6bc1f0dd1 ";
-        //public string appSecret = "fc0470e431c0fc25a36b9c9d7801f633";
-        public MobPushImpl mobPushImpl;
+
+		//public string appKey = "moba6b6c6d6";
+		//public string appSecret = "b89d2427a3bc7ad1aea1e1e8c1d36bf3";
+		public MobPushImpl mobPushImpl;
 		public OnNotifyCallback onNotifyCallback;
 		public OnTagsCallback onTagsCallback;
 		public OnAliasCallback onAliasCallback;

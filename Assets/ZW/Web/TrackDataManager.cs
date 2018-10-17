@@ -35,7 +35,7 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
 
     IEnumerator Start()
     {
-        CopyFile();
+        //CopyFile();
 
         yield return new WaitForSeconds(1f);
         string reader = JsonManager.ReadJsonFromFilePath(UnityHelper.LocalFilePath + "Web/", "PointMap.json");
@@ -54,44 +54,44 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
         }
 
     }
-    public  void CopyFile()
-    {
+//    public  void CopyFile()
+//    {
 
-        string htmlPath = UnityHelper.LocalFilePath + "Web/a.txt";
-        string pushcontentPath = UnityHelper.LocalFilePath + "Push/a.txt";
-        if (!File.Exists(htmlPath))
-        {
-            if (!Directory.Exists(Path.GetDirectoryName(htmlPath)))
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(htmlPath));
-            }
-            if (!Directory.Exists(Path.GetDirectoryName(pushcontentPath)))
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(pushcontentPath));
-            }
-            FileStream fs = new FileStream(htmlPath, FileMode.OpenOrCreate);
-            StreamWriter sw = new StreamWriter(fs);
-            sw.Close();
+//        string htmlPath = UnityHelper.LocalFilePath + "Web/a.txt";
+//        string pushcontentPath = UnityHelper.LocalFilePath + "Push/a.txt";
+//        if (!File.Exists(htmlPath))
+//        {
+//            if (!Directory.Exists(Path.GetDirectoryName(htmlPath)))
+//            {
+//                Directory.CreateDirectory(Path.GetDirectoryName(htmlPath));
+//            }
+//            if (!Directory.Exists(Path.GetDirectoryName(pushcontentPath)))
+//            {
+//                Directory.CreateDirectory(Path.GetDirectoryName(pushcontentPath));
+//            }
+//            FileStream fs = new FileStream(htmlPath, FileMode.OpenOrCreate);
+//            StreamWriter sw = new StreamWriter(fs);
+//            sw.Close();
      
-        }
-   string htmltargetFile = UnityHelper.LocalFilePath + "Web/" + "CustomOverlay.html";
+//        }
+//   string htmltargetFile = UnityHelper.LocalFilePath + "Web/" + "CustomOverlay.html";
 
 
-#if UNITY_ANDROID
-        StartCoroutine(Load(htmltargetFile, "CustomOverlay.html"));
+//#if UNITY_ANDROID
+//        StartCoroutine(Load(htmltargetFile, "CustomOverlay.html"));
 
-#else
-        string sourceFile = Application.streamingAssetsPath + "/Web/CustomOverlay.html";
+//#else
+//        string sourceFile = Application.streamingAssetsPath + "/Web/CustomOverlay.html";
      
    
-        File.Copy(sourceFile,targetFile,true);
+//        File.Copy(sourceFile,targetFile,true);
 
-#endif
-
-
+//#endif
 
 
-    }
+
+
+//    }
     /// <summary>
     /// 从移动端的streamingAssets目录下读取并且写到移动端app的安装目录下
     /// </summary>
