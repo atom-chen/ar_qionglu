@@ -1,10 +1,15 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
 public class PublicAttribute
 {
+
+    /// <summary>
+    /// 是否是游客登录
+    /// </summary>
+    public static bool isVisitor = false;
     /// <summary>
     /// app资源版本json文件
     /// </summary>
@@ -249,7 +254,21 @@ public class PublicAttribute
         secreKey = Guid.NewGuid().ToString();
         return secreKey;
     }
+    public static void SetUserInfo(string  userName,string tokenInfo)
+    {
+       UserName = userName;
+      Token = tokenInfo;
+    }
+    private static string userName;
+    public static string UserName
+    {
+        get {
 
+
+            return userName;
+        }
+        set { userName = value; }
+    }
     private static string token;
 
     /// <summary>

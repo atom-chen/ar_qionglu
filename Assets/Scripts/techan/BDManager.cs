@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class BDManager : MonoBehaviour
 {
     public static BDManager _Instance;
+    public AudioSource aud;
     void Awake()
     {
         _Instance = this;
@@ -27,11 +28,11 @@ public class BDManager : MonoBehaviour
     {
         CiqiManager.instance.LostEvent();
         KQCManager._Instance.OnTrackingLost();
-        AudioManager.instance.PlayFX("beidian");
+        aud.Play();
     }
     void Lost()
     {
-        AudioManager.instance.StopAll();
+        aud.Stop();
     }
     private bool Check(params Component[] com)
     {

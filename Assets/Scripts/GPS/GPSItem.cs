@@ -45,6 +45,8 @@ public class GPSItem : MonoBehaviour
 
     public IconFollow icon;
 
+    public Thumbnail thumbnail;
+
     private void Start()
     {
        

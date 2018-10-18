@@ -19,30 +19,55 @@ public class ARScanManager : MonoBehaviour
     public EdgeDetection ed;
     public DOTweenAnimation scanImg;
     public GameObject toastObj;
+
+    public static string scan_more_Path = "";
+    public static string scan_ticket_Path = "";
+    public static string scan_native_product_Path = "";
+    public static string scan_Conjure_Path = "";
     private void Awake()
     {
         instance = this;
+
+        foreach (var ChangeInfo in mainPageUI.curScenicInfo.ResourcesInfos)
+        {
+            if (ChangeInfo.ResourcesKey == "scan_more")
+            {
+                scan_more_Path = ChangeInfo.LocalPath;
+                Debug.Log(scan_more_Path);
+            }
+            else if (ChangeInfo.ResourcesKey == "scan_ticket")
+            {
+                scan_ticket_Path = ChangeInfo.LocalPath;
+                Debug.Log(scan_ticket_Path);
+            }
+            else if (ChangeInfo.ResourcesKey == "scan_native_product")
+            {
+                scan_native_product_Path = ChangeInfo.LocalPath;
+                Debug.Log(scan_native_product_Path);
+            }
+            else if (ChangeInfo.ResourcesKey == "scan_Conjure")
+            {
+                scan_Conjure_Path = ChangeInfo.LocalPath;
+                Debug.Log(scan_Conjure_Path);
+            }
+        }
     }
     void Start()
     {
         if (PlayerPrefs.GetInt("ARScan") == 0)
         {
-            //PlayerPrefs.SetInt("ARScan", 1);
-            //ARScanGuide.SetActive(true);
-            //Screen.orientation = ScreenOrientation.Portrait;
-            Screen.orientation = ScreenOrientation.LandscapeLeft;
+            PlayerPrefs.SetInt("ARScan", 1);
+            ARScanGuide.SetActive(true);
+            Screen.orientation = ScreenOrientation.Portrait;
         }
         else
         {
             Screen.orientation = ScreenOrientation.LandscapeLeft;
         }
         //Invoke("LoadAllXML", 1);
-        //Invoke("GetImageList", 1);
+        Invoke("GetImageList", 1);
     }
-    public void ShowGameObjectPanel(GameObject obj)
-    {
-        obj.SetActive(!obj.activeSelf);
-    }
+
     public void scanImgTweenOver()
     {
         StartCoroutine(ImgTweenOver());
@@ -100,7 +125,7 @@ public class ARScanManager : MonoBehaviour
     {
         foreach (var ChangeInfo in mainPageUI.curScenicInfo.ResourcesInfos)
         {
-            if (ChangeInfo.ResourcesKey == "scan_ticket" || ChangeInfo.ResourcesKey == "scan_native_product" || ChangeInfo.ResourcesKey == "scan_more" || ChangeInfo.ResourcesKey == "scan_conjure")
+            if (ChangeInfo.ResourcesKey == "vsz-scan-ticket" || ChangeInfo.ResourcesKey == "vsz-scan-native-product" || ChangeInfo.ResourcesKey == "vsz-scan-more" || ChangeInfo.ResourcesKey == "vsz-scan-conjure")
             {
                 string LocalPath = ChangeInfo.LocalPath;
                 Debug.Log(LocalPath);

@@ -16,6 +16,8 @@ public class CiqiManager : MonoBehaviour
     public DOTweenAnimation[] ciqi1, ciqi2, ciqi3, ciqi4;
     public GameObject gaoguang;
     public Material[] panzi;
+
+    public AudioSource aud1, aud2;
     #endregion // PROTECTED_MEMBER_VARIABLES
 
     #region UNITY_MONOBEHAVIOUR_METHODS
@@ -29,6 +31,8 @@ public class CiqiManager : MonoBehaviour
         panzi[1].color = new Color(1, 1, 1, 0);
         panzi[2].color = new Color(1, 1, 1, 0);
         panzi[3].color = new Color(1, 1, 1, 0);
+
+        vp.url = ARScanManager.scan_native_product_Path + "/panzi.mp4";
     }
     #endregion // UNITY_MONOBEHAVIOUR_METHODS
 
@@ -64,25 +68,12 @@ public class CiqiManager : MonoBehaviour
     float ChangeTime = 25;
     IEnumerator FirstStep()
     {
-
-        string scan_native_product = "";
-        foreach (var ChangeInfo in mainPageUI.curScenicInfo.ResourcesInfos)
-        {
-            if (ChangeInfo.ResourcesKey == "scan_native_product")
-            {
-                scan_native_product = ChangeInfo.LocalPath;
-                Debug.Log(scan_native_product);
-            }
-        }
-
-        vp.url = scan_native_product + "/panzi.mp4";
-
         uiDo[0].DOPlayForward();
         womenstate = "speak";
         num = 0;
         yield return new WaitForSeconds(3);
-        AudioManager.instance.PlayFX("1");
-        yield return new WaitForSeconds(23f);
+        aud1.Play();
+        yield return new WaitForSeconds(17f);
         womenstate = "idle";
         uiDo[1].DOPlayForward();
         vp.Play();
@@ -92,8 +83,8 @@ public class CiqiManager : MonoBehaviour
         yield return new WaitForSeconds(1);
         num = 17;
         womenstate = "speak";
-        AudioManager.instance.PlayFX("2");
-        yield return new WaitForSeconds(18.2f);
+        aud2.Play();
+        yield return new WaitForSeconds(15f);
         womenstate = "idle";
         uiDo[2].DOPlayForward();
         //瓷器1开始转
@@ -156,6 +147,8 @@ public class CiqiManager : MonoBehaviour
     }
     public  void LostEvent()
     {
+        aud1.Stop();
+        aud2.Stop();
         gaoguang.SetActive(true);
         womenstate = "idle";
         num = 0;
@@ -173,7 +166,6 @@ public class CiqiManager : MonoBehaviour
         ciqi[1].SetActive(false);
         ciqi[2].SetActive(false);
         ciqi[3].SetActive(false);
-        AudioManager.instance.StopFX();
 
         panzi[0].DOKill();
         panzi[1].DOKill();

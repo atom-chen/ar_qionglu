@@ -28,7 +28,9 @@ public class HttpBase
     /// <param name="token"></param>
     public static void OssGet(string url, KeyValuePair<string, string>[] post, OnRequestFinishedDelegate OnRequestFinished, string token = null)
     {
-        BestHTTP.HTTPRequest request = new BestHTTP.HTTPRequest(new Uri(url), OnRequestFinished);
+        BestHTTP.HTTPRequest request = new BestHTTP.HTTPRequest(new Uri(url),true, OnRequestFinished);
+        request.Timeout = TimeSpan.FromMinutes(10);
+        request.ConnectTimeout= TimeSpan.FromMinutes(5);
         if (post != null)
         {
             foreach (var item in post)

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LoginUIController : SingletonMono<LoginUIController>
@@ -38,7 +39,7 @@ public class LoginUIController : SingletonMono<LoginUIController>
             else
             {
                 item.SetActive(false);
-
+                item.GetComponent<UIWindowsBase>().ClearInputFieldText();
             }
         }
     }
@@ -65,6 +66,8 @@ public class LoginUIController : SingletonMono<LoginUIController>
 
     public void PopupInfo(string status)
     {
+        PublicAttribute.isVisitor = false;
+            //不是游客登录
         Debug.Log(status);
         switch (status)
         {
@@ -107,7 +110,11 @@ public class LoginUIController : SingletonMono<LoginUIController>
                 break;
             default:
                 break;
+        
+
         }
+
+
     }
     public void ShowPopup(string title, string content)
     {

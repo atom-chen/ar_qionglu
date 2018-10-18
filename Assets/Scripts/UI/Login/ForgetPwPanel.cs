@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class ForgetPwPanel : MonoBehaviour
+public class ForgetPwPanel : UIWindowsBase
 {
 
     public Button backBtn;
@@ -15,8 +15,9 @@ public class ForgetPwPanel : MonoBehaviour
     public InputField smssInput;
     public InputField pwInput;
 
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
         backBtn.onClick.AddListener(() =>
         {
             LoginUIController.Instance.SetNextUIState(LoginUIState.LoginPanel);

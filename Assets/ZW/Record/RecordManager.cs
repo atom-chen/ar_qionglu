@@ -12,13 +12,13 @@ public class RecordManager : SingletonMono<RecordManager>
     Image processImage;
 
 
-  private  CanvasGroup thisUI;
+  public   GameObject thisUI;
     public UnityEngine.UI.Image ProcessImage
     {
         get {
             if (processImage == null)
             {
-                processImage = transform.Find("RecordBtn/process").GetComponent <Image>();
+                processImage = thisUI.transform.Find("RecordBtn/process").GetComponent <Image>();
 
             }
 
@@ -35,7 +35,7 @@ public class RecordManager : SingletonMono<RecordManager>
 
             if (recordButton==null)
             {
-                recordButton = GetComponentInChildren<Button>();
+                recordButton = thisUI.GetComponentInChildren<Button>();
                
             }
             return recordButton;
@@ -45,26 +45,16 @@ public class RecordManager : SingletonMono<RecordManager>
 
     public void ShowCanvas(bool flag)
     {
-        if (flag)
-        {
-            thisUI.alpha = 1;
-        }
-        else
-        {
-            thisUI.alpha = 0;
-
-        }
-
-        transform.GetComponentInChildren<Button>().enabled = flag;
-
+        thisUI.gameObject.SetActive(flag);
+      
     }
 
     // Use this for initialization
     void Start ()
     {
         RecordButton.onClick.AddListener(RecordClick);
-        thisUI = this.GetComponent<CanvasGroup>();
-        ShowCanvas(true);
+    
+        ShowCanvas(false);
 
     }
 

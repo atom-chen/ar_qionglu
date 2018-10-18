@@ -21,6 +21,8 @@ public class Downloader
         public string savePath;
         public string md5;
         public string size;
+        public string endpoint;
+
         private string fileSuffix;
 
         /// <summary>
@@ -368,6 +370,7 @@ public class Downloader
 
     #region OSS下载
 
+    //private Dictionary<DownloadUnit, OSSFile> faillist;
     /// <summary>
     /// 批量下载
     /// </summary>
@@ -375,7 +378,9 @@ public class Downloader
     /// <param name="callback"></param>
     public void BatchOSSDownload(Dictionary<DownloadUnit, OSSFile> list, Action callback)
     {
+        Dictionary<DownloadUnit, OSSFile> faillist = new Dictionary<DownloadUnit, OSSFile>();
         int cureentDownCount = 0;
+        int fallCount = 0;
         //下载完成的个数统计 用于判断是否全部完成
         foreach (var file in list)
         {
@@ -387,6 +392,7 @@ public class Downloader
                     cureentDownCount++;
                     if (b)
                     {
+                        //HttpManager.Instance.DownLoadcurSize += float.Parse(file.Key.size);
                         if (cureentDownCount == list.Count)
                         {
                             if (callback != null)
@@ -394,19 +400,36 @@ public class Downloader
                                 callback();
                             }
                         }
+                        if (file.Value.endpoint == "vsz-more-change")
+                        {
+                            Debug.LogError("下载成功:::::::" + file.Key.downUrl + "    " + file.Value.endpoint + "    " + file.Key.fileName);
+                        }
                     }
                     else
                     {
-                        Debug.Log("失败" + file.Key.downUrl + "    " + file.Value.endpoint + "    " + file.Value.objectName);
+                        if (float.Parse(file.Key.size) <= 0 || file.Key.size == null)
+                        {
+                            //HttpManager.Instance.DownLoadcurSize += float.Parse(file.Key.size);
+                            if (cureentDownCount == list.Count)
+                            {
+                                if (callback != null)
+                                {
+                                    callback();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            fallCount++;
+                            faillist.Add(file.Key, file.Value);
+                            Debug.LogError("失败:::::::" + file.Key.downUrl + "    " + file.Value.endpoint + "    " + file.Key.fileName + "    " + file.Key.size);
+                        }
                     }
-                    Debug.Log("总共  " + list.Count + "    当前  " + cureentDownCount);
+                    Debug.LogWarning("总共  " + list.Count +"    当前  " + cureentDownCount );
                     HttpManager.Instance.DownloadPercent((float)cureentDownCount / (float)list.Count);
                     if (cureentDownCount == list.Count)
                     {
-                        if (callback != null)
-                        {
-                            callback();
-                        }
+                        callback();
                     }
                     et.Stop();
                 }));
@@ -414,6 +437,7 @@ public class Downloader
             et.Start();
         };
     }
+
 
     private void recursion(int index, Dictionary<DownloadUnit, OSSFile> list, Action callback)
     {
@@ -487,101 +511,115 @@ public class Downloader
             new KeyValuePair<string, string>("Authorization",Utility.OSSSignature(of.endpoint,of.objectName,expire)),
             new KeyValuePair<string, string>("Range","bytes="+(int)startPos+"-"),
         }, ((originalRequest, response) =>
-             {
-                 FileStream fs = null;
-                 if (response == null || !response.IsSuccess)
-                 {
-                     DebugManager.Instance.LogError("请求失败！");
-                     if (fs != null)
-                     {
-                         fs.Flush();
-                         fs.Close();
-                         fs = null;
-                     }
-                     if (callback != null)
-                     {
-                         callback(false);
-                     }
-                     return;
-                 }
-                 try
-                 {
-                     if (System.IO.File.Exists(tempFile))
-                     {
-                         fs = File.OpenWrite(tempFile);
-                     }
-                     else
-                     {
-                         string direName = Path.GetDirectoryName(tempFile);
-                         if (!Directory.Exists(direName))
-                         {
-                             Directory.CreateDirectory(direName);
-                         }
-                         fs = new FileStream(tempFile, FileMode.Create);
-                     }
+        {
+            //float fileSize = float.Parse(downUnit.size) / (1024 * 1024);
+            //originalRequest.ConnectTimeout = new TimeSpan(600000);
+            //originalRequest.Timeout = new TimeSpan(600000);
+            FileStream fs = null;
+            if (response == null || !response.IsSuccess)
+            {
+                Debug.Log("请求失败！");
+                if (fs != null)
+                {
+                    fs.Flush();
+                    fs.Close();
+                    fs = null;
+                }
 
+                if (callback != null)
+                {
+                    callback(false);
+                }
 
-                     var resp_bytes = response.Data;
-                     fs.Write(resp_bytes, 0, resp_bytes.Length);
-                    
-                     fs.Flush();
-                     fs.Close();
-                     fs = null;
-                     response.Dispose();
-                     File.Move(tempFile, InstallFile);
-                     var file = File.OpenRead(InstallFile);
-                     string md5 = Utility.GetMd5Hash(file);
-                     Debug.LogError("文件路径 :" + InstallFile + "  /文件名称/     :" + downUnit.fileName + "    /本地计算的md5值为/    :" + md5 + "            /服务器的md5/    :" + downUnit.md5 + "         /下载url  /      :" + downUnit.downUrl);
+                return;
+            }
 
-                     file.Dispose();
-                     file.Close();
-                     fs = null;
-                     if (md5 == downUnit.md5)
-                     {
-                         Debug.LogError("下载成功");
-                         if (callback != null)
-                         {
-                             callback(true);
-                         }
-                         return;
-                     }
-                     else
-                     {
-                         File.Delete(InstallFile);
-                         Debug.LogError("删除       删除      删除      删除      删除      删除      删除      删除      删除      删除      删除           " + InstallFile);
-                         if (callback != null)
-                         {
-                             callback(false);
-                         }
-                         return;
-                     }
-                 }
-                 catch (WebException ex)
-                 {
-                     Debug.Log("下载出错：");
-                     if (fs != null)
-                     {
-                         fs.Flush();
-                         fs.Close();
-                         fs = null;
-                     }
-                     if (callback != null)
-                     {
-                         callback(false);
-                     }
-                     return;
-                 }
-                 finally
-                 {
-                     if (fs != null)
-                     {
-                         fs.Flush();
-                         fs.Close();
-                         fs = null;
-                     }
-                     response.Dispose();
-                 }
-             }));
+            try
+            {
+                if (System.IO.File.Exists(tempFile))
+                {
+                    fs = File.OpenWrite(tempFile);
+                }
+                else
+                {
+                    string direName = Path.GetDirectoryName(tempFile);
+                    if (!Directory.Exists(direName))
+                    {
+                        Directory.CreateDirectory(direName);
+                    }
+
+                    fs = new FileStream(tempFile, FileMode.Create);
+                }
+
+                var resp_bytes = response.Data;
+                fs.Write(resp_bytes, 0, resp_bytes.Length);
+
+                fs.Flush();
+                fs.Close();
+                fs = null;
+                response.Dispose();
+                File.Move(tempFile, InstallFile);
+                var file = File.OpenRead(InstallFile);
+                string md5 = Utility.GetMd5Hash(file);
+                //Debug.LogError("文件路径 :" + InstallFile + "  /文件名称/     :" + downUnit.fileName +
+                //               "    /本地计算的md5值为/    :" + md5 + "            /服务器的md5/    :" + downUnit.md5 +
+                //               "         /下载url  /      :" + downUnit.downUrl);
+                file.Dispose();
+                file.Close();
+                fs = null;
+                if (md5 == downUnit.md5)
+                {
+                    //Debug.LogError("下载成功");
+                    if (callback != null)
+                    {
+                        callback(true);
+                    }
+
+                    return;
+                }
+                else
+                {
+                    File.Delete(InstallFile);
+                    //Debug.LogError(
+                    //    "删除       删除      删除      删除      删除      删除      删除      删除      删除      删除      删除           " +
+                    //    InstallFile);
+                    if (callback != null)
+                    {
+                        callback(false);
+                    }
+
+                    return;
+                }
+            }
+            catch (WebException ex)
+            {
+                Debug.Log("下载出错：");
+                if (fs != null)
+                {
+                    fs.Flush();
+                    fs.Close();
+                    fs = null;
+                }
+
+                if (callback != null)
+                {
+                    callback(false);
+                }
+
+                return;
+            }
+            finally
+            {
+                if (fs != null)
+                {
+                    fs.Flush();
+                    fs.Close();
+                    fs = null;
+                }
+
+                response.Dispose();
+            }
+        }));
     }
 
     #endregion OSS下载

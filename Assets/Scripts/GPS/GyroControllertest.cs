@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GyroControllertest : MonoBehaviour
 {
-
+#if UNITY_ANDROID
     #region [Private fields]
 
 
@@ -125,7 +125,6 @@ public class GyroControllertest : MonoBehaviour
     }
 
     #endregion
-
     #region [Private methods]
 
     /// <summary>
@@ -202,20 +201,20 @@ public class GyroControllertest : MonoBehaviour
     private Quaternion GetRotFix()
     {
 
-//#if UNITY_3_5
+        //#if UNITY_3_5
         if (Screen.orientation == ScreenOrientation.Portrait)
             return Quaternion.identity;
         if (Screen.orientation == ScreenOrientation.LandscapeLeft || Screen.orientation == ScreenOrientation.Landscape)
             return landscapeLeft;
         if (Screen.orientation == ScreenOrientation.LandscapeRight)
-            return landscapeRight;               
+            return landscapeRight;
         if (Screen.orientation == ScreenOrientation.PortraitUpsideDown)
-            return upsideDown; 
+            return upsideDown;
         return Quaternion.identity;
-   
-//#else
-//        return Quaternion.identity;
-//#endif
+
+        //#else
+        //        return Quaternion.identity;
+        //#endif
     }
     /// <summary>
     /// 重新计算的参考系统。
@@ -236,4 +235,71 @@ public class GyroControllertest : MonoBehaviour
 
     }
     #endregion
+#elif UNITY_IOS || UNITY_IPHONE
+
+    private float initialYAngle = 0f;
+    private float appliedGyroYAngle = 0f;
+    private float calibrationYAngle = 0f;
+    [SerializeField]
+    private bool initDone = false;
+    public void Awake()
+    {
+        Input.compass.enabled = true;
+        Input.gyro.enabled = true;
+        Input.location.Start();
+    }
+
+    void Start()
+    {
+        Application.targetFrameRate = 60;
+        //initialYAngle = transform.eulerAngles.y;
+        initialYAngle = Input.compass.magneticHeading;
+    }
+
+    void Update()
+    {
+        if(initialYAngle.Equals(0))
+        {
+            initialYAngle = Input.compass.magneticHeading;
+        }
+        else
+        {
+            //transform.rotation = Quaternion.Euler(Input.gyro.attitude.eulerAngles.x, Input.compass.magneticHeading, Input.gyro.attitude.eulerAngles.z);
+            ApplyGyroRotation();
+            //ApplyCalibration();
+        }
+    }
+
+    /*
+    void OnGUI()
+    {
+        if (GUILayout.Button("Calibrate", GUILayout.Width(300), GUILayout.Height(100)))
+        {
+            CalibrateYAngle();
+        }
+    }
+    public void CalibrateYAngle()
+    {
+        calibrationYAngle = appliedGyroYAngle - initialYAngle; // Offsets the y angle in case it wasn't 0 at edit time.
+    }
+*/
+
+    void ApplyGyroRotation()
+    {
+        transform.rotation = Input.gyro.attitude;
+        transform.Rotate(0f, 0f, 180f, Space.Self); // Swap "handedness" of quaternion from gyro.
+        transform.Rotate(90f, 180f, 0f, Space.World); // Rotate to make sense as a camera pointing out the back of your device.
+       // appliedGyroYAngle = transform.eulerAngles.y;
+        //CalibrateYAngle();
+        ApplyCalibration();
+        //appliedGyroYAngle = transform.eulerAngles.y; // Save the angle around y axis for use in calibration.
+    }
+
+    void ApplyCalibration()
+    {
+        transform.Rotate(0f, initialYAngle, 0f, Space.World); // Rotates y angle back however much it deviated when calibrationYAngle was saved.
+    }
+
+
+#endif
 }

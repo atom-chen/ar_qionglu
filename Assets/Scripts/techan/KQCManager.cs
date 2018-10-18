@@ -9,13 +9,16 @@ public class KQCManager : MonoBehaviour
     public static KQCManager _Instance;
     public GameObject videoGo, roleGo;
     VideoPlayer videoPlayer;
-    float SpeakTime = 21.028f, VideoTime = 12.54f;
+    public AudioSource aud;
+    float SpeakTime = 16f, VideoTime = 26f;
     void Awake()
     {
         _Instance = this;
 
         videoPlayer = videoGo.GetComponentInChildren<VideoPlayer>();
         videoGo.gameObject.SetActive(false);
+
+        videoPlayer.url = ARScanManager.scan_native_product_Path + "kqc.mp4";
     }
     private void Start()
     {
@@ -51,7 +54,8 @@ public class KQCManager : MonoBehaviour
         roleGo.transform.parent.gameObject.SetActive(true);
         AudioManager.instance.StopAll();
         roleGo.GetComponent<Animator>().Play("start");
-        AudioManager.instance.PlayFX("kqcspeak");
+        aud.Play();
+
         yield return new WaitForSeconds(1.0f);
 
         //   roleGo.GetComponent<Animator>().Play("speak");
@@ -66,13 +70,11 @@ public class KQCManager : MonoBehaviour
         videoPlayer.url = scan_native_product + "/kqc.mp4";
         videoPlayer.Play();
         yield return new WaitForSeconds(VideoTime);
-
-
-
     }
     void Lost()
     {
         StopAllCoroutines();
+        aud.Stop();
         if (Check(videoPlayer, roleGo.GetComponent<Animator>()))
         {
             videoPlayer.Stop();

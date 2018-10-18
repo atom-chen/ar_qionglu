@@ -28,7 +28,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
 
 
     RawImage showShotImage;
-    public GameObject uiCanvas;
+    public CanvasGroup uiCanvas;
     Text resultTipText;
 
     string imageSavePath = string.Empty;
@@ -255,7 +255,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     {
         ShowShotImage.texture = null;
         EffectPanelUI.Instance.EffectPanelGo.gameObject.SetActive(false);
-        uiCanvas.gameObject.SetActive(false);
+        uiCanvas.alpha = 0;
         RecordManager.Instance.ShowCanvas(false);;
         FingerTouchEL.Instance.targetGameObject = null;
         YiyouStaticDataManager.Instance.OnSilenceGameObject(0f);
@@ -288,7 +288,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
 
     IEnumerator requestRecoding()
     {
-        uiCanvas.gameObject.SetActive(false);
+        uiCanvas.alpha = 0;
         RecordManager.Instance.ShowCanvas(true);
         isRec = true;
         yield return new WaitForSeconds(0.01f);
@@ -315,7 +315,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
 
     public void stopRecoding()
     {
-        uiCanvas.gameObject.SetActive(true);
+        uiCanvas.alpha = 1;
         Debug.Log("Rec::::::::::::::Stop");
         RecordManager.Instance.ShowCanvas(false);
         isRec = false;
@@ -350,7 +350,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     /// <param name="msg"></param>
     public void onCaptureRecodeFailed(string msg)
     {
-        uiCanvas.gameObject.SetActive(true);
+        uiCanvas.alpha = 1;
         isRec = false;
         Debug.Log("Rec::::::::::::::Failed");
 
@@ -468,18 +468,9 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     /// <param name="txt2D"></param>
     private void OnScreenshotTaken(Texture2D txt2D)
     {
+        uiCanvas = GameObject.Find("Canvas").GetComponent<CanvasGroup>();
+        uiCanvas.alpha = 1;
         Debug.Log("截图之后回调");
-        if (uiCanvas == null)
-        {
-        }
-        else
-        {
-
-            uiCanvas.gameObject.SetActive(true);
-
-        }
-
-
         if (txt2D != null)
         {
             ShowShotImage.gameObject.SetActive(true);

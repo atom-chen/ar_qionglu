@@ -66,7 +66,9 @@ public class CopyFileSystem : SingletonMono<CopyFileSystem>
         File.Copy(htmlsourceFile,htmltargetFile,true);
              File.Copy(pushjsonsourceFile,pushjsontargetFile,true);
 #endif
+    
     }
+
 
     IEnumerator Load(string targetFile, string fileName,string  fileparentName)
     {
@@ -78,7 +80,7 @@ public class CopyFileSystem : SingletonMono<CopyFileSystem>
         {
             // 写到持久化目录
             Debug.Log("load.text==" + load.text);
-            File.WriteAllText(targetFile, load.text);
+            File.WriteAllText(targetFile, load.text,System.Text.Encoding.UTF8);
         }
     }
 }

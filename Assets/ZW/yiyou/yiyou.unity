@@ -285,12 +285,18 @@ Prefab:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114888540230101868, guid: b8659f4719d74b84dad880b3cc4ca006, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: b8659f4719d74b84dad880b3cc4ca006, type: 2}
   m_IsPrefabParent: 0
 --- !u!224 &192196397 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224751986173409862, guid: b8659f4719d74b84dad880b3cc4ca006,
+    type: 2}
+  m_PrefabInternal: {fileID: 192196396}
+--- !u!1 &192196398 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1633121118033200, guid: b8659f4719d74b84dad880b3cc4ca006,
     type: 2}
   m_PrefabInternal: {fileID: 192196396}
 --- !u!1 &194671120
@@ -1390,7 +1396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de1600de243f1146a60daa0267951d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiCanvas: {fileID: 0}
+  uiCanvas: {fileID: 1978156210}
   ssdk: {fileID: 0}
 --- !u!4 &737306170
 Transform:
@@ -1502,6 +1508,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8369d29937a5721498484ab13c63163d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &893780629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 893780627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 995ffc77875de5246a0b248a0f88dcb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thisUI: {fileID: 1742189540}
+  isRec: 0
 --- !u!1 &933527854
 GameObject:
   m_ObjectHideFlags: 0
@@ -2460,6 +2479,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ef6d3b387e807f040819d99afb979cff, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1742189540 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1603427407043886, guid: ef6d3b387e807f040819d99afb979cff,
+    type: 2}
+  m_PrefabInternal: {fileID: 1742189539}
 --- !u!224 &1800873481 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224674340254263888, guid: 68b79d85f53b9a54ca2f1af7da6b3063,
@@ -2683,8 +2707,8 @@ MonoBehaviour:
   backButton: {fileID: 179274034}
   zujiButton: {fileID: 873942309}
   helpButton: {fileID: 96665062}
-  cancelButton: {fileID: 0}
-  helpImage: {fileID: 0}
+  cancelButton: {fileID: 192196398}
+  helpImage: {fileID: 2013692362}
   sliderPanel: {fileID: 440808345}
   intensitySlider: {fileID: 440808344}
   lightSlider: {fileID: 440808343}
@@ -2788,3 +2812,8 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224988524327281226, guid: b27948ebd84ac7b42930cf70503b6ad3,
     type: 2}
   m_PrefabInternal: {fileID: 304014882}
+--- !u!1 &2013692362 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1860651263457968, guid: b8659f4719d74b84dad880b3cc4ca006,
+    type: 2}
+  m_PrefabInternal: {fileID: 192196396}

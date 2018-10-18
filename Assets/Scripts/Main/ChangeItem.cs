@@ -56,6 +56,8 @@ public class ChangeItem : MonoBehaviour {
 
     public string LocalAddress;
     webrequest web;
+
+    private string VideoURL;
     public void Start()
     {
         web = GameObject.Find("UniWebView").GetComponent<webrequest>();
@@ -124,10 +126,20 @@ public class ChangeItem : MonoBehaviour {
         //        StartCoroutine(LoadAssets(item.localPath));
         //    }
         //}
-        foreach (var item in VersionFilesItems.Where(item=> item.extName=="vsz"))
+
+        //StartCoroutine(LoadAssets2());
+
+        foreach (var item in VersionFilesItems.Where(item => item.extName == "vsz"))
         {
             Debug.Log(item.localPath);
             StartCoroutine(LoadAssets(item.localPath));
+            //StartCoroutine(LoadAssets2());
+        }
+
+        foreach (var item in VersionFilesItems.Where(item => item.extName == "mp4"))
+        {
+            Debug.Log(item.localPath);
+            VideoURL = item.localPath;
         }
     }
 
@@ -137,14 +149,38 @@ public class ChangeItem : MonoBehaviour {
     }
     private IEnumerator LoadAssets(string path)
     {
-        Debug.Log(File.Exists(path));
-        WWW bundle = WWW.LoadFromCacheOrDownload("file:///" + path, 0);
-        yield return bundle;
-        Debug.Log(bundle.size);
+        if (VideoURL != null)
+        {
+            GlobalInfo.VideoURL360 = VideoURL;
+        }
+
         int index1 = path.LastIndexOf("/");
         int index2 = path.LastIndexOf(".");
-        string suffix = path.Substring(index1+1, index2-index1-1);
+        string suffix = path.Substring(index1 + 1, index2 - index1 - 1);
+
+        //string FileBrower= path.Substring(0, index1);
+        //int index3 = FileBrower.LastIndexOf("/");
+        //string FileBrowername = FileBrower.Substring(0, index3);
+
+        //path = Application.persistentDataPath + "/DownloadFile/Panorama/" + FileBrowername+"/"+ suffix+".vsz";
+        //path = Application.persistentDataPath + "/DownloadFile/Panorama/1/shajin.vsz";
+
+        Debug.Log(File.Exists(path));
+        WWW bundle = new WWW("file:///" + path);
+        yield return bundle;
+        Debug.Log(bundle.size);
         var data = bundle.assetBundle;
         SceneManager.LoadScene(suffix);
+    }
+    private IEnumerator LoadAssets2()
+    {
+        string path = Application.dataPath + "/DownloadFile/Panorama/1/qionghai.vsz";
+        Debug.Log(path);
+        Debug.Log(File.Exists(path));
+        WWW bundle =new WWW("file:///" + path);
+        yield return bundle;
+        Debug.Log(bundle.size);
+        var data = bundle.assetBundle;
+        SceneManager.LoadScene("qionghai");
     }
 }

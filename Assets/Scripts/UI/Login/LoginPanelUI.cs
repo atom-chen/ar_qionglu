@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-public class LoginPanelUI : MonoBehaviour
+public class LoginPanelUI : UIWindowsBase
 {
 
     #region   Accounts
@@ -42,8 +43,9 @@ public class LoginPanelUI : MonoBehaviour
     public Toggle SMSSType;
     #endregion
 
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
         ForgetPwdBtn.onClick.AddListener(() => {
 
             LoginUIController.Instance.SetNextUIState(LoginUIState.ForgetPwdPanel);
@@ -78,10 +80,14 @@ public class LoginPanelUI : MonoBehaviour
                if (AccountsPwInpPut.contentType == InputField.ContentType.Standard)
                {
                    AccountsPwInpPut.contentType = InputField.ContentType.Password;
+                   AccountsPwInpPut.enabled = false;
+                   AccountsPwInpPut.enabled = true;
                }
                else
                {
                    AccountsPwInpPut.contentType = InputField.ContentType.Standard;
+                   AccountsPwInpPut.enabled = false;
+                   AccountsPwInpPut.enabled = true;
                }
            }));
         UserType.onValueChanged.AddListener((bool args) =>
@@ -143,7 +149,15 @@ public class LoginPanelUI : MonoBehaviour
             }
         });
         #endregion
+        #region   游客登录
 
+
+        visitorBtn.onClick.AddListener(()=> {
+            PublicAttribute.isVisitor = true;
+            SceneManager.LoadScene("main");
+        });
+
+        #endregion
 
 
         Init();

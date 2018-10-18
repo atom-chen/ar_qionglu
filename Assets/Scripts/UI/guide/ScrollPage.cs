@@ -27,6 +27,7 @@ public class ScrollPage : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     void Start()
     {
         pageItemPrefab.GetComponent<RectTransform>().sizeDelta = new Vector2(1440, 2560);
+        GetImageList();
         HttpManager.Instance.GetGuids((b =>
         {
             if (b)

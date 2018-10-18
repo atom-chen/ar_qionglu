@@ -26,7 +26,7 @@ public class IconFollow : MonoBehaviour
     public GameObject state;
     private Transform infobg, iconbg, namebg1, namebg2;
     private RectTransform txtbg;
-    private int type;
+    private string type;
     private Image other;
     private webrequest web;
     private void Awake()
@@ -44,7 +44,7 @@ public class IconFollow : MonoBehaviour
         webbtn = state.transform.Find("infobg").GetComponent<Button>();
         webbtn.onClick.AddListener(delegate ()
         {
-            web.LoadWeb("https://www.baidu.com/");
+            web.LoadWeb(item.address);
         });
 
         raw = state.transform.Find("infobg/pic").GetComponent<RawImage>();
@@ -53,13 +53,15 @@ public class IconFollow : MonoBehaviour
         infonameText = state.transform.Find("infobg/pic/bottom/name").GetComponent<Text>();
         infonameText.text = item.name;
         describeText = state.transform.Find("infobg/info").GetComponent<Text>();
-        //describeText.text = item.content;
+        describeText.text = item.content;
 
         infobg = state.transform.Find("infobg").GetComponent<Transform>();
         iconbg = state.transform.Find("iconbg").GetComponent<Transform>();
         namebg1 = state.transform.Find("namebg1").GetComponent<Transform>();
         namebg2 = state.transform.Find("namebg2").GetComponent<Transform>();
-        LoadType(int.Parse(item.typeName));
+        LoadType(item.typeName);
+
+        StartCoroutine(LoadImgFromCache(item.thumbnail.localPath, raw));
     }
     public void ChangeFade(float value)
     {
@@ -79,16 +81,16 @@ public class IconFollow : MonoBehaviour
             infobg.gameObject.SetActive(false);
             switch (type)
             {
-                case 1:
-                case 2:
-                case 3:
-                case 4:
+                case "vsz-facilities":
+                case "vsz-building":
+                case "vsz-business":
+                case "vsz-sell-ticket":
                     iconbg.gameObject.SetActive(true);
                     break;
-                case 6:
+                case "vsz-special-scenery":
                     namebg1.gameObject.SetActive(true);
                     break;
-                case 5:
+                case "vsz-scenery-dot":
                     namebg2.gameObject.SetActive(true);
                     break;
             }
@@ -103,13 +105,13 @@ public class IconFollow : MonoBehaviour
         namebg2.gameObject.SetActive(false);
     }
 
-    private void LoadType(int spottype)
+    private void LoadType(string spottype)
     {
         type = spottype;
         switch (spottype)
         {
-            //图标类
-            case 1:
+            //公共设施
+            case "vsz-facilities":
                 iconraw = state.transform.Find("iconbg/icon").GetComponent<RawImage>();
                 iconraw.texture = Resources.Load<Texture>("GPS/厕所");
 
@@ -126,10 +128,10 @@ public class IconFollow : MonoBehaviour
                 namebg2.gameObject.SetActive(false);
 
                 break;
-            //图标类
-            case 2:
+            //市政建筑
+            case "vsz-building":
                 iconraw = state.transform.Find("iconbg/icon").GetComponent<RawImage>();
-                iconraw.texture = Resources.Load<Texture>("GPS/酒店");
+                iconraw.texture = Resources.Load<Texture>("GPS/自行车");
 
                 disText = state.transform.Find("iconbg/distance").GetComponent<Text>();
                 btn = iconraw.transform.GetComponent<Button>();
@@ -144,8 +146,8 @@ public class IconFollow : MonoBehaviour
                 namebg2.gameObject.SetActive(false);
 
                 break;
-            //图标类
-            case 3:
+            //商家
+            case "vsz-business":
                 iconraw = state.transform.Find("iconbg/icon").GetComponent<RawImage>();
                 iconraw.texture = Resources.Load<Texture>("GPS/餐饮");
 
@@ -162,10 +164,10 @@ public class IconFollow : MonoBehaviour
                 namebg2.gameObject.SetActive(false);
 
                 break;
-            //图标类
-            case 4:
+            //售票处
+            case "vsz-sell-ticket":
                 iconraw = state.transform.Find("iconbg/icon").GetComponent<RawImage>();
-                iconraw.texture = Resources.Load<Texture>("GPS/自行车");
+                iconraw.texture = Resources.Load<Texture>("GPS/酒店");
 
 
                 disText = state.transform.Find("iconbg/distance").GetComponent<Text>();
@@ -182,8 +184,8 @@ public class IconFollow : MonoBehaviour
 
                 break;
 
-            //小景点类
-            case 6:
+            //普通景点
+            case "vsz-scenery-dot":
                 txtbg = state.transform.Find("namebg1/name").GetComponent<RectTransform>();
                 int count = item.name.Length;
                 if (count > 7)
@@ -205,8 +207,8 @@ public class IconFollow : MonoBehaviour
                 namebg2.gameObject.SetActive(false);
 
                 break;
-            //大景点类
-            case 5:
+            //特色景点
+            case "vsz-special-scenery":
                 other = state.transform.Find("namebg2/name/Image").GetComponent<Image>();
 
                 txtbg = state.transform.Find("namebg2/name").GetComponent<RectTransform>();
@@ -280,7 +282,7 @@ public class IconFollow : MonoBehaviour
                     infodisText.text = float.Parse((distance / 1000).ToString("#0.0")) + "km";
                 }
 #if UNITY_ANDROID
-                state.transform.localScale = Vector3.one * 1f;
+                state.transform.localScale = Vector3.one * 1.2f;
 #elif UNITY_IOS || UNITY_IPHONE
                 state.transform.localScale = Vector3.one * 1.2f;
 #endif
@@ -321,5 +323,37 @@ public class IconFollow : MonoBehaviour
             //curScale = Mathf.Clamp(curScale, minScale, maxScale);
             //recTransform.localScale = curScale * Vector3.one;
         }
+    }
+
+    private IEnumerator LoadImgFromCache(string imgURl, RawImage img)
+    {
+        if (CheckCacheUrlIsExit(imgURl))
+        {
+            Texture2D tex = new Texture2D(256, 256, TextureFormat.ARGB32, false);
+            img.texture = tex;
+            HttpBase.Download(imgURl, ((request, downloaded, length) => { }), ((request, response)
+                =>
+            {
+                if (response == null || !response.IsSuccess)
+                {
+                    DebugManager.Instance.LogError("请求失败！");
+                    return;
+                }
+                tex.LoadImage(response.Data);
+            }));
+        }
+        else
+        {
+            yield break;
+        }
+    }
+    /// <summary>
+    /// 检查文件是否存在
+    /// </summary>
+    /// <param name="imgURl"></param>
+    /// <returns></returns>
+    private bool CheckCacheUrlIsExit(string imgURl)
+    {
+        return true;
     }
 }

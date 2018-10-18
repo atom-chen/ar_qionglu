@@ -116,6 +116,8 @@ public class GpsConvert : MonoBehaviour
     public Dropdown dd;
 
     public GameObject GPSHelp;
+
+    public static bool isDown;
     // Use this for initialization
     private void Awake()
     {
@@ -133,6 +135,63 @@ public class GpsConvert : MonoBehaviour
         e = Math.Sqrt(1 - POW(polarRadius / equatorialRadius, 2));
         e1sq = e * e / (1 - e * e);
         //getLocation();
+        Debug.Log(mainPageUI.SceneID.id);
+        if (!isDown)
+        {
+            HttpManager.Instance.GetNavigationInfo((b =>
+            {
+                if (b)
+                {
+                    isDown = true;
+                    Debug.Log(JsonClass.Instance.NavigationInfos.Count);
+                    foreach (var info in JsonClass.Instance.NavigationInfos)
+                    {
+                        Debug.Log(info.type);
+                        HttpManager.Instance.Download(info.baseEntity.thumbnail, (() =>
+                        {
+                            Debug.Log("下载实景导览图片");
+                            GPSItem item = GameObject.Instantiate<GPSItem>(obj);
+                            item.id = info.baseEntity.id;
+                            item.locationX = info.baseEntity.locationX;
+                            item.locationY = info.baseEntity.locationY;
+                            item.name = info.baseEntity.name;
+                            item.height = info.baseEntity.height;
+                            item.typeName = info.type;
+                            item.content = info.baseEntity.content;
+                            item.thumbnail = info.baseEntity.thumbnail;
+                            item.address = info.baseEntity.address;
+
+                            GPSItems.Add(item);
+
+                        }));
+                    }
+                }
+            }));
+        }
+        else
+        {
+            foreach (var info in JsonClass.Instance.NavigationInfos)
+            {
+                Debug.Log(info.type);
+                HttpManager.Instance.Download(info.baseEntity.thumbnail, (() =>
+                {
+                    GPSItem item = GameObject.Instantiate<GPSItem>(obj);
+                    item.id = info.baseEntity.id;
+                    item.locationX = info.baseEntity.locationX;
+                    item.locationY = info.baseEntity.locationY;
+                    item.name = info.baseEntity.name;
+                    item.height = info.baseEntity.height;
+                    item.typeName = info.type;
+                    item.content = info.baseEntity.content;
+                    item.thumbnail = info.baseEntity.thumbnail;
+                    item.address = info.baseEntity.address;
+
+                    GPSItems.Add(item);
+                }));
+            }
+        }
+
+
         point = getLocation();
     }
     void Start()
@@ -147,7 +206,7 @@ public class GpsConvert : MonoBehaviour
             GPSHelp.SetActive(false);
         }
         dd.value = 3;
-        GetPoint();
+        //GetPoint();
         StartCoroutine(StartGPS());
     }
     private float timer = 1f;
@@ -344,38 +403,61 @@ public class GpsConvert : MonoBehaviour
     }
     void GetPoint()
     {
-        string jsonText;
-#if UNITY_IOS
-         jsonText = Resources.Load<TextAsset>("location").ToString();
-#elif UNITY_ANDROID
-        if (File.Exists(localFilePath))
+        Debug.Log("开始导览点1");
+        foreach (var info in JsonClass.Instance.NavigationInfos)
         {
-            StreamReader sr = new StreamReader(localFilePath);
-            jsonText = sr.ReadToEnd();
-            sr.Close();
-            sr.Dispose();
+            Debug.Log("开始导览点2");
+            Debug.Log(info.type);
+            HttpManager.Instance.Download(info.baseEntity.thumbnail, (() =>
+            {
+                Debug.Log("生成实景导览点");
+                GPSItem item = GameObject.Instantiate<GPSItem>(obj);
+                item.id = info.baseEntity.id;
+                item.locationX = info.baseEntity.locationX;
+                item.locationY = info.baseEntity.locationY;
+                item.name = info.baseEntity.name;
+                item.height = info.baseEntity.height;
+                item.typeName = info.type;
+                item.content = info.baseEntity.content;
+                item.thumbnail = info.baseEntity.thumbnail;
+                item.address = info.baseEntity.address;
+
+                GPSItems.Add(item);
+            }));
         }
-        else
-        {
-            jsonText = Resources.Load<TextAsset>("location").ToString();
-        }
-#endif
-        Debug.Log(jsonText);
-        JsonData jsonData = JsonMapper.ToObject(jsonText);
-        for (int i = 0; i < jsonData["data"].Count; i++)
-        {
-            JsonData baseEntity = jsonData["data"][i]["baseEntity"];
-            GPSItem item = GameObject.Instantiate<GPSItem>(obj);
+
+//        string jsonText;
+//#if UNITY_IOS
+//         jsonText = Resources.Load<TextAsset>("location").ToString();
+//#elif UNITY_ANDROID
+//        if (File.Exists(localFilePath))
+//        {
+//            StreamReader sr = new StreamReader(localFilePath);
+//            jsonText = sr.ReadToEnd();
+//            sr.Close();
+//            sr.Dispose();
+//        }
+//        else
+//        {
+//            jsonText = Resources.Load<TextAsset>("location").ToString();
+//        }
+//#endif
+//        Debug.Log(jsonText);
+//        JsonData jsonData = JsonMapper.ToObject(jsonText);
+//        for (int i = 0; i < jsonData["data"].Count; i++)
+//        {
+//            JsonData baseEntity = jsonData["data"][i]["baseEntity"];
+//            GPSItem item = GameObject.Instantiate<GPSItem>(obj);
 
 
-            item.id = jsonData["data"][i]["id"].ToString();
-            item.locationX = baseEntity["locationX"].ToString();
-            item.locationY = baseEntity["locationY"].ToString();
-            item.name = baseEntity["name"].ToString();
-            item.height = baseEntity["height"].ToString();
-            item.typeName = jsonData["data"][i]["type"].ToString();
-            GPSItems.Add(item);
-        }
+//            item.id = jsonData["data"][i]["id"].ToString();
+//            item.locationX = baseEntity["locationX"].ToString();
+//            item.locationY = baseEntity["locationY"].ToString();
+//            item.name = baseEntity["name"].ToString();
+//            item.height = baseEntity["height"].ToString();
+//            item.typeName = jsonData["data"][i]["type"].ToString();
+//            GPSItems.Add(item);
+//        }
     }
     public static List<GameObject> icon = new List<GameObject>();
     private void CreatePoints(string typename)
@@ -438,7 +520,6 @@ public class GpsConvert : MonoBehaviour
 
     public void ChangeDropDown(Dropdown Drop)
     {
-        Debug.Log(Drop.value);
         switch (Drop.value)
         {
             case 3:

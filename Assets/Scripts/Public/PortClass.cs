@@ -351,6 +351,23 @@ public class PortClass : Singleton<PortClass>
         set { smssLogin = value; }
     }
 
+    private string ChangePho;
+    /// <summary>
+    /// 使用短信验证码登陆 POST
+    /// http://192.168.30.22:9999/user/updateTelephone
+    /// </summary>
+    public string PhoChange
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(ChangePho))
+            {
+                ChangePho = PublicAttribute.URL + "user/updateTelephone";
+            }
+            return ChangePho;
+        }
+        set { ChangePho = value; }
+    }
 
     private string getSMSS;
     /// <summary>

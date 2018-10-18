@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RegistPanelUI : MonoBehaviour
+public class RegistPanelUI : UIWindowsBase
 {
 
 
@@ -15,8 +15,9 @@ public class RegistPanelUI : MonoBehaviour
     public InputField phoneNoInput;
     public InputField smssInput;
     public InputField pwInput;
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
 
 
         backBtn.onClick.AddListener(() => {

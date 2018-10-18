@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Ports
 {
@@ -93,8 +94,11 @@ public class initScene : MonoBehaviour
     }
     IEnumerator Start ()
     {
+        //屏幕常亮
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
         yield return new WaitForSeconds(1);
         root.SetActive(true);
+        //StartCoroutine(LoadAssets2());
         yield return new WaitForSeconds(3);
         guide.SetActive(true);
         splash.gameObject.SetActive(false);
@@ -110,5 +114,20 @@ public class initScene : MonoBehaviour
     public void GetState()
     {
 
+    }
+
+    private IEnumerator LoadAssets2()
+    {
+        string path = Application.persistentDataPath + "/DownloadFile/Panorama/1/shajin.vsz";
+        Debug.Log(path);
+        Debug.Log(File.Exists(path));
+        int index1 = path.LastIndexOf("/");
+        int index2 = path.LastIndexOf(".");
+        string suffix = path.Substring(index1 + 1, index2 - index1 - 1);
+        WWW bundle = WWW.LoadFromCacheOrDownload("file:///" + path, 0);
+        yield return bundle;
+        Debug.Log(bundle.size);
+        var data = bundle.assetBundle;
+        SceneManager.LoadScene("shajin");
     }
 }

@@ -161,26 +161,34 @@ public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                 {
                     foreach (var fileitem in ChangeInfo.DIS)
                     {
-                        pageCount++;
-                        SetContent(pageCount);
-                        ChangeItem item = GameObject.Instantiate<ChangeItem>(pageItemPrefab);
-                        item.transform.SetParent(Content.transform);
-                        item.transform.localScale = Vector3.one;
-                        item.transform.localPosition = Vector3.zero;
+                        HttpManager.Instance.Download(fileitem.PageThumbnail, (() =>
+                        {
+                            Loom.QueueOnMainThread((() =>
+                            {
+                                pageCount++;
+                                SetContent(pageCount);
+                                ChangeItem item = GameObject.Instantiate<ChangeItem>(pageItemPrefab);
+                                item.transform.SetParent(Content.transform);
+                                item.transform.localScale = Vector3.one;
+                                item.transform.localPosition = Vector3.zero;
 
-                        item.id = fileitem.baseEntity.id;
-                        item.name = fileitem.baseEntity.name;
-                        item.thumbnail = fileitem.PageThumbnail;
-                        item.locationX = fileitem.baseEntity.locationX;
-                        item.locationY = fileitem.baseEntity.locationY;
-                        item.height = fileitem.baseEntity.height;
-                        item.sceneryArea = fileitem.baseEntity.sceneryArea;
-                        item.address = fileitem.baseEntity.address;
-                        item.content = fileitem.baseEntity.content;
-                        item.VersionFilesItems = fileitem.VersionFilesItems;
+                                item.id = fileitem.baseEntity.id;
+                                item.name = fileitem.baseEntity.name;
+                                item.thumbnail = fileitem.PageThumbnail;
+                                item.locationX = fileitem.baseEntity.locationX;
+                                item.locationY = fileitem.baseEntity.locationY;
+                                item.height = fileitem.baseEntity.height;
+                                item.sceneryArea = fileitem.baseEntity.sceneryArea;
+                                item.address = fileitem.baseEntity.address;
+                                item.content = fileitem.description;
+                                item.VersionFilesItems = fileitem.VersionFilesItems;
 
-                        itemObj.Add(item.gameObject);
-                        item.gameObject.SetActive(true);
+                                itemObj.Add(item.gameObject);
+                                item.gameObject.SetActive(true);
+                            }));
+                        }));
+
+                       
                     }
                 }
             }
@@ -191,7 +199,7 @@ public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     void SetContent(int Count)
     {
         if (Count * 1000 > 2360)
-            Content.sizeDelta = new Vector2(1440, Count * 1000);
+            Content.sizeDelta = new Vector2(1440, Count * 1050);
         Content.anchoredPosition = new Vector2(-720, 0);
     }
     public void EnterMain()

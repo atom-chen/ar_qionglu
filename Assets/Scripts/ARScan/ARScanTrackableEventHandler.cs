@@ -18,11 +18,11 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
   
     protected virtual void Start()
     {
-        loadingImg = GameObject.Instantiate(Resources.Load<GameObject>("ARScan/LoadingImg"));
+        loadingImg = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/LoadingImg"));
         loadingImg.transform.SetParent(transform);
         loadingImg.transform.localEulerAngles = Vector3.zero;
         loadingImg.transform.localPosition = Vector3.zero;
-        loadingImg.transform.localScale = Vector3.one *0.05f;
+        loadingImg.transform.localScale = Vector3.one *0.03f;
         AssetBundle.UnloadAllAssetBundles(false);
         mTrackableBehaviour = GetComponent<TrackableBehaviour>();
         if (mTrackableBehaviour)
@@ -58,7 +58,7 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
             if (transform.childCount < 2 && !isLoading)
             {
-                loadingImg.transform.localScale = Vector3.one;
+                loadingImg.transform.localScale = Vector3.one *0.03f;
                 LoadAssetbundle();
                 isLoading = true;
             }

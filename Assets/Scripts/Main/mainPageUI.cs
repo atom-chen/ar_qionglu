@@ -23,7 +23,16 @@ public class mainPageUI : MonoBehaviour
     public Sprite[] HeadSpr;
     public Text[] photonTxt, UserName;
     private bool ischecking;
-    private bool[] firstDown = new bool[]{false,false, false, false, false, false, false, false, false };
+    private static bool[] firstDown = new bool[]{false,false, false, false, false, false, false, false, false };
+
+    #region 换绑手机号页面
+    // 登陆界面弹出提示框
+    public LoginUIPopupPage PP;
+    public InputField BindingPage_PhoneNoInputField;
+    public InputField BindingPage_SmsCodeInputField;
+    public Button BindingPage_BindingBtn;
+    public Button BindingPage_GetSMSBtn;
+    #endregion
     public static int HeadId
     {
         set {PlayerPrefs.SetInt("HeadId", value);}
@@ -114,7 +123,7 @@ public class mainPageUI : MonoBehaviour
                     ///如果获取信息成功，开始下载缩略图
                     foreach (var info in JsonClass.Instance.ShopInfoS)
                     {
-                        HttpManager.Instance.Download(info.thumbnail, (() => { Debug.Log("Done"); }));
+                        HttpManager.Instance.Download(info.thumbnail, (() => { }));
                     }
                 }
             }));
@@ -135,7 +144,7 @@ public class mainPageUI : MonoBehaviour
                     ///如果获取信息成功，开始下载缩略图
                     foreach (var info in JsonClass.Instance.LocalSpecialtyS)
                     {
-                        HttpManager.Instance.Download(info.thumbnail, (() => { Debug.Log("Done"); }));
+                        HttpManager.Instance.Download(info.thumbnail, (() => {  }));
                     }
                 }
             }));
@@ -170,8 +179,35 @@ public class mainPageUI : MonoBehaviour
             }
 
         }
-    }
 
+        BindingPage_BindingBtn.onClick.AddListener((() =>
+        {
+            if (VerifyPhoneNo(BindingPage_PhoneNoInputField.text) && VerifySMSCode(BindingPage_SmsCodeInputField.text))
+            {
+                HttpManager.Instance.ChangePhoneNo(BindingPage_PhoneNoInputField.text, BindingPage_SmsCodeInputField.text, (PopupInfo));
+            }
+            else
+            {
+                PP.ShowPopup("格式不正确", "请输入正确的格式");
+            }
+        }));
+
+        BindingPage_GetSMSBtn.onClick.AddListener((() =>
+        {
+            if (VerifyPhoneNo(BindingPage_PhoneNoInputField.text))
+            {
+                FreezeButton(BindingPage_GetSMSBtn);
+                HttpManager.Instance.GetSMSS(BindingPage_PhoneNoInputField.text, (b =>
+                {
+                    Debug.Log("获取短信验证码 " + b);
+                }));
+            }
+            else
+            {
+                PP.ShowPopup("格式不正确", "请输入正确的手机号");
+            }
+        }));
+    }
     void Start ()
 	{
         CoroutineWrapper.EXES(1f, () =>
@@ -329,7 +365,6 @@ public class mainPageUI : MonoBehaviour
 
     public void LogOut()
     {
-        //ABManager.Instance.LogOut();
         HttpManager.Instance.Logout((b =>
         {
             if (!b)
@@ -337,7 +372,7 @@ public class mainPageUI : MonoBehaviour
 
             }
         }));
-        //File.Delete(PublicAttribute.LocalFilePath + "APP/Token.json");
+        File.Delete(PublicAttribute.LocalFilePath + "APP/Token.json");
         SceneManager.LoadScene("Login");
     }
 
@@ -388,5 +423,75 @@ public class mainPageUI : MonoBehaviour
 
             PublicAttribute.UserInfo.NickName = name.text;
         }));
+    }
+    /// <summary>
+    /// 验证手机号是否符合格式
+    /// </summary>
+    bool VerifyPhoneNo(string str)
+    {
+        if (string.IsNullOrEmpty(str))
+        {
+            return false;
+        }
+        if (str.Length != 11)
+        {
+            return false;
+        }
+        return true;
+    } 
+    /// <summary>
+    /// 验证验证码是否符合格式
+    /// </summary>
+    bool VerifySMSCode(string str)
+    {
+        if (string.IsNullOrEmpty(str))
+        {
+            return false;
+        }
+        if (str.Length != 6)
+        {
+            return false;
+        }
+        return true;
+    }
+    private void FreezeButton(Button btn, float time = 15)
+    {
+        Text text = btn.gameObject.GetComponentInChildren<Text>();
+        string oldText = text.text;
+
+        StartCoroutine(changeTime(btn, text, time, oldText));
+    }
+
+    IEnumerator changeTime(Button btn, Text text, float time, string oldText)
+    {
+        btn.interactable = false;
+        while (time > 0)
+        {
+            text.text = time + "";
+            //暂停一秒
+            yield return new WaitForSeconds(1);
+            time--;
+        }
+        btn.interactable = true;
+        text.text = oldText;
+    }
+    /// <summary>
+    /// 根据状态码执行
+    /// </summary>
+    /// <param name="status"></param>
+    public void PopupInfo(string status)
+    {
+        Debug.Log(status);
+        switch (status)
+        {
+            case "200":
+                PP.ShowPopup("请求成功", "请求成功");
+                break;
+            case "Error":
+                PP.ShowPopup("请求失败", "请稍候重试");
+                break;
+            default:
+                break;
+        }
     }
 }

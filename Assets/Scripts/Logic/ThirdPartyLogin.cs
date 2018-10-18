@@ -27,19 +27,24 @@ public class ThirdPartyLogin : MonoBehaviour
     private string UserIcon;
     private string UserGender;
 
-    private ShareSDK ssdk;
+    private ShareSDK ssdk=null;
 
     private void Awake()
     {
         LUIS = GetComponent<LoginUISwitch>();
-        ssdk = GameObject.Find("Root").GetComponent<ShareSDK>();
+        ssdk = GameObject.FindObjectOfType<ShareSDK>();
+        if (ssdk==null)
+        {
+            ssdk = UnityHelper.GetOrCreateComponent<ShareSDK>(this.gameObject);
+        }
+
         ssdk.authHandler = OnAuthResultHandler;
         ssdk.showUserHandler = OnGetUserInfoResultHandler;
 
         //Listeners
         wechatLoginBtn.onClick.AddListener(() =>
         {
-            if (!LUIS.VerifyAgreeToggle())
+            if (!LoginUIController.Instance.VerifyAgreeToggle())
             {
                 return;
             }
@@ -49,7 +54,7 @@ public class ThirdPartyLogin : MonoBehaviour
 
         qqLoginBtn.onClick.AddListener(() =>
         {
-            if (!LUIS.VerifyAgreeToggle())
+            if (!LoginUIController.Instance.VerifyAgreeToggle())
             {
                 return;
             }
@@ -59,7 +64,7 @@ public class ThirdPartyLogin : MonoBehaviour
 
         weiboLoginBtn.onClick.AddListener(() =>
         {
-            if (!LUIS.VerifyAgreeToggle())
+            if (!LoginUIController.Instance.VerifyAgreeToggle())
             {
                 return;
             }

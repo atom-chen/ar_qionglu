@@ -1103,7 +1103,8 @@ public class HttpManager : Singleton<HttpManager>
                     JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
                     if (response.DataAsText.Trim().Contains("1010"))
                     {
-                        PublicAttribute.Token = "VSZ " + content["data"].ToString();
+                        PublicAttribute.SetUserInfo(userName, "VSZ " + content["data"].ToString());
+               
                     }
                     callback(content["status"].ToString());
                 }
@@ -1139,7 +1140,7 @@ public class HttpManager : Singleton<HttpManager>
                     JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
                     if (response.DataAsText.Trim().Contains("1010"))
                     {
-                        PublicAttribute.Token = "VSZ " + content["data"].ToString();
+                        PublicAttribute.SetUserInfo(phoneNo, "VSZ " + content["data"].ToString());
                     }
                     callback(content["status"].ToString());
                 }
@@ -1202,6 +1203,7 @@ public class HttpManager : Singleton<HttpManager>
                 if (callback != null)
                 {
                     JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
+                    PublicAttribute.SetUserInfo(userName, "VSZ " + content["data"].ToString());
                     callback(content["status"].ToString());
                 }
             }
@@ -1235,6 +1237,7 @@ public class HttpManager : Singleton<HttpManager>
                 if (callback != null)
                 {
                     JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
+                    PublicAttribute.UserName = userName;
                     callback(content["status"].ToString());
                 }
             }
@@ -1333,7 +1336,8 @@ public class HttpManager : Singleton<HttpManager>
                   if (response.DataAsText.Trim().Contains("1010"))
                   {
                       JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
-                      PublicAttribute.Token = "VSZ " + content["data"].ToString();
+
+                      PublicAttribute.SetUserInfo(phoneNo, "VSZ " + content["data"].ToString());
                   }
                   if (callback != null)
                   {
@@ -1351,7 +1355,47 @@ public class HttpManager : Singleton<HttpManager>
               response.Dispose();
           }));
     }
+    /// <summary>
+    /// 换绑手机号
+    /// </summary>
+    /// <param name="phoneNo"></param>
+    /// <param name="smsCode"></param>
+    /// <param name="thirdCode"></param>
+    /// <param name="userIcon"></param>
+    /// <param name="userName"></param>
+    /// <param name="callback"></param>
+    public void ChangePhoneNo(string phoneNo, string smsCode, Action<string> callback)
+    {
+        Debug.Log(phoneNo +"  "+ smsCode);
+        HttpBase.POST(PortClass.Instance.PhoChange, new KeyValuePair<string, string>[]
+        {
+            new KeyValuePair<string, string>("telephone", phoneNo), new KeyValuePair<string, string>("code", smsCode),
+        }, ((request, response) =>
+        {
+            if (response.IsSuccess)
+            {
+                if (callback != null)
+                {
+                    JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
+                    if (response.DataAsText.Trim().Contains("1010"))
+                    {
 
+                        PublicAttribute.SetUserInfo(phoneNo, "VSZ " + content["data"].ToString());
+                        PublicAttribute.Token = "VSZ " + content["data"].ToString();
+                    }
+                    callback(content["status"].ToString());
+                }
+            }
+            else
+            {
+                if (callback != null)
+                {
+                    callback("Error");
+                }
+            }
+            response.Dispose();
+        }),PublicAttribute.Token);
+    }
     /// <summary>
     /// 通过token获取用户信息
     /// </summary>
@@ -1386,7 +1430,7 @@ public class HttpManager : Singleton<HttpManager>
                     JsonData date = content["data"];
                     string phoneNo = date["username"].ToString();
                     string userName = date["userExtDto"]["userNickName"].ToString();
-                    Debug.Log(userName);
+                    Debug.Log(phoneNo);
                     var userHeadPhoto = date["userExtDto"]["userHeadPhoto"];
 
                     string downloadUrl = PublicAttribute.URL + "resource?filename=" + userHeadPhoto["md5"].ToString() + "." +
@@ -2019,7 +2063,7 @@ public class HttpManager : Singleton<HttpManager>
         }
         savePath = Path.GetDirectoryName(savePath);
 
-        Debug.Log(savePath + "   " + md5 + "   url  " + URL + "        fileName   : " + fileName);
+        //Debug.Log(savePath + "   " + md5 + "   url  " + URL + "        fileName   : " + fileName);
 
         ossDownloader.OSSdownload(new Downloader.DownloadUnit(URL, savePath, fileName, md5, size), of, (b
             =>
@@ -2056,6 +2100,8 @@ public class HttpManager : Singleton<HttpManager>
     /// <param name="version">版本号</param>
     /// <param name="op">当前道具的op</param>
     /// <param name="id">当前道具的id</param>
+    //public float DownLoadtotalSize = 0;
+    //public float DownLoadcurSize = 0;
     private void BatchDownloadFile(List<DynamicResourcesInfo> dis)
     {
         if (_downloadList.Count == 0)
@@ -2136,6 +2182,7 @@ public class HttpManager : Singleton<HttpManager>
         foreach (var file in batchlist)
         {
             file.Key.downUrl = "http://" + file.Key.downUrl;
+            //DownLoadtotalSize += float.Parse(file.Key.size);
         }
         batchDownloader.BatchOSSDownload(batchlist, (() =>
          {
