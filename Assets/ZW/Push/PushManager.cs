@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using System.Runtime.InteropServices;
 #if UNITY_IOS || UNITY_IPHONE
 using com.mob.mobpush;
 #endif
@@ -101,14 +102,35 @@ public class PushManager : MonoBehaviour
         }
         Debug.Log(pushPointIndexV2Dic.Count);
     }
+    [DllImport("__Internal")]
+    private static extern string GetLocation();//接收字符串
 
+
+
+    /// <summary>
+    /// 获取GPS经纬度信息
+    /// 返回值
+    /// {"altitude":460.1,"available":true,"latitude":30.597598,"longitude":104.066928}
+    /// </summary>
+    /// <returns></returns>
+    public string GetBDGPSLocation()
+    {
+#if UNITY_ANDROID
+        AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+        String location = jo.Call<String>("getLocation");
+        return location;
+#endif
+        return GetLocation();
+
+    }
 
     public void GetCurerntLocation()
     {
 #if UNITY_EDITOR
         Vector2 currentGps = new Vector2(104.067304f, 30.597963f);
 #else
-      String location = GPSManager.Instance.GetBDGPSLocation();
+      String location = GetBDGPSLocation();
         Debug.Log("GPS::::::::::" + location);
         JsonData zb = JsonMapper.ToObject(location);
         float x = float.Parse(zb["longitude"].ToString());
