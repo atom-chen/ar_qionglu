@@ -164,10 +164,12 @@ public class EffectPanelUI : SingletonMono<EffectPanelUI>
                 WikiSLAMUIController.Instance.ShowSliderPanel(ChangeSliderEnum.Intensity);
             }
 #endif
+
+            
         }
     }
 
-    private void HideToggle()
+    public void HideToggle()
     {
         TogglePanel.gameObject.SetActive(false);
         showButton.gameObject.SetActive(true);
@@ -185,10 +187,11 @@ public class EffectPanelUI : SingletonMono<EffectPanelUI>
 #endif
     }
 
-    private void ShowToggle()
+    public void ShowToggle()
     {
         TogglePanel.gameObject.SetActive(true);
         showButton.gameObject.SetActive(false);
+        intensityToggle.isOn = true;
 #if UNITY_IOS || UNITY_IPHONE
                      GroundPlaneUI.Instance.ShowSliderPanel(ChangeSliderEnum.Intensity);
 #elif UNITY_ANDROID

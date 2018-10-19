@@ -1,4 +1,4 @@
-//
+﻿//
 //  UniWebView.cs
 //  Created by Wang Wei(@onevcat) on 2017-04-11.
 //
@@ -24,8 +24,12 @@ using System;
 /// Use this class to create, load, show and interact with a web view.
 /// </summary>
 public class UniWebView: MonoBehaviour {
+
+
+    
     /// <summary>
     /// Delegate for page started event.
+    /// 页面加载开始
     /// </summary>
     /// <param name="webView">The web view component which raises this event.</param>
     /// <param name="url">The url which the web view begins to load.</param>
@@ -50,6 +54,7 @@ public class UniWebView: MonoBehaviour {
     /// This method will be invoked when a valid response received from the url, regardless the response status.
     /// If a url loading fails before reaching to the server and getting a response, `OnPageErrorReceived` will be 
     /// raised instead.
+    ///     /// 页面加载正确结束
     /// </summary>
     public event PageFinishedDelegate OnPageFinished;
 
@@ -66,6 +71,7 @@ public class UniWebView: MonoBehaviour {
     /// <summary>
     /// Raised when an error encountered during the loading process. 
     /// Such as host not found or no Internet connection will raise this event.
+    /// 页面加载出错
     /// </summary>
     public event PageErrorReceivedDelegate OnPageErrorReceived;
 
@@ -84,6 +90,7 @@ public class UniWebView: MonoBehaviour {
     /// 
     /// "uniwebview://" scheme is default in the list, so a clicking on link starts with "uniwebview://"
     /// will raise this event, if it is not removed.
+    /// unity收到页面的点击事件
     /// </summary>
     public event MessageReceivedDelegate OnMessageReceived;
 
@@ -100,6 +107,7 @@ public class UniWebView: MonoBehaviour {
     /// or Close button on Unity Editor. It gives a chance to make final decision whether the web view should 
     /// be closed and destroyed. You should also clean all related resources you created (such as a reference to
     /// the web view.)
+    /// 删除操作
     /// </summary>
     public event ShouldCloseDelegate OnShouldClose;
 

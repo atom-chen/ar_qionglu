@@ -160,13 +160,13 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
         intensityBar.maxValue = 2f;
         intensityBar.value = 1f;
 
-        leftBar.minValue = -180f;
-        leftBar.maxValue = 180f;
-        leftBar.value = -30f;
+        leftBar.minValue = 90f;
+        leftBar.maxValue = 270f;
+        leftBar.value = 180f;
 
-        upBar.minValue = -50f;
-        upBar.maxValue = 50f;
-        upBar.value = 50f;
+        upBar.minValue = -30f;
+        upBar.maxValue = 90f;
+        upBar.value = 30f;
 
 
         rotateBar.minValue = -180f;
@@ -231,7 +231,7 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
         intensityText.text =( intensityBar.value).ToString("f2");
     }
 
-    public void ShowSliderPanel(ChangeSliderEnum  changeSliderEnum)
+    public void ShowSliderPanel(ChangeSliderEnum changeSliderEnum)
     {
 
         sliderPanel.gameObject.SetActive(true);
@@ -239,23 +239,30 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
         {
             case ChangeSliderEnum.Intensity:
                 intensitySlider.gameObject.SetActive(true);
+                intensityBar.value = WikiSLAMController.Instance.MainLight.GetComponent<Light>().intensity;
+                intensityText.text = (intensityBar.value).ToString("f2");
                 lightSlider.gameObject.SetActive(false);
                 rotateSlider.gameObject.SetActive(false);
                 break;
             case ChangeSliderEnum.Light:
                 intensitySlider.gameObject.SetActive(false);
                 lightSlider.gameObject.SetActive(true);
+
+                leftBar.value = WikiSLAMController.Instance.MainLight.transform.parent.localEulerAngles.y;
+                upBar.value = WikiSLAMController.Instance.MainLight.transform.eulerAngles.x;
+
+
+
                 rotateSlider.gameObject.SetActive(false);
                 break;
             case ChangeSliderEnum.Scale:
                 intensitySlider.gameObject.SetActive(false);
                 lightSlider.gameObject.SetActive(false);
                 rotateSlider.gameObject.SetActive(true);
+                rotateBar.value = WikiSLAMController.Instance.showGameObject.transform.localEulerAngles.y;
+                rotateText.text = ((int)rotateBar.value).ToString();
                 break;
-
             case ChangeSliderEnum.None:
-
-
                 intensitySlider.gameObject.SetActive(false);
                 lightSlider.gameObject.SetActive(false);
                 rotateSlider.gameObject.SetActive(false);
@@ -318,7 +325,7 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
             else
             {
                 Debug.Log("111");
-                EffectPanelGo.gameObject.SetActive(false);
+                EffectPanelUI.Instance.HideToggle();
 
                 ButtonPanel.gameObject.SetActive(false);
 
@@ -327,13 +334,14 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
                 WikiSLAMController.Instance.ResetScene();
                 SetIntroductionText("请将镜头朝向地面并选择模型");
                 YiyouStaticDataManager.Instance.HandleClear();
+                sliderPanel.gameObject.SetActive(false);
             }
             ShouZujiBtn(false);
         }
        else  if (SelectModelPanel.gameObject.activeSelf == false)
         {
 
-            EffectPanelGo.gameObject.SetActive(false);
+            EffectPanelUI.Instance.HideToggle();
 
             ButtonPanel.gameObject.SetActive(false);
 
@@ -343,6 +351,7 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
             SetIntroductionText("请将镜头朝向地面并选择模型");
             YiyouStaticDataManager.Instance.HandleClear();
             ShouZujiBtn(false);
+            sliderPanel.gameObject.SetActive(false);
         }
         else
         {
@@ -381,7 +390,7 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
         if (modelName != "haiou" )
         {
             EffectPanelGo.gameObject.SetActive(v);
-
+            EffectPanelUI.Instance.HideToggle();
         }
 
     }

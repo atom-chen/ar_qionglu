@@ -174,17 +174,29 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
 
     internal void SetLightLeftValue(float value)
     {
-        Vector3 rot = MainLight.transform.localEulerAngles;
-        MainLight.transform.localEulerAngles = new UnityEngine.Vector3(rot.x,value,rot.z);
-       
+
+        Vector3 rot = MainLight.transform.parent.localEulerAngles;
+        MainLight.transform.parent.localEulerAngles = new UnityEngine.Vector3(rot.x,-value,rot.z);
+
     }
 
     internal void SetLightUpValue(float value)
     {
-        Vector3 rot = MainLight.transform.parent.localEulerAngles;
-        MainLight.transform.parent.localEulerAngles = new UnityEngine.Vector3(value, rot.y, rot.z);
-    }
 
+
+        Vector3 rot = MainLight.transform.localEulerAngles;
+  
+        MainLight.transform.localEulerAngles = new UnityEngine.Vector3(value, rot.y, rot.z);
+    }
+    private void InitLight()
+    {
+
+        mainLight.transform.parent.eulerAngles = new UnityEngine.Vector3(0, 180f, 0);
+
+        mainLight.transform.localEulerAngles = new UnityEngine.Vector3(30, 0f, 0);
+
+
+    }
     internal void SetRotateValue(float value)
     {
         if (showGameObject!=null)
@@ -479,12 +491,7 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
                     WikiSLAMUIController.Instance.SetIntroductionText("", false);
                     WikiSLAMUIController.Instance.ShowButtonPanel(true);
                 }
-
-         
-                WikiSLAMUIController.Instance.ShowEffectPanel(true);
-
-           
-
+            EffectPanelUI.Instance.ShowToggle();
 
             if (showGameObjectName.Contains("haiou"))
                 {
@@ -499,12 +506,14 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
             FingerTouchEL.Instance.targetGameObject = showGameObject;
             WriteManager.Instance.SetGoodsEnum(showGameObject.GetComponent<WriteItem>().goodsEnum);
                 _activeModels.Add(showGameObject);
-            
-        
+
+            InitLight();
 
 
         }
     }
+
+
 
     public void OnScreenConversionComputed(bool success, Vector2 screenCoordinate, Vector3 pointCloudCoordinate)
     {
@@ -530,7 +539,7 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
                     WikiSLAMUIController.Instance.SetIntroductionText("", false);
                     WikiSLAMUIController.Instance.ShowButtonPanel(true);
                 }
-                WikiSLAMUIController.Instance.ShowEffectPanel(true);
+                EffectPanelUI.Instance.ShowToggle();
 
 
                 if (showGameObjectName.Contains("haiou"))

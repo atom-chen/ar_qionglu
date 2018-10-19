@@ -16,6 +16,9 @@ public class TrackUIManager : SingletonMono<TrackUIManager> {
 
     GameObject showImage;
 
+    public GameObject loadTipImage;
+
+    public GameObject resultGo;
     public UnityEngine.UI.Button BackBtn
     {
         get {
@@ -73,6 +76,16 @@ public class TrackUIManager : SingletonMono<TrackUIManager> {
     {
    
         BackBtn.onClick.AddListener(BackBtnClick);
+        loadTipImage.gameObject.SetActive(true);
+
+        resultGo.GetComponentInChildren<Button>().onClick.AddListener(()=> {
+
+            resultGo.SetActive(false);
+            WebView.Instance.CreateWebView();
+        });
+
+
+        resultGo.SetActive(false);
     }
 
 
@@ -87,4 +100,23 @@ public class TrackUIManager : SingletonMono<TrackUIManager> {
         go.transform.Find("Image"). GetComponent<Image>().sprite = sps;
         //FingerTouchEL.Instance.targetGameObject = go;
     }
+
+    public void LoadComplete()
+    {
+        loadTipImage.gameObject.SetActive(false);
+    }
+
+    public void LoadError()
+    {
+        resultGo.gameObject.SetActive(false);
+    }
+    private void Update()
+    {
+        if (loadTipImage.activeSelf)
+        {
+            loadTipImage.transform.Rotate(-Vector3.forward * 100f * Time.deltaTime, Space.Self);
+        }
+    }
+
+
 }

@@ -35,8 +35,29 @@ public class WebView : SingletonMono<WebView>
 
         webView.OnMessageReceived += WebView_OnMessageReceived;
         webView.OnPageFinished += WebView_OnPageFinished;
+        webView.OnPageErrorReceived += WebView_OnPageErrorReceived;
 
     }
+    /// <summary>
+    /// 页面加载出错
+    /// </summary>
+    /// <param name="webView"></param>
+    /// <param name="errorCode"></param>
+    /// <param name="errorMessage"></param>
+    private void WebView_OnPageErrorReceived(UniWebView webView, int errorCode, string errorMessage)
+    {
+        try
+        {
+            TrackUIManager.Instance.LoadError();
+        }
+        catch (System.Exception ex)
+        {
+
+        }
+    }
+
+
+
     /// <summary>
     /// 页面加载完毕回调事件
     /// </summary>
@@ -44,6 +65,16 @@ public class WebView : SingletonMono<WebView>
     {
     
         Debug.Log("加载完毕" + statusCode + "***");
+        try
+        {
+            TrackUIManager.Instance.LoadComplete();
+        }
+        catch (System.Exception ex)
+        {
+        	    
+        }
+
+
      SpawnPointToMap();
     }
 

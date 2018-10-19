@@ -119,4 +119,9 @@ public class WriteItem : SingletonMono<WriteItem>
         }
   
     }
+    private void OnDestroy()
+    {
+        FingerTouchEL.Instance.touchBeginGo -= TouchBegin;
+        FingerTouchEL.Instance.touchEndGo -= TouchEnd;
+    }
 }

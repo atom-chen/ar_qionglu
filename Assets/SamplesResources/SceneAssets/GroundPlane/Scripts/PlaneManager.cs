@@ -67,8 +67,8 @@ public class PlaneManager : SingletonMono<PlaneManager>
     bool isPlaced = false;
 
 
-
-    Light mainLight;
+    [HideInInspector]
+public    Light mainLight;
     #endregion // PRIVATE_MEMBERS
 
 
@@ -225,6 +225,10 @@ public class PlaneManager : SingletonMono<PlaneManager>
      ShowEffectPanel();
                 GroundPlaneUI.Instance.SetReticleVisiblity(false);
                 WriteManager.Instance.SetGoodsEnum(showGameObject.GetComponent<WriteItem>().goodsEnum);
+
+
+
+                InitLight();
             }
             else
             {
@@ -232,6 +236,14 @@ public class PlaneManager : SingletonMono<PlaneManager>
             }
 
         }
+    }
+    private void InitLight()
+    {
+        mainLight.transform.parent.eulerAngles = new UnityEngine.Vector3(0, 180f, 0);
+
+        mainLight.transform.localEulerAngles = new UnityEngine.Vector3(30, 0f, 0);
+
+
     }
 
     private void ShowInput()
@@ -576,15 +588,21 @@ public class PlaneManager : SingletonMono<PlaneManager>
 
     internal void SetLightLeftValue(float value)
     {
-        Vector3 rot = mainLight.transform.localEulerAngles;
-        mainLight.transform.localEulerAngles = new UnityEngine.Vector3(rot.x, value, rot.z);
+
+        Vector3 rot = mainLight.transform.parent.localEulerAngles;
+        mainLight.transform.parent.localEulerAngles = new UnityEngine.Vector3(rot.x, -value, rot.z);
+
+
 
     }
 
     internal void SetLightUpValue(float value)
     {
-        Vector3 rot = mainLight.transform.parent.localEulerAngles;
-        mainLight.transform.parent.localEulerAngles = new UnityEngine.Vector3(value, rot.y, rot.z);
+
+
+        Vector3 rot = mainLight.transform.localEulerAngles;
+
+        mainLight.transform.localEulerAngles = new UnityEngine.Vector3(value, rot.y, rot.z);
     }
 
     internal void SetModelRotate(float value)

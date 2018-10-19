@@ -142,13 +142,13 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
         intensityBar.minValue = 0.1f;
         intensityBar.maxValue = 2f;
 
-        leftBar.minValue = -180f;
-        leftBar.maxValue = 180f;
-        leftBar.value = -30f;
+        leftBar.minValue = 90f;
+        leftBar.maxValue = 270f;
+        leftBar.value = 180f;
 
-        upBar.minValue = -50f;
-        upBar.maxValue = 50f;
-        upBar.value = 50f;
+        upBar.minValue = -30f;
+        upBar.maxValue = 90f;
+        upBar.value = 30f;
 
 
 
@@ -232,18 +232,28 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
         {
             case ChangeSliderEnum.Intensity:
                 intensitySlider.gameObject.SetActive(true);
+                intensityBar.value = PlaneManager.Instance.mainLight.GetComponent<Light>().intensity;
+                intensityText.text = (intensityBar.value).ToString("f2");
                 lightSlider.gameObject.SetActive(false);
                 rotateSlider.gameObject.SetActive(false);
                 break;
             case ChangeSliderEnum.Light:
                 intensitySlider.gameObject.SetActive(false);
                 lightSlider.gameObject.SetActive(true);
+
+                leftBar.value = PlaneManager.Instance.mainLight.transform.parent.localEulerAngles.y;
+                upBar.value = PlaneManager.Instance.mainLight.transform.eulerAngles.x;
+
+
+
                 rotateSlider.gameObject.SetActive(false);
                 break;
             case ChangeSliderEnum.Scale:
                 intensitySlider.gameObject.SetActive(false);
                 lightSlider.gameObject.SetActive(false);
                 rotateSlider.gameObject.SetActive(true);
+                rotateBar.value = PlaneManager.Instance.showGameObject.transform.localEulerAngles.y;
+                rotateText.text = ((int)rotateBar.value).ToString();
                 break;
             case ChangeSliderEnum.None:
                 intensitySlider.gameObject.SetActive(false);
@@ -272,7 +282,7 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
     public void InitUI()
     {
         Debug.Log("111");
-        EffectPanelGo.gameObject.SetActive(false);
+        EffectPanelUI.Instance.HideToggle();
         ButtonPanelGo.gameObject.SetActive(false);
         SelectModelPanel.gameObject.SetActive(true);
         WriteManager.Instance.ShowInputPanel(false);
@@ -461,6 +471,7 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
         {
 
             EffectPanelGo.gameObject.SetActive(flag);
+            EffectPanelUI.Instance.HideToggle();
         }
 
     }
