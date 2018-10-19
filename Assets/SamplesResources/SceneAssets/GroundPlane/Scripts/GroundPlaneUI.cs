@@ -144,9 +144,13 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
 
         leftBar.minValue = -180f;
         leftBar.maxValue = 180f;
+        leftBar.value = -30f;
 
-        upBar.minValue = -45f;
-        upBar.maxValue = 45f;
+        upBar.minValue = -50f;
+        upBar.maxValue = 50f;
+        upBar.value = 50f;
+
+
 
         rotateBar.minValue = -180f;
         rotateBar.maxValue = 180f;

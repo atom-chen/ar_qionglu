@@ -162,13 +162,15 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
 
         leftBar.minValue = -180f;
         leftBar.maxValue = 180f;
-        leftBar.value = 0f;
-        upBar.minValue = -45f;
-        upBar.maxValue = 45f;
-        upBar.value = 0f;
+        leftBar.value = -30f;
+
+        upBar.minValue = -50f;
+        upBar.maxValue = 50f;
+        upBar.value = 50f;
+
+
         rotateBar.minValue = -180f;
         rotateBar.maxValue = 180f;
-
         rotateBar.value = 1f;
         intensityText = intensityBar.transform.GetComponentInChildren<Text>();
         //lightLeftText = leftBar.transform.GetComponentInChildren<Text>();
