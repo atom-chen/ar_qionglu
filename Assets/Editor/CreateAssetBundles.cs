@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -31,19 +31,25 @@ public class CreateAssetBundles : EditorWindow
         windos.Show();
     }
 
-    string _packagePath = "Assets/StreamingAssets/AssetBundles/Windows/";
+    string _packagePath = "Assets/StreamingAssets/AssetBundles/Android/";
     string _assetBundleName;
     void OnGUI()
     {
         _packagePath = EditorGUILayout.TextField("AssetBundle保存路径", _packagePath);
         _assetBundleName = EditorGUILayout.TextField("单独资源包的名字", _assetBundleName);
-        if (GUI.Button(new Rect(60, 60, 180, 40), "所有选择的文件创建为一个包"))
+        if (GUI.Button(new Rect(60, 120, 180, 40), "所有选择的文件创建为一个包"))
         {
             CreateBundleALL();
         }
-        if (GUI.Button(new Rect(320, 60, 180, 40), "所有选择的文件创建为独立的包"))
+        if (GUI.Button(new Rect(320, 60, 230, 40), "所有选择的文件创建为独立的Android包"))
         {
+            _packagePath = "Assets/StreamingAssets/AssetBundles/Android/";
             _packageBuddleSelected();
+        }
+        if (GUI.Button(new Rect(60, 60, 230, 40), "所有选择的文件创建为独立的IOS包"))
+        {
+            _packagePath = "Assets/StreamingAssets/AssetBundles/IOS/";
+            _packageBuddleSelected_IOS();
         }
     }
 
@@ -64,8 +70,10 @@ public class CreateAssetBundles : EditorWindow
         }
         //将选中对象一起打包
         AssetBundleBuild[] buildMap = new AssetBundleBuild[1];
-        NewMethod(buildMap);
+        //NewMethod(buildMap);
         Object[] SelectedAsset = Selection.GetFiltered(typeof(Object), SelectionMode.DeepAssets);
+
+        buildMap[0].assetBundleName = SelectedAsset[0].name + ".vsz";
         //GameObject[] objs = Selection.gameObjects; //获取当前选中的所有对象
         string[] itemAssets = new string[SelectedAsset.Length];
         for (int i = 0; i < SelectedAsset.Length; i++)
@@ -73,7 +81,7 @@ public class CreateAssetBundles : EditorWindow
             itemAssets[i] = AssetDatabase.GetAssetPath(SelectedAsset[i]); //获取对象在工程目录下的相对路径
         }
         buildMap[0].assetNames = itemAssets;
-        AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(_packagePath, buildMap, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows64);
+        AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(_packagePath, buildMap, BuildAssetBundleOptions.None, BuildTarget.Android);
         AssetDatabase.Refresh(); //刷新
         if (manifest == null)
             Debug.LogError("Package AssetBundles Faild.");
@@ -99,7 +107,28 @@ public class CreateAssetBundles : EditorWindow
             buildMap[i].assetBundleName = objs[i].name + ".vsz";
             buildMap[i].assetNames = itemAsset;
         }
-        AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(_packagePath, buildMap, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows64);
+        AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(_packagePath, buildMap, BuildAssetBundleOptions.None, BuildTarget.Android);
+        AssetDatabase.Refresh();
+        if (manifest == null)
+            Debug.LogError("Error:Package Failed");
+        else
+            Debug.Log("Package Success.");
+    }
+
+    void _packageBuddleSelected_IOS()
+    {
+        if (_packagePath.Length <= 0 || !Directory.Exists(_packagePath))
+            return;
+
+        GameObject[] objs = Selection.gameObjects;
+        AssetBundleBuild[] buildMap = new AssetBundleBuild[objs.Length];
+        for (int i = 0; i < objs.Length; i++)
+        {
+            string[] itemAsset = new string[] { AssetDatabase.GetAssetPath(objs[i]) };
+            buildMap[i].assetBundleName = objs[i].name + ".vsz";
+            buildMap[i].assetNames = itemAsset;
+        }
+        AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(_packagePath, buildMap, BuildAssetBundleOptions.None, BuildTarget.iOS);
         AssetDatabase.Refresh();
         if (manifest == null)
             Debug.LogError("Error:Package Failed");

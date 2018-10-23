@@ -382,6 +382,20 @@ public class Downloader
         int cureentDownCount = 0;
         int fallCount = 0;
         //下载完成的个数统计 用于判断是否全部完成
+
+        int i = 0;
+        foreach (var file in list)
+        {
+            //Debug.Log("StartDownload::::" + file.Key.downUrl + "    " + file.Value.endpoint + "    " + file.Key.fileName + "    " + file.Key.size);
+
+            Loom.QueueOnMainThread((() =>
+            {
+                WriteIntoTxt(i + "StartDownload::::" + file.Key.downUrl + "    " + file.Value.endpoint + "    " + file.Key.fileName + "    " + file.Key.size, "list");
+                i++;
+            }));
+
+        }
+        int j = 0;
         foreach (var file in list)
         {
             EasyThread et = null;
@@ -392,6 +406,14 @@ public class Downloader
                     cureentDownCount++;
                     if (b)
                     {
+
+                        Loom.QueueOnMainThread((() =>
+                        {
+                            WriteIntoTxt(j + "DownloadSuccess::::" + file.Key.downUrl + "    " + file.Value.endpoint + "    " + file.Key.fileName + "    " + file.Key.size, "down");
+                        }));
+
+
+                        Debug.Log("DownloadSuccess::::" + file.Key.downUrl + "    " + file.Value.endpoint + "    " + file.Key.fileName + "    " + file.Key.size);
                         //HttpManager.Instance.DownLoadcurSize += float.Parse(file.Key.size);
                         if (cureentDownCount == list.Count)
                         {
@@ -400,13 +422,14 @@ public class Downloader
                                 callback();
                             }
                         }
-                        if (file.Value.endpoint == "vsz-more-change")
-                        {
-                            Debug.LogError("下载成功:::::::" + file.Key.downUrl + "    " + file.Value.endpoint + "    " + file.Key.fileName);
-                        }
                     }
                     else
                     {
+                        Loom.QueueOnMainThread((() =>
+                        {
+                            WriteIntoTxt(j + "DownloadFail::::" + file.Key.downUrl + "    " + file.Value.endpoint + "    " + file.Key.fileName + "    " + file.Key.size, "down");
+                        }));
+
                         if (float.Parse(file.Key.size) <= 0 || file.Key.size == null)
                         {
                             //HttpManager.Instance.DownLoadcurSize += float.Parse(file.Key.size);
@@ -425,7 +448,9 @@ public class Downloader
                             Debug.LogError("失败:::::::" + file.Key.downUrl + "    " + file.Value.endpoint + "    " + file.Key.fileName + "    " + file.Key.size);
                         }
                     }
-                    Debug.LogWarning("总共  " + list.Count +"    当前  " + cureentDownCount );
+
+                    j++;
+                    Debug.LogWarning("总共  " + list.Count + "    当前  " + cureentDownCount);
                     HttpManager.Instance.DownloadPercent((float)cureentDownCount / (float)list.Count);
                     if (cureentDownCount == list.Count)
                     {
@@ -437,7 +462,24 @@ public class Downloader
             et.Start();
         };
     }
-
+    StreamWriter writer;
+    StreamReader reader;
+    public void WriteIntoTxt(string message, string fliename)
+    {
+        FileInfo file = new FileInfo(Application.persistentDataPath + "/" + fliename + ".txt");
+        if (!file.Exists)
+        {
+            writer = file.CreateText();
+        }
+        else
+        {
+            writer = file.AppendText();
+        }
+        writer.WriteLine(message);
+        writer.Flush();
+        writer.Dispose();
+        writer.Close();
+    }
 
     private void recursion(int index, Dictionary<DownloadUnit, OSSFile> list, Action callback)
     {
@@ -486,7 +528,7 @@ public class Downloader
         if (File.Exists(InstallFile) && string.Equals(Utility.GetMd5Hash(File.OpenRead(InstallFile)), downUnit.md5))
         {
             //不执行下载流程
-            Debug.LogError("下载的文件 已经存在                 : " + InstallFile);
+            //Debug.LogError("下载的文件 已经存在                 : " + InstallFile);
             if (callback != null)
             {
                 callback(true);
@@ -518,7 +560,7 @@ public class Downloader
             FileStream fs = null;
             if (response == null || !response.IsSuccess)
             {
-                Debug.Log("请求失败！");
+                Debug.Log("请求失败！" + response.StatusCode);
                 if (fs != null)
                 {
                     fs.Flush();
@@ -558,7 +600,12 @@ public class Downloader
                 fs.Close();
                 fs = null;
                 response.Dispose();
-                File.Move(tempFile, InstallFile);
+
+                if (!File.Exists(InstallFile))
+                {
+                    File.Move(tempFile, InstallFile);
+                }
+
                 var file = File.OpenRead(InstallFile);
                 string md5 = Utility.GetMd5Hash(file);
                 //Debug.LogError("文件路径 :" + InstallFile + "  /文件名称/     :" + downUnit.fileName +

@@ -28,6 +28,7 @@ public class RegistPanelUI : UIWindowsBase
         });
         getSmssBtn.onClick.AddListener((() =>
         {
+            Debug.Log("获取短信验证码 ");
             if (LoginUIController.Instance.VerifyPhoneNo(phoneNoInput.text))
             {
                 LoginUIController.Instance.FreezeButton(getSmssBtn);

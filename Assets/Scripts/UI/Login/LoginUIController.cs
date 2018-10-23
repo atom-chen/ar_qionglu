@@ -9,6 +9,9 @@ public class LoginUIController : SingletonMono<LoginUIController>
 {
     [Header("所有的UIPanels")]
     public GameObject[] uiPanels;
+
+
+
     //public GameObject RegistPanel;
     //public GameObject ResetPwdPanel;
     //public GameObject ChangePwPanel;
@@ -35,15 +38,29 @@ public class LoginUIController : SingletonMono<LoginUIController>
             if (item.name==uiName)
             {
                 item.SetActive(true);
+                item.GetComponent<UIWindowsBase>().ClearInputFieldText();
             }
             else
             {
+          
+             
+      item.SetActive(false);
+
+            }
+        }
+    }
+    internal void HideCurrentUIState(string name)
+    {
+        foreach (var item in uiPanels)
+        {
+            if (item.name == name)
+            {
+      
                 item.SetActive(false);
                 item.GetComponent<UIWindowsBase>().ClearInputFieldText();
             }
         }
     }
-
 
     #region   用户协议
 
@@ -129,7 +146,7 @@ public class LoginUIController : SingletonMono<LoginUIController>
 
 
 
-    public void FreezeButton(Button btn, float time = 15)
+    public void FreezeButton(Button btn, float time = 60)
     {
         Text text = btn.gameObject.GetComponentInChildren<Text>();
         string oldText = text.text;

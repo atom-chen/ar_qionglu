@@ -17,18 +17,18 @@ public class GuidePageItem : MonoBehaviour
         StartCoroutine(LoadImgFromCache(assetpath));
     }
     /// <summary>
-    /// »ñÈ¡Í¼Æ¬ÁĞ±í
+    /// è·å–å›¾ç‰‡åˆ—è¡¨
     /// </summary>
     void GetImageList(string assetpath)
     {
-        //1.ÕÒµ½×ÊÔ´±£´æµÄÎÄ¼ş¼Ğ
+        //1.æ‰¾åˆ°èµ„æºä¿å­˜çš„æ–‡ä»¶å¤¹
         //string assetDirectory = Application.dataPath + "/DownloadFile/preview/" + Imgid.ToString();
         string assetDirectory = PublicAttribute.LocalFilePath + assetpath;
         DirectoryInfo directoryInfo = new DirectoryInfo(assetDirectory);
 
         if (directoryInfo == null)
         {
-            Debug.LogError(directoryInfo + " ²»´æÔÚ!");
+            Debug.LogError(directoryInfo + " ä¸å­˜åœ¨!");
             return;
         }
         else
@@ -63,7 +63,7 @@ public class GuidePageItem : MonoBehaviour
             {
                 if (response == null || !response.IsSuccess)
                 {
-                    DebugManager.Instance.LogError("ÇëÇóÊ§°Ü£¡");
+                    DebugManager.Instance.LogError("è¯·æ±‚å¤±è´¥ï¼");
                     return;
                 }
                 tex.LoadImage(response.Data);
@@ -75,7 +75,7 @@ public class GuidePageItem : MonoBehaviour
         }
     }
     /// <summary>
-    /// ¼ì²éÎÄ¼şÊÇ·ñ´æÔÚ
+    /// æ£€æŸ¥æ–‡ä»¶æ˜¯å¦å­˜åœ¨
     /// </summary>
     /// <param name="imgURl"></param>
     /// <returns></returns>

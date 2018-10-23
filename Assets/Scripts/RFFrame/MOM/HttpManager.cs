@@ -1052,6 +1052,7 @@ public class HttpManager : Singleton<HttpManager>
         GetAdsItem("4", JsonClass.Instance.BannerPages, callback);
     }
 
+
     #endregion 获取动态资源
 
     #region 与登陆相关的所有接口调用
@@ -1103,8 +1104,7 @@ public class HttpManager : Singleton<HttpManager>
                     JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
                     if (response.DataAsText.Trim().Contains("1010"))
                     {
-                        PublicAttribute.SetUserInfo(userName, "VSZ " + content["data"].ToString());
-               
+                        PublicAttribute.Token = "VSZ " + content["data"].ToString();
                     }
                     callback(content["status"].ToString());
                 }
@@ -1140,7 +1140,7 @@ public class HttpManager : Singleton<HttpManager>
                     JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
                     if (response.DataAsText.Trim().Contains("1010"))
                     {
-                        PublicAttribute.SetUserInfo(phoneNo, "VSZ " + content["data"].ToString());
+                        PublicAttribute.Token = "VSZ " + content["data"].ToString();
                     }
                     callback(content["status"].ToString());
                 }
@@ -1203,7 +1203,6 @@ public class HttpManager : Singleton<HttpManager>
                 if (callback != null)
                 {
                     JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
-                    PublicAttribute.SetUserInfo(userName, "VSZ " + content["data"].ToString());
                     callback(content["status"].ToString());
                 }
             }
@@ -1237,7 +1236,6 @@ public class HttpManager : Singleton<HttpManager>
                 if (callback != null)
                 {
                     JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
-                    PublicAttribute.UserName = userName;
                     callback(content["status"].ToString());
                 }
             }
@@ -1336,8 +1334,7 @@ public class HttpManager : Singleton<HttpManager>
                   if (response.DataAsText.Trim().Contains("1010"))
                   {
                       JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
-
-                      PublicAttribute.SetUserInfo(phoneNo, "VSZ " + content["data"].ToString());
+                      PublicAttribute.Token = "VSZ " + content["data"].ToString();
                   }
                   if (callback != null)
                   {
@@ -1379,8 +1376,6 @@ public class HttpManager : Singleton<HttpManager>
                     JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
                     if (response.DataAsText.Trim().Contains("1010"))
                     {
-
-                        PublicAttribute.SetUserInfo(phoneNo, "VSZ " + content["data"].ToString());
                         PublicAttribute.Token = "VSZ " + content["data"].ToString();
                     }
                     callback(content["status"].ToString());
@@ -1492,6 +1487,35 @@ public class HttpManager : Singleton<HttpManager>
                 if (callback != null)
                 {
                     callback(response.DataAsText.Trim().Contains("200"));
+                }
+            }
+            else
+            {
+                if (callback != null)
+                {
+                    callback(false);
+                }
+            }
+            response.Dispose();
+        }), PublicAttribute.Token);
+    }
+
+    /// <summary>
+    /// 反馈
+    /// </summary>
+    public void Suggest(string message, Action<bool> callback)
+    {
+        HttpBase.POST(PortClass.Instance.suggest, new KeyValuePair<string, string>[]
+        {
+            new KeyValuePair<string, string>("content", message),
+        }, ((request, response) =>
+        {
+            if (response.IsSuccess)
+            {
+                if (callback != null)
+                {
+                    JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
+                    callback(true);
                 }
             }
             else

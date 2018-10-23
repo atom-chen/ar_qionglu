@@ -24,32 +24,55 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         //引导页调用
         DownloadProp.Instance.UpdatePreview();
     }
+    static bool isdown;
     // Use this for initialization
     void Start()
     {
         pageItemPrefab.GetComponent<RectTransform>().sizeDelta = new Vector2(1440, 800);
         //GetImageList();
-        HttpManager.Instance.GetBanner((b =>
+        if (!isdown)
         {
-            if (b)
+            HttpManager.Instance.GetBanner((b =>
             {
-                foreach (var page in JsonClass.Instance.BannerPages)
+                if (b)
                 {
-                    pageCount++;
-                    SetContent(pageCount);
-                    BananrItem item = GameObject.Instantiate<BananrItem>(pageItemPrefab);
-                    item.transform.SetParent(Content.transform);
-                    item.transform.localScale = Vector3.one;
-                    item.transform.localPosition = Vector3.zero;
-                    item.gameObject.SetActive(true);
-                    HttpManager.Instance.Download(page.Thumbnail, (() =>
+                    isdown = true;
+                    foreach (var page in JsonClass.Instance.BannerPages)
                     {
-                        item._init(page.Thumbnail.localPath);
-                    }));
+                        pageCount++;
+                        SetContent(pageCount);
+                        BananrItem item = GameObject.Instantiate<BananrItem>(pageItemPrefab);
+                        item.transform.SetParent(Content.transform);
+                        item.transform.localScale = new Vector3(1, 1 * mainPageUI.scale, 1);
+                        item.transform.localPosition = Vector3.zero;
+                        item.gameObject.SetActive(true);
+                        HttpManager.Instance.Download(page.Thumbnail, (() =>
+                        {
+                            item.address = page.address;
+                            item._init(page.Thumbnail.localPath);
+                        }));
+                    }
                 }
+            }));
+        }
+        else
+        {
+            foreach (var page in JsonClass.Instance.BannerPages)
+            {
+                pageCount++;
+                SetContent(pageCount);
+                BananrItem item = GameObject.Instantiate<BananrItem>(pageItemPrefab);
+                item.transform.SetParent(Content.transform);
+                item.transform.localScale = new Vector3(1, 1 * mainPageUI.scale, 1);
+                item.transform.localPosition = Vector3.zero;
+                item.gameObject.SetActive(true);
+                HttpManager.Instance.Download(page.Thumbnail, (() =>
+                {
+                    item.address = page.address;
+                    item._init(page.Thumbnail.localPath);
+                }));
             }
-        }));
-
+        }
 
         rect = transform.GetComponent<ScrollRect>();
         startime = Time.time;
@@ -285,8 +308,8 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {
         //Content.offsetMax = new Vector2(0,0);
         //Content.offsetMin = new Vector2(1440*(pageCount-1), 0);
-        Content.sizeDelta = new Vector2(1440 * Count, 800);
-        Content.anchoredPosition = new Vector2(-720, 400);
+        Content.sizeDelta = new Vector2(1440 * Count, 800 * mainPageUI.scale);
+        Content.anchoredPosition = new Vector2(-720, 400 * mainPageUI.scale);
     }
 
     public void EnterMain()

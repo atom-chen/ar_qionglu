@@ -125,7 +125,7 @@ public class LoginPanelUI : UIWindowsBase
         {
             if (LoginUIController.Instance.VerifyPhoneNo(SMSSphoneInput.text))
             {
-             LoginUIController.Instance.   FreezeButton(SMSSgetSMSSBtn);
+             LoginUIController.Instance.FreezeButton(SMSSgetSMSSBtn);
                 HttpManager.Instance.GetSMSS(SMSSphoneInput.text, (b =>
                 {
                     Debug.Log("获取短信验证码 " + b);

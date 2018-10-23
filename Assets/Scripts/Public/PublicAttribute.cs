@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
 public class PublicAttribute
 {
-
-    /// <summary>
+	
+	 /// <summary>
     /// 是否是游客登录
     /// </summary>
     public static bool isVisitor = false;
@@ -43,7 +43,8 @@ public class PublicAttribute
     /// <summary>
     /// OSS 链接
     /// </summary>
-    public static string OSSUri = ".oss-cn-beijing.aliyuncs.com/";
+    //public static string OSSUri = ".oss-cn-beijing.aliyuncs.com/";
+    public static string OSSUri = ".vszapp.com/";
 
 
     #region 缩略图本地存储路径
@@ -254,7 +255,7 @@ public class PublicAttribute
         secreKey = Guid.NewGuid().ToString();
         return secreKey;
     }
-    public static void SetUserInfo(string  userName,string tokenInfo)
+   public static void SetUserInfo(string  userName,string tokenInfo)
     {
        UserName = userName;
       Token = tokenInfo;

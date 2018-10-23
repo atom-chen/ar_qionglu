@@ -30,7 +30,7 @@ public class WriteItem : SingletonMono<WriteItem>
     {
         YiyouStaticDataManager.Instance.OnDestroyGo += OnDestroyGo;
         FingerTouchEL.Instance.touchBeginGo += TouchBegin;
-        FingerTouchEL.Instance.touchEndGo += TouchEnd; 
+        FingerTouchEL.Instance.touchEndGo += TouchEnd;
         Transform[] ziTras = gameObject.GetComponentsInChildren<Transform>(true);
         if (ziTras.Length != 0)
         {

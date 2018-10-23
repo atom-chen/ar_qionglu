@@ -106,41 +106,27 @@ public class ChangeItem : MonoBehaviour {
         return true;
     }
 
-    public void BtnOnClick()
+    public void BtnOnClick(GameObject obj)
     {
-        Debug.Log(locationX);
-        Debug.Log(locationY);
-        //if (Vector2.Distance(GPS, new Vector2(float.Parse(locationX), float.Parse(locationY))) < 10)
-        //{
-        //    foreach (var item in VersionFilesItems)
-        //    {
-        //        Debug.Log(item.localPath);
-        //        StartCoroutine(LoadAssets(item.localPath));
-        //    }
-        //}
-        //else
-        //{
-        //    foreach (var item in VersionFilesItems)
-        //    {
-        //        Debug.Log(item.localPath);
-        //        StartCoroutine(LoadAssets(item.localPath));
-        //    }
-        //}
-
-        //StartCoroutine(LoadAssets2());
-
-        foreach (var item in VersionFilesItems.Where(item => item.extName == "vsz"))
+        Debug.Log("当前距离：：："+ Vector2.Distance(GPS, new Vector2(float.Parse(locationX), float.Parse(locationY))));
+        if (Vector2.Distance(GPS, new Vector2(float.Parse(locationX), float.Parse(locationY))) < 30)
         {
-            Debug.Log(item.localPath);
-            StartCoroutine(LoadAssets(item.localPath));
-            //StartCoroutine(LoadAssets2());
-        }
+            foreach (var item in VersionFilesItems.Where(item => item.extName == "vsz"))
+            {
+                Debug.Log(item.localPath);
+                StartCoroutine(LoadAssets(item.localPath));
+            }
 
-        foreach (var item in VersionFilesItems.Where(item => item.extName == "mp4"))
-        {
-            Debug.Log(item.localPath);
-            VideoURL = item.localPath;
+            foreach (var item in VersionFilesItems.Where(item => item.extName == "mp4"))
+            {
+                Debug.Log(item.filename);
+                VideoURL  = PublicAttribute.LocalFilePath + "/Panorama/1/"+item.filename;
+            }
         }
+        else
+        {
+            obj.SetActive(true);
+        } 
     }
 
     public void OpenWeb()

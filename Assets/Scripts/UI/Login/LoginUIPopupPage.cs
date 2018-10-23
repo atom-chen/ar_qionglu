@@ -23,6 +23,7 @@ public class LoginUIPopupPage : MonoBehaviour
         TitleText.text = title;
         ContentText.text = content;
         TipGo.SetActive(true);
+        CoroutineWrapper.EXES(2f, () => { Hide(); });
     }
     /// <summary>
     /// 显示弹出窗并执行函数

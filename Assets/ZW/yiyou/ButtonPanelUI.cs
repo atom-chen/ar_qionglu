@@ -219,6 +219,21 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
         ReshotBtn.gameObject.SetActive(false);
         ShareBtn.gameObject.SetActive(true);
         TrackDataManager.Instance.AddPoint(imageSaveName);
+#if UNITY_IOS || UNITY_IPHONE
+        GroundPlaneUI.Instance.ShouZujiBtn(true);
+
+#elif UNITY_ANDROID
+
+        if (SceneManager.GetActiveScene().name == "yiyou")
+        {
+            GroundPlaneUI.Instance.ShouZujiBtn(true);
+
+        }
+        else
+        {
+            WikiSLAMUIController.Instance.ShouZujiBtn(true);
+        }
+#endif
     }
 
     /// <summary>
@@ -487,21 +502,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
         SaveBtn.gameObject.SetActive(true);
         ReshotBtn.gameObject.SetActive(true);
         ShareBtn.gameObject.SetActive(false);
-#if UNITY_IOS||UNITY_IPHONE
-        GroundPlaneUI.Instance.ShouZujiBtn(true);
 
-#elif  UNITY_ANDROID
-
-        if (SceneManager.GetActiveScene().name=="yiyou")
-        {
-            GroundPlaneUI.Instance.ShouZujiBtn(true);
-
-        }
-        else
-        {
-            WikiSLAMUIController.Instance.ShouZujiBtn(true);
-        }
-#endif
     }
 
 

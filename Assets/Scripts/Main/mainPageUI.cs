@@ -10,6 +10,9 @@ using UnityEngine.UI;
 public class mainPageUI : MonoBehaviour
 {
     public static mainPageUI instance;
+    public RectTransform[] ChildPanel;
+    public RectTransform[] ConnectPanel;
+
     public DOTweenAnimation my_panel;
     public GameObject DownPanel;
 
@@ -39,9 +42,17 @@ public class mainPageUI : MonoBehaviour
         get { return PlayerPrefs.GetInt("HeadId");}
     }
 
+    public static float scale;
     void Awake()
     {
         instance = this;
+        scale = (((float) Screen.height / (float)Screen.width) * 1440)/2560f;
+        for (int i = 0; i < ChildPanel.Length; i++)
+        {
+            ChildPanel[i].sizeDelta=new Vector2(1440,2560 * scale);
+        }
+
+
         Screen.orientation = ScreenOrientation.Portrait;
         for (int i = 0; i < HeadImg.Length; i++)
         {
@@ -475,6 +486,23 @@ public class mainPageUI : MonoBehaviour
         btn.interactable = true;
         text.text = oldText;
     }
+
+    public void Suggest(Text message)
+    {
+        HttpManager.Instance.Suggest(message.text, (b =>
+        {
+            if (b)
+            {
+                message.transform.parent.parent.parent.gameObject.SetActive(false);
+                PopupInfo("300");
+            }
+            else
+            {
+                PopupInfo("Error");
+            }
+        }));
+    }
+
     /// <summary>
     /// 根据状态码执行
     /// </summary>
@@ -486,6 +514,9 @@ public class mainPageUI : MonoBehaviour
         {
             case "200":
                 PP.ShowPopup("请求成功", "请求成功");
+                break;
+            case "300":
+                PP.ShowPopup("意见提交成功", "意见提交成功，我们会尽快查看！");
                 break;
             case "Error":
                 PP.ShowPopup("请求失败", "请稍候重试");

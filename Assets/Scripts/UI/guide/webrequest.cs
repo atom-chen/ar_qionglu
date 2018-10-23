@@ -41,7 +41,7 @@ public class webrequest : MonoBehaviour {
         {
             var action = message.Args["action"];
             var id = message.Args["id"];
-            Debug.Log("ÊÕµ½ÁËÏûÏ¢    " + action + "      id :" + id);
+            Debug.Log("æ”¶åˆ°äº†æ¶ˆæ¯    " + action + "      id :" + id);
             MessageHandler(action, id);
         }
     }
@@ -76,6 +76,6 @@ public class webrequest : MonoBehaviour {
     public void CloseWebView(GameObject obj)
     {
         obj.GetComponent<UniWebView>().Stop();
-        Destroy(obj,0.2f);
+        Destroy(obj);
     }
 }

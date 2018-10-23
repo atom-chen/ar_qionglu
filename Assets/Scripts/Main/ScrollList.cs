@@ -276,25 +276,26 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     }
     //offsetMin ÊÇvector2(left, bottom);
     //offsetMax ÊÇvector2(right, top)
+
     void SetContent(int Count)
     {
         if (Count <= 6)
         {
-            Content.sizeDelta = new Vector2(1440, 1600);
+            Content.sizeDelta = new Vector2(1440, 1600 / mainPageUI.scale);
         }
         else if (Count > 6 && Count <= 9)
         {
-            Content.sizeDelta = new Vector2(1440, 1800);
+            Content.sizeDelta = new Vector2(1440, 1800 / mainPageUI.scale);
         }
         else if (Count > 9)
         {
             if ((Count - 9) % 3 != 0)
             {
-                Content.sizeDelta = new Vector2(1440, 1745 + 465 * (int)((Count - 9) / 3 + 1));
+                Content.sizeDelta = new Vector2(1440, 1745f/ mainPageUI.scale + 465 * (int)((Count - 9) / 3 + 1));
             }
             else
             {
-                Content.sizeDelta = new Vector2(1440, 1745 + 465 * (int)((Count - 9) / 3));
+                Content.sizeDelta = new Vector2(1440, 1745 / mainPageUI.scale + 465 * (int)((Count - 9) / 3));
             }
         }
         Content.anchoredPosition = new Vector2(-720, 0);

@@ -1,9 +1,4 @@
-﻿//
-// Fingers Gestures
-// (c) 2015 Digital Ruby, LLC
-// Source code may be used for personal or commercial projects.
-// Source code may NOT be redistributed or sold.
-// 
+﻿
 
 using UnityEngine;
 using System.Collections;
@@ -215,7 +210,11 @@ namespace ElviraFrame
             if (gesture.State == GestureRecognizerState.Executing&&targetGameObject!=null)
             {
                 float clamp = Mathf.Clamp(scaleGesture.ScaleMultiplier, 0.3f, 1.3f);
-                targetGameObject.transform.localScale *= clamp;
+
+                if (targetGameObject.transform.localScale.x >= 1.3f || targetGameObject.transform.localScale.x <= 0.3f)
+                    return;
+                     targetGameObject.transform.localScale *=clamp;
+
             }
 
             if (gesture.State == GestureRecognizerState.Ended && targetGameObject != null)

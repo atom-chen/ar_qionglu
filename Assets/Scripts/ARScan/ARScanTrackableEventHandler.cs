@@ -48,8 +48,7 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
         TrackableBehaviour.Status newStatus)
     {
         if (newStatus == TrackableBehaviour.Status.DETECTED ||
-            newStatus == TrackableBehaviour.Status.TRACKED ||
-            newStatus == TrackableBehaviour.Status.EXTENDED_TRACKED)
+            newStatus == TrackableBehaviour.Status.TRACKED )
         {
 
             istracking = true;
@@ -68,7 +67,8 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
             }
         }
         else if (previousStatus == TrackableBehaviour.Status.TRACKED &&
-                 newStatus == TrackableBehaviour.Status.NO_POSE)
+                 newStatus == TrackableBehaviour.Status.NO_POSE||
+            newStatus == TrackableBehaviour.Status.EXTENDED_TRACKED)
         {
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
             istracking = false;

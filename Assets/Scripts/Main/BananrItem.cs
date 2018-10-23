@@ -9,9 +9,12 @@ public class BananrItem : MonoBehaviour {
     public RawImage jpg;
     public RawImage png;
     public VideoPlayer mp4;
+    public string address;
+    webrequest web;
     // Use this for initialization
     public void _init(string assetpath)
     {
+        web = GameObject.Find("UniWebView").GetComponent<webrequest>();
         StartCoroutine(LoadImgFromCache(assetpath, jpg));
     }
 
@@ -46,5 +49,10 @@ public class BananrItem : MonoBehaviour {
     private bool CheckCacheUrlIsExit(string imgURl)
     {
         return true;
+    }
+    public void OpenWeb()
+    {
+        Debug.Log(address);
+        web.LoadWeb(address);
     }
 }

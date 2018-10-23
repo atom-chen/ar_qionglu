@@ -48,7 +48,7 @@
 <!--	android:name="com.unity3d.player.UnityPlayerActivity" -->
   <application
     android:name="com.mob.MobApplication"
-  android:label="AR游"
+    android:label="AR游"
     android:allowBackup="true"
     android:icon="@drawable/ic_launcher">
     <activity android:name="com.secondfury.galleryscreenshot.MainActivity" />

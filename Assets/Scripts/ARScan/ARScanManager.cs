@@ -30,22 +30,22 @@ public class ARScanManager : MonoBehaviour
 
         foreach (var ChangeInfo in mainPageUI.curScenicInfo.ResourcesInfos)
         {
-            if (ChangeInfo.ResourcesKey == "scan_more")
+            if (ChangeInfo.ResourcesKey == "vsz-scan-more")
             {
                 scan_more_Path = ChangeInfo.LocalPath;
                 Debug.Log(scan_more_Path);
             }
-            else if (ChangeInfo.ResourcesKey == "scan_ticket")
+            else if (ChangeInfo.ResourcesKey == "vsz-scan-ticket")
             {
                 scan_ticket_Path = ChangeInfo.LocalPath;
                 Debug.Log(scan_ticket_Path);
             }
-            else if (ChangeInfo.ResourcesKey == "scan_native_product")
+            else if (ChangeInfo.ResourcesKey == "vsz-scan-native-product")
             {
                 scan_native_product_Path = ChangeInfo.LocalPath;
                 Debug.Log(scan_native_product_Path);
             }
-            else if (ChangeInfo.ResourcesKey == "scan_Conjure")
+            else if (ChangeInfo.ResourcesKey == "vsz-scan-conjure")
             {
                 scan_Conjure_Path = ChangeInfo.LocalPath;
                 Debug.Log(scan_Conjure_Path);
@@ -216,8 +216,12 @@ public class ARScanManager : MonoBehaviour
             toastObj.SetActive(true);
             CoroutineWrapper.EXES(1.5f, () =>
             {
-                isShooting = false;
-                toastObj.SetActive(false);
+                toastObj.SetActive(true);
+                CoroutineWrapper.EXES(1.5f, () =>
+                {
+                    isShooting = false;
+                    toastObj.SetActive(false);
+                });
             });
         }
     }

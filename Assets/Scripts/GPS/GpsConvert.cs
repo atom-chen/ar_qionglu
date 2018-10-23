@@ -144,6 +144,9 @@ public class GpsConvert : MonoBehaviour
                 {
                     isDown = true;
                     Debug.Log(JsonClass.Instance.NavigationInfos.Count);
+                    int totalCount = 0;
+                    int curCount = 0;
+                    totalCount = JsonClass.Instance.NavigationInfos.Count;
                     foreach (var info in JsonClass.Instance.NavigationInfos)
                     {
                         Debug.Log(info.type);
@@ -160,16 +163,23 @@ public class GpsConvert : MonoBehaviour
                             item.content = info.baseEntity.content;
                             item.thumbnail = info.baseEntity.thumbnail;
                             item.address = info.baseEntity.address;
-
                             GPSItems.Add(item);
-
                         }));
+
+                        curCount++;
+                        if (curCount == totalCount)
+                        {
+                            StartCoroutine(StartGPS());
+                        }
                     }
                 }
             }));
         }
         else
         {
+            int totalCount = 0;
+            int curCount = 0;
+            totalCount = JsonClass.Instance.NavigationInfos.Count;
             foreach (var info in JsonClass.Instance.NavigationInfos)
             {
                 Debug.Log(info.type);
@@ -185,9 +195,14 @@ public class GpsConvert : MonoBehaviour
                     item.content = info.baseEntity.content;
                     item.thumbnail = info.baseEntity.thumbnail;
                     item.address = info.baseEntity.address;
-
                     GPSItems.Add(item);
                 }));
+
+                curCount++;
+                if (curCount == totalCount)
+                {
+                    StartCoroutine(StartGPS());
+                }
             }
         }
 
@@ -207,7 +222,6 @@ public class GpsConvert : MonoBehaviour
         }
         dd.value = 3;
         //GetPoint();
-        StartCoroutine(StartGPS());
     }
     private float timer = 1f;
     private void Update()
@@ -220,7 +234,7 @@ public class GpsConvert : MonoBehaviour
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            SetCamGpsPoint(104.068216, 30.598146, 447, "cam");
+            SetCamGpsPoint(102.292392, 27.814844, 460, "cam");
         }
 
 
@@ -323,7 +337,7 @@ public class GpsConvert : MonoBehaviour
     public Vector3 getLocation()
     {
 #if UNITY_EDITOR
-        return new Vector3(104.0597f, 30.59437f, 576.7651f);
+        return new Vector3(102.292392f, 27.814844f, 460f);
 
 #elif UNITY_ANDROID
 
@@ -426,38 +440,38 @@ public class GpsConvert : MonoBehaviour
             }));
         }
 
-//        string jsonText;
-//#if UNITY_IOS
-//         jsonText = Resources.Load<TextAsset>("location").ToString();
-//#elif UNITY_ANDROID
-//        if (File.Exists(localFilePath))
-//        {
-//            StreamReader sr = new StreamReader(localFilePath);
-//            jsonText = sr.ReadToEnd();
-//            sr.Close();
-//            sr.Dispose();
-//        }
-//        else
-//        {
-//            jsonText = Resources.Load<TextAsset>("location").ToString();
-//        }
-//#endif
-//        Debug.Log(jsonText);
-//        JsonData jsonData = JsonMapper.ToObject(jsonText);
-//        for (int i = 0; i < jsonData["data"].Count; i++)
-//        {
-//            JsonData baseEntity = jsonData["data"][i]["baseEntity"];
-//            GPSItem item = GameObject.Instantiate<GPSItem>(obj);
+        //        string jsonText;
+        //#if UNITY_IOS
+        //         jsonText = Resources.Load<TextAsset>("location").ToString();
+        //#elif UNITY_ANDROID
+        //        if (File.Exists(localFilePath))
+        //        {
+        //            StreamReader sr = new StreamReader(localFilePath);
+        //            jsonText = sr.ReadToEnd();
+        //            sr.Close();
+        //            sr.Dispose();
+        //        }
+        //        else
+        //        {
+        //            jsonText = Resources.Load<TextAsset>("location").ToString();
+        //        }
+        //#endif
+        //        Debug.Log(jsonText);
+        //        JsonData jsonData = JsonMapper.ToObject(jsonText);
+        //        for (int i = 0; i < jsonData["data"].Count; i++)
+        //        {
+        //            JsonData baseEntity = jsonData["data"][i]["baseEntity"];
+        //            GPSItem item = GameObject.Instantiate<GPSItem>(obj);
 
 
-//            item.id = jsonData["data"][i]["id"].ToString();
-//            item.locationX = baseEntity["locationX"].ToString();
-//            item.locationY = baseEntity["locationY"].ToString();
-//            item.name = baseEntity["name"].ToString();
-//            item.height = baseEntity["height"].ToString();
-//            item.typeName = jsonData["data"][i]["type"].ToString();
-//            GPSItems.Add(item);
-//        }
+        //            item.id = jsonData["data"][i]["id"].ToString();
+        //            item.locationX = baseEntity["locationX"].ToString();
+        //            item.locationY = baseEntity["locationY"].ToString();
+        //            item.name = baseEntity["name"].ToString();
+        //            item.height = baseEntity["height"].ToString();
+        //            item.typeName = jsonData["data"][i]["type"].ToString();
+        //            GPSItems.Add(item);
+        //        }
     }
     public static List<GameObject> icon = new List<GameObject>();
     private void CreatePoints(string typename)
@@ -523,7 +537,7 @@ public class GpsConvert : MonoBehaviour
         switch (Drop.value)
         {
             case 3:
-                IconFollow.showDistance = 99999;
+                IconFollow.showDistance = 999999999;
                 break;
             case 0:
                 IconFollow.showDistance = 500;

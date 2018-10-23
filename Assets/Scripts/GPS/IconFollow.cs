@@ -88,10 +88,10 @@ public class IconFollow : MonoBehaviour
                     iconbg.gameObject.SetActive(true);
                     break;
                 case "vsz-special-scenery":
-                    namebg1.gameObject.SetActive(true);
+                    namebg2.gameObject.SetActive(true);
                     break;
                 case "vsz-scenery-dot":
-                    namebg2.gameObject.SetActive(true);
+                    namebg1.gameObject.SetActive(true);
                     break;
             }
         }
@@ -252,7 +252,7 @@ public class IconFollow : MonoBehaviour
         return result;
     }
 
-    public static float showDistance = 99999;
+    public static float showDistance = 999999999;
     private void Update()
     {
         if (state != null)
@@ -263,8 +263,8 @@ public class IconFollow : MonoBehaviour
             float distance = Vector3.Distance(Camera.main.transform.position, transform.position);
             //物体不在屏幕中就不显示  
             if (showDistance < 300)
-                showDistance = 99999;
-            if (IsAPointInACamera(Camera.main, transform.position) && distance > 80 && distance <= showDistance)
+                showDistance = 999999999;
+            if (IsAPointInACamera(Camera.main, transform.position) && distance > 5 && distance <= showDistance)
             {
                 recTransform.gameObject.SetActive(true);
                 //disText.text = "距离：" + (int)(distance/1000)+ "km";

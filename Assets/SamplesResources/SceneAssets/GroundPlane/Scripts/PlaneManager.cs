@@ -175,7 +175,7 @@ public    Light mainLight;
                 else
                 {
                     FingerTouchEL.Instance.targetGameObject = showGameObject;
-                UnityHelper.FaceToGoal(showGameObject.transform, Camera.main.gameObject.transform, 0.1f);
+
 
                 }
 
@@ -229,6 +229,14 @@ public    Light mainLight;
 
 
                 InitLight();
+
+
+                if (showGameObjectName != "haiou")
+                {
+                    //   UnityHelper.FaceToGoal(showGameObject.transform, GameObject.FindGameObjectWithTag(Tags.MainCamera).transform, 0.1f);
+                    showGameObject.transform.eulerAngles = Vector3.zero;
+                }
+              
             }
             else
             {
@@ -239,6 +247,8 @@ public    Light mainLight;
     }
     private void InitLight()
     {
+        mainLight.transform.transform.position = Vector3.zero;
+        mainLight.transform.localPosition = Vector3.zero;
         mainLight.transform.parent.eulerAngles = new UnityEngine.Vector3(0, 180f, 0);
 
         mainLight.transform.localEulerAngles = new UnityEngine.Vector3(30, 0f, 0);
@@ -324,6 +334,7 @@ public    Light mainLight;
         {
             showGameObject = Instantiate(showGameObject);
             showGameObject.name = showGameObjectName;
+            //showGameObject.AddComponent<FingerTouchController>();
         }
   
             switch (showGameObject.GetComponent<WriteItem>().goodsPositionEnum)

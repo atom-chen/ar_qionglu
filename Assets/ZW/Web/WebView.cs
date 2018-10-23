@@ -35,9 +35,27 @@ public class WebView : SingletonMono<WebView>
 
         webView.OnMessageReceived += WebView_OnMessageReceived;
         webView.OnPageFinished += WebView_OnPageFinished;
+        webView.OnPageStarted += WebView_OnPageStarted;
         webView.OnPageErrorReceived += WebView_OnPageErrorReceived;
 
     }
+    /// <summary>
+    /// 页面加载开始
+    /// </summary>
+    /// <param name="webView"></param>
+    /// <param name="url"></param>
+    private void WebView_OnPageStarted(UniWebView webView, string url)
+    {
+        try
+        {
+            TrackUIManager.Instance.LoadStart();
+        }
+        catch (System.Exception ex)
+        {
+
+        }
+    }
+
     /// <summary>
     /// 页面加载出错
     /// </summary>

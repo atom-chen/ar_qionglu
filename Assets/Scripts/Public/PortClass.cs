@@ -542,6 +542,28 @@ public class PortClass : Singleton<PortClass>
 
     #endregion
 
+    #region 反馈
+
+    private string fankui;
+    /// <summary>
+    /// 反馈
+    /// </summary>
+    public string suggest
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(fankui))
+            {
+                fankui = PublicAttribute.URL + "suggest/save";
+            }
+            return fankui;
+        }
+        set { fankui = value; }
+    }
+
+
+    #endregion
+
     #region 退出登录 Post
 
     private string  logout;

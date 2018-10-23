@@ -35,6 +35,7 @@ public enum LoginUIState
     RegistPanel,
     ForgetPwdPanel,
     ChangePwPanel,
-    AgressPage,
+    AgressPagePanel,
+    ProtocolPanel,
     BinDingPhonePage
 }

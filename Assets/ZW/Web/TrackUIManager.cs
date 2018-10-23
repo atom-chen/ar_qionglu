@@ -14,7 +14,8 @@ public class TrackUIManager : SingletonMono<TrackUIManager> {
 
 
 
-    GameObject showImage;
+    
+    GameObject bigImage=null;
 
     public GameObject loadTipImage;
 
@@ -40,7 +41,13 @@ public class TrackUIManager : SingletonMono<TrackUIManager> {
         //        FingerTouchEL.Instance.targetGameObject = null;
         //    }
         //else 
-        if (curState==1)
+
+
+        if (bigImage!=null)
+        {
+            Destroy(bigImage.gameObject);
+        }
+      else  if (curState==1)
         {
             Destroy(GalleryImageManager.Instance.ImageScrollView);
             WebView.Instance.CreateWebView();
@@ -53,6 +60,8 @@ public class TrackUIManager : SingletonMono<TrackUIManager> {
         curState--;
         curState = Mathf.Clamp(curState, 0, 1);
     }
+
+
 
     public UnityEngine.UI.Text TitleText
     {
@@ -89,18 +98,21 @@ public class TrackUIManager : SingletonMono<TrackUIManager> {
     }
 
 
-
+  
     public void ShowBigImage(Sprite  sps)
     {
-        GameObject go = Instantiate<GameObject>(Resources.Load<GameObject>("Model/ShowImage"), this.transform);
+        bigImage = Instantiate<GameObject>(Resources.Load<GameObject>("Model/ShowImage"), this.transform);
 
-        go.gameObject.SetActive(true);
-        go.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
-        go.GetComponent<RectTransform>().offsetMax = new Vector2(0, -90);
-        go.transform.Find("Image"). GetComponent<Image>().sprite = sps;
+        bigImage.gameObject.SetActive(true);
+        bigImage.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
+        bigImage.GetComponent<RectTransform>().offsetMax = new Vector2(0, -90);
+        bigImage.transform.Find("Image"). GetComponent<Image>().sprite = sps;
         //FingerTouchEL.Instance.targetGameObject = go;
     }
-
+    internal void LoadStart()
+    {
+        loadTipImage.gameObject.SetActive(true);
+    }
     public void LoadComplete()
     {
         loadTipImage.gameObject.SetActive(false);

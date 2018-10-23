@@ -13,7 +13,7 @@ public class TrackShowImage : MonoBehaviour {
 
     private void CancelClick()
     {
-        FingerTouchEL.Instance.targetGameObject = null;
+        //FingerTouchEL.Instance.targetGameObject = null;
         Destroy(this.gameObject);
 
     }

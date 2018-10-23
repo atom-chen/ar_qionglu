@@ -19,7 +19,7 @@ public class CopyFileSystem : SingletonMono<CopyFileSystem>
     private void CopyFile()
     {
         string htmlPath = UnityHelper.LocalFilePath + "Web/a.txt";
-        string pushcontentPath = UnityHelper.LocalFilePath + "Push/a.txt";
+        //string pushcontentPath = UnityHelper.LocalFilePath + "Push/a.txt";
 
 
         string htmltargetFile = UnityHelper.LocalFilePath + "Web/" + "CustomOverlay.html";
@@ -40,31 +40,31 @@ public class CopyFileSystem : SingletonMono<CopyFileSystem>
         }
 
 
-        string pushjsontargetFile = UnityHelper.LocalFilePath + "Push/" + "content.json";
-        if (!File.Exists(pushcontentPath))
-        {
-            if (!Directory.Exists(Path.GetDirectoryName(pushcontentPath)))
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(pushcontentPath));
-            }
+        //string pushjsontargetFile = UnityHelper.LocalFilePath + "Push/" + "content.json";
+        //if (!File.Exists(pushcontentPath))
+        //{
+        //    if (!Directory.Exists(Path.GetDirectoryName(pushcontentPath)))
+        //    {
+        //        Directory.CreateDirectory(Path.GetDirectoryName(pushcontentPath));
+        //    }
 
-            FileStream fs = new FileStream(pushcontentPath, FileMode.OpenOrCreate);
-            StreamWriter sw = new StreamWriter(fs);
-            sw.Close();
+        //    FileStream fs = new FileStream(pushcontentPath, FileMode.OpenOrCreate);
+        //    StreamWriter sw = new StreamWriter(fs);
+        //    sw.Close();
 
-        }
+        //}
 
 
 
 #if UNITY_ANDROID
         StartCoroutine(Load(htmltargetFile, "CustomOverlay.html","Web"));
-        StartCoroutine(Load(pushjsontargetFile, "content.json","Push"));
+        //StartCoroutine(Load(pushjsontargetFile, "content.json","Push"));
 #else
         string htmlsourceFile = Application.streamingAssetsPath + "/Web/CustomOverlay.html";
-             string pushjsonsourceFile = Application.streamingAssetsPath + "/Push/content.json";
+             //string pushjsonsourceFile = Application.streamingAssetsPath + "/Push/content.json";
    
         File.Copy(htmlsourceFile,htmltargetFile,true);
-             File.Copy(pushjsonsourceFile,pushjsontargetFile,true);
+             //File.Copy(pushjsonsourceFile,pushjsontargetFile,true);
 #endif
     
     }

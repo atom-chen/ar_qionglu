@@ -1,4 +1,4 @@
-ï»¿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,11 +7,11 @@ public class LoginUILogic : MonoBehaviour
 {
 
     /// <summary>
-    /// ç”¨æˆ·åå¯†ç ç™»é™†
+    /// ÓÃ»§ÃûÃÜÂëµÇÂ½
     /// </summary>
     public Toggle LoginPage_UserPwdLoginToggle;
     /// <summary>
-    /// çŸ­ä¿¡ç™»é™†
+    /// ¶ÌĞÅµÇÂ½
     /// </summary>
     public Toggle LoginPage_SmsLoginToggle;
 
@@ -43,8 +43,5 @@ public class LoginUILogic : MonoBehaviour
             }
         } ));
     }
-    private void Start()
-    {
-        
-    }
+
 }

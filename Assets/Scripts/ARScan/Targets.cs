@@ -38,79 +38,83 @@ public class Targets : MonoBehaviour
         switch (id)
         {
             case 1:
-                //É¨Ò»É¨-ãòÉ½Ë÷»¬µÀÏßÂ·µ¼ÀÀÍ¼
+                //É¨Ò»É¨-ï¿½ï¿½É½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½Í¼
                 StartCoroutine(target1());
                 break;
             case 2:
-                //É¨Ò»É¨-ÃÎÀïË®Ïçµ¼ÀÀÍ¼
+                //É¨Ò»É¨-ï¿½ï¿½ï¿½ï¿½Ë®ï¿½çµ¼ï¿½ï¿½Í¼
                 if (vp != null)
                 {
                     vp.url = ARScanManager.scan_more_Path + "/shuixiang1.mp4";
                     vp.Play();
+                    Debug.Log(vp.url);
                     women.gameObject.SetActive(true);
                     women.Play("start");
                 }
                 break;
             case 3:
-                //É¨Ò»É¨-Úöº£È«¾°Í¼£¨¹ÛÄñµº£©
+                //É¨Ò»É¨-ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ñµº£ï¿½
                 speaktime = 3;
                 StartCoroutine(PlayAnimOneShot());
+                aud.Play();
                 break;
             case 4:
-                //É¨Ò»É¨-Ð¡Óæ´å
+                //É¨Ò»É¨-Ð¡ï¿½ï¿½ï¿½
                 StartCoroutine(target4());
                 break;
             case 5:
-                //É¨Ò»É¨-Úöº£ÓÎ´¬¼Û¸ñ¹«Ê¾À¸
+                //É¨Ò»É¨-ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½Û¸ï¿½Ê¾ï¿½ï¿½
                 StartCoroutine(target5());
                 break;
             case 6:
-                //É¨Ò»É¨-Èü²¨¸®¾ÆµêÊ¯Í·
+                //É¨Ò»É¨-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½Ê¯Í·
                 StartCoroutine(target6());
                 break;
             case 7:
-                //É¨Ò»É¨-Ï¡¿ÍÊ¯Í·\
+                //É¨Ò»É¨-Ï¡ï¿½ï¿½Ê¯Í·\
                 StartCoroutine(showtex());
                 break;
             case 8:
-                //É¨Ò»É¨-ÔÂÉ«·çÇéÐ¡ÕòÂëÍ·
+                //É¨Ò»É¨-ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Í·
                 if (vp != null)
                 {
                     vp.url = ARScanManager.scan_more_Path + "/matou.mp4";
                     vp.Play();
+                    Debug.Log(vp.url);
                     women.gameObject.SetActive(true);
                     women.Play("start");
                 }
                 break;
             case 9:
-                //ãòÉ½ÃÅÆ±
+                //ï¿½ï¿½É½ï¿½ï¿½Æ±
                 ShowTicket(9);
                 break;
             case 10:
-                //Ë®ÏçÃÅÆ±
+                //Ë®ï¿½ï¿½ï¿½ï¿½Æ±
                 ShowTicket(10);
                 break;
             case 11:
-                //ÌØ²ú´ÉÆ÷
+                //ï¿½Ø²ï¿½ï¿½ï¿½ï¿½ï¿½
                 CiqiManager.instance.OnTrackingFound();
                 break;
             case 12:
-                //ÌØ²ú¿àÜñ²è
+                //ï¿½Ø²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 KQCManager._Instance.OnTrackingFound();
                 break;
             case 13:
-                //ÌØ²ú±­µæ
+                //ï¿½Ø²ï¿½ï¿½ï¿½ï¿½ï¿½
                 BDManager._Instance.OnTrackingFound();
                 break;
         }
     }
     public void HideInfo()
     {
+        Debug.Log("HideInfo");
         ARScanManager.instance.isScan = false;
         switch (id)
         {
             case 1:
-                //É¨Ò»É¨-ãòÉ½Ë÷»¬µÀÏßÂ·µ¼ÀÀÍ¼
+                //É¨Ò»É¨-ï¿½ï¿½É½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½Í¼
                 StopCoroutine(target1());
                 mat.mainTexture = target1tex[0];
                 aud.Stop();
@@ -118,70 +122,64 @@ public class Targets : MonoBehaviour
                 line[1].SetActive(false);
                 break;
             case 2:
-                //É¨Ò»É¨-ÃÎÀïË®Ïçµ¼ÀÀÍ¼
-                if (vp != null)
-                {
-                    vp.Stop();
-                    women.gameObject.SetActive(false);
-                }
+                //É¨Ò»É¨-ï¿½ï¿½ï¿½ï¿½Ë®ï¿½çµ¼ï¿½ï¿½Í¼
+                vp.Stop();
+                women.gameObject.SetActive(false);
                 break;
             case 3:
-                //É¨Ò»É¨-Úöº£È«¾°Í¼£¨¹ÛÄñµº£©
+                //É¨Ò»É¨-ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ñµº£ï¿½
                 StopCoroutine(PlayAnimOneShot());
                 women.gameObject.SetActive(false);
                 women.Play("Idle");
                 aud.Stop();
                 break;
             case 4:
-                //É¨Ò»É¨-Úöº£È«¾°Í¼£¨å­º£Í¤£©
+                //É¨Ò»É¨-ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½Í¼ï¿½ï¿½å­ºï¿½Í¤ï¿½ï¿½
                 StopCoroutine(target4());
                 women.gameObject.SetActive(false);
                 women.Play("Idle");
                 aud.Stop();
                 break;
             case 5:
-                //É¨Ò»É¨-Ð¡Óæ´å
+                //É¨Ò»É¨-Ð¡ï¿½ï¿½ï¿½
                 Target5Lost();
                 break;
             case 6:
-                //É¨Ò»É¨-Èü²¨¸®¾ÆµêÊ¯Í·
+                //É¨Ò»É¨-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½Ê¯Í·
                 StopCoroutine(target6());
                 women.gameObject.SetActive(false);
                 women.Play("Idle");
                 aud.Stop();
                 break;
             case 7:
-                //É¨Ò»É¨-Ï¡¿ÍÊ¯Í·
+                //É¨Ò»É¨-Ï¡ï¿½ï¿½Ê¯Í·
                 StopCoroutine(showtex());
                 women.gameObject.SetActive(false);
                 women.Play("Idle");
                 aud.Stop();
                 break;
             case 8:
-                //É¨Ò»É¨-ÔÂÉ«·çÇéÐ¡ÕòÂëÍ·
-                if (vp != null)
-                {
-                    vp.Stop();
-                    women.gameObject.SetActive(false);
-                }
+                //É¨Ò»É¨-ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Í·
+                vp.Stop();
+                women.gameObject.SetActive(false);
                 break;
             case 9:
-                //ãòÉ½ÃÅÆ±
+                //ï¿½ï¿½É½ï¿½ï¿½Æ±
                 HideTicket(9);
                 break;
             case 10:
-                //Ë®ÏçÃÅÆ±
+                //Ë®ï¿½ï¿½ï¿½ï¿½Æ±
                 HideTicket(10);
                 break;
             case 11:
                 CiqiManager.instance.OnTrackingLost();
                 break;
             case 12:
-                //ÌØ²ú¿àÜñ²è
+                //ï¿½Ø²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 KQCManager._Instance.OnTrackingLost();
                 break;
             case 13:
-                //ÌØ²ú±­µæ
+                //ï¿½Ø²ï¿½ï¿½ï¿½ï¿½ï¿½
                 BDManager._Instance.OnTrackingLost();
                 break;
         }
@@ -194,7 +192,7 @@ public class Targets : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
-                Debug.Log("Åö×²¶ÔÏó: " + hit.collider.name);
+                Debug.Log("ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½: " + hit.collider.name);
                 switch (id)
                 {
                     case 3:
@@ -226,11 +224,13 @@ public class Targets : MonoBehaviour
             case 9:
                 vp.url = ARScanManager.scan_ticket_Path + "/lushan.mp4";
                 vp.Play();
+                Debug.Log(vp.url);
                 break;
             case 10:
                 women.gameObject.SetActive(true);
                 women.Play("start");
                 vp.url = ARScanManager.scan_ticket_Path + "/shuixiang2.mp4";
+                Debug.Log(vp.url);
                 vp.Play();
                 break;
         }
@@ -240,13 +240,11 @@ public class Targets : MonoBehaviour
         switch (num)
         {
             case 9:
-                if (vp.clip != null)
-                    vp.Stop();
+                vp.Stop();
                 break;
             case 10:
                 women.transform.parent.DOKill();
-                women.transform.parent.localScale = Vector3.one;
-                if (vp.clip != null)
+               // women.transform.parent.localScale = Vector3.one;
                     vp.Stop();
                 women.gameObject.SetActive(false);
                 women.Play("Idle");

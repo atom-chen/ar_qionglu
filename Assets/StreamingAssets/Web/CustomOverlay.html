@@ -34,28 +34,28 @@
 </html>
 <script type="text/javascript">
     var map = new BMap.Map("allmap", {
-        minZoom: 7, maxZoom: 18,// 百度地图:设置最大最小缩放级别级别越大越精细
+       // minZoom: 7, maxZoom: 18,// 百度地图:设置最大最小缩放级别级别越大越精细
         enableMapClick: false,// 取消地图本身的可点击，
-        enableHighResolution: true//使用高清图
+        enableHighResolution: false//使用高清图
     });
     //设置地图的中心点
     var centerpoint = new BMap.Point(104.074666, 30.646894);
     //设初始化地图。
     // 如果center类型为Point时，zoom必须赋值，范围3-19级，
     // 若调用高清底图（针对移动端开发）时，zoom可赋值范围为3-18级。
-    map.centerAndZoom(centerpoint, 13);
-    map.enableScrollWheelZoom(true);//启用滚轮放大缩小，默认禁用
+    map.centerAndZoom(centerpoint, 15);
+  //  map.enableScrollWheelZoom(false);//启用滚轮放大缩小，默认禁用
     map.enableDragging();   //启用地图拖拽，默认启用
 
 	var CustomOverlayArray = [];
-	map.addEventListener("zoomend", function(){	
+	//map.addEventListener("zoomend", function(){	
 	
-	alert(map.getZoom());
-			for(var i=0;i<CustomOverlayArray.length;i++)
-			 {
-						CustomOverlayArray[i].draw();
-			 }
-		});
+//	alert(map.getZoom());
+		//	for(var i=0;i<CustomOverlayArray.length;i++)
+		//	 {
+			//			CustomOverlayArray[i].draw();
+			// }
+		//});
 function PointOverlap(jingdu,weidu,imagepath,count,index)
 	{	
 		var mySquare = new CustomOverlay(new BMap.Point(jingdu, weidu),imagepath,count,index);   
@@ -93,9 +93,9 @@ CustomOverlay.prototype.initialize = function(map){
     // 创建div元素，作为自定义覆盖物的容器
     var div = document.createElement("div");
     div.style.position = "absolute";
-    div.style.width = "60px";
-    div.style.height ="60px";
-	div.style.background = "url(1.png)   no-repeat   0px 0px / 30px 30px ";
+    div.style.width = "160px";
+    div.style.height ="160px";
+	div.style.background = "url(1.png)   no-repeat   0px 0px / 160px 160px ";
 	//div.addEventListener("click", function(){	
  //     console.log(index + "   " + count);
  //       alert(index);
@@ -128,16 +128,16 @@ CustomOverlay.prototype.initialize = function(map){
 // 根据地理坐标转换为像素坐标，并设置给容器    
     var image = this._imagepath;
     var position = this._map.pointToOverlayPixel(this._center);
-	var imagefactor= 60*0.5*map.getZoom()/15+ "px";
-	var fontfactor= 20*map.getZoom()/15+ "px";
+	var imagefactor=  "160px";
+	var fontfactor= "160px";
 	this. _div.style.width =imagefactor;
     this._div.style.height = imagefactor;
-    this._div.style.background = "url(" + image+") no-repeat 0px 0px / " + "   " + imagefactor + "   " + imagefactor;
+    this._div.style.background = "url(" + image+") no-repeat   0px 0px / 160px 160px ";
 	this._div.style.left = position.x  + "px";    
     this._div.style.top = position.y  + "px";  
 	var  span=this._div.getElementsByTagName("span")[0];
 	span.innerHTML =  this._count;
-	span.style.fontSize = fontfactor;
+	span.style.fontSize = "50px";
 }
  function ChangeCount(overlap,count)
 	{	
@@ -161,7 +161,7 @@ function AddOverLay() {
 
     //以下为测试
 // 添加自定义覆盖物   
-  //AddOverLay();
+  AddOverLay();
 //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
 	//var markerClusterer = new BMapLib.MarkerClusterer(map, {markers:CustomOverlayArray,styles:myStyles});
 </script>

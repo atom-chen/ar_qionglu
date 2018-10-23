@@ -40,6 +40,7 @@ public class initScene : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
+#if UNITY_ANDROID
         if (Application.platform == RuntimePlatform.Android)
         {
             localFilePath = Application.persistentDataPath + "/port.json";
@@ -91,18 +92,20 @@ public class initScene : MonoBehaviour
             PublicAttribute.URL =allport[0].address + allport[0].portnum;
             Debug.Log(PublicAttribute.URL);
         }
+                
+#endif
     }
+
     IEnumerator Start ()
     {
         //屏幕常亮
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         yield return new WaitForSeconds(1);
         root.SetActive(true);
-        //StartCoroutine(LoadAssets2());
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(2);
         guide.SetActive(true);
         splash.gameObject.SetActive(false);
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3);
 	    ads.SetActive(false);
     }
 
@@ -116,18 +119,18 @@ public class initScene : MonoBehaviour
 
     }
 
-    private IEnumerator LoadAssets2()
-    {
-        string path = Application.persistentDataPath + "/DownloadFile/Panorama/1/shajin.vsz";
-        Debug.Log(path);
-        Debug.Log(File.Exists(path));
-        int index1 = path.LastIndexOf("/");
-        int index2 = path.LastIndexOf(".");
-        string suffix = path.Substring(index1 + 1, index2 - index1 - 1);
-        WWW bundle = WWW.LoadFromCacheOrDownload("file:///" + path, 0);
-        yield return bundle;
-        Debug.Log(bundle.size);
-        var data = bundle.assetBundle;
-        SceneManager.LoadScene("shajin");
-    }
+    //private IEnumerator LoadAssets2()
+    //{
+    //    string path = Application.persistentDataPath + "/DownloadFile/Panorama/1/shajin.vsz";
+    //    Debug.Log(path);
+    //    Debug.Log(File.Exists(path));
+    //    int index1 = path.LastIndexOf("/");
+    //    int index2 = path.LastIndexOf(".");
+    //    string suffix = path.Substring(index1 + 1, index2 - index1 - 1);
+    //    WWW bundle = WWW.LoadFromCacheOrDownload("file:///" + path, 0);
+    //    yield return bundle;
+    //    Debug.Log(bundle.size);
+    //    var data = bundle.assetBundle;
+    //    SceneManager.LoadScene("shajin");
+    //}
 }

@@ -34,7 +34,7 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
     Slider rotateBar;
 
 
-    Text intensityText, lightLeftText, lightUpText, rotateText;
+    Text intensityText,rotateText;
     private GameObject buttonPanel;
 
 
@@ -376,6 +376,23 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
         ShowEffectPanel(true);
         SetIntroductionText("", false);
         ShowButtonPanel(true);
+
+
+#if UNITY_IOS || UNITY_IPHONE
+        GroundPlaneUI.Instance.ShouZujiBtn(true);
+
+#elif UNITY_ANDROID
+
+        if (SceneManager.GetActiveScene().name == "yiyou")
+        {
+            GroundPlaneUI.Instance.ShouZujiBtn(true);
+
+        }
+        else
+        {
+            WikiSLAMUIController.Instance.ShouZujiBtn(true);
+        }
+#endif
     }
     public void SetIntroductionText(string ssss, bool flag = true)
     {

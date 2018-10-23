@@ -40,6 +40,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
 
     #endregion // UNITY_MONOBEHAVIOUR_METHODS
 
+    public Targets tag;
     #region PUBLIC_METHODS
 
     /// <summary>
@@ -56,12 +57,16 @@ public class DefaultTrackableEventHandler : MonoBehaviour, ITrackableEventHandle
         {
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
             OnTrackingFound();
+            if(tag!=null)
+                tag.ShowInfo();
         }
         else if (previousStatus == TrackableBehaviour.Status.TRACKED &&
                  newStatus == TrackableBehaviour.Status.NO_POSE)
         {
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
             OnTrackingLost();
+            if (tag != null)
+                tag.HideInfo();
         }
         else
         {

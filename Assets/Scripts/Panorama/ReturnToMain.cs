@@ -23,6 +23,7 @@ public class ReturnToMain : MonoBehaviour
         if (vp != null)
         {
             vp.url = GlobalInfo.VideoURL360;
+            vp.url = PublicAttribute.LocalFilePath + "Panorama/1/jiulonghanbai.mp4";
             vp.Play();
         }
     }

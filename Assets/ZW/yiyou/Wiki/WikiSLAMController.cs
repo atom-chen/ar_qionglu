@@ -190,10 +190,11 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
     }
     private void InitLight()
     {
+        MainLight.transform.transform.position = Vector3.zero;
+        MainLight.transform.localPosition = Vector3.zero;
+        MainLight.transform.parent.eulerAngles = new UnityEngine.Vector3(0, 180f, 0);
 
-        mainLight.transform.parent.eulerAngles = new UnityEngine.Vector3(0, 180f, 0);
-
-        mainLight.transform.localEulerAngles = new UnityEngine.Vector3(30, 0f, 0);
+        MainLight.transform.localEulerAngles = new UnityEngine.Vector3(30, 0f, 0);
 
 
     }
@@ -267,6 +268,7 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
         {
             showGameObject = Instantiate(showGameObject);
             showGameObject.name = showGameObjectName;
+            //showGameObject.AddComponent<FingerTouchController>();
         }
         Destroy(oldGo);
         skinMaterialsList.Clear();
@@ -493,22 +495,22 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
                 }
             EffectPanelUI.Instance.ShowToggle();
 
-            if (showGameObjectName.Contains("haiou"))
-                {
-                    showGameObject.GetComponent<Haiou>().Init();
-                }
-            else
-            {
-                UnityHelper.FaceToGoal(showGameObject.transform, Camera.main.gameObject.transform, 0.1f);
 
-            }
 
             FingerTouchEL.Instance.targetGameObject = showGameObject;
             WriteManager.Instance.SetGoodsEnum(showGameObject.GetComponent<WriteItem>().goodsEnum);
                 _activeModels.Add(showGameObject);
 
             InitLight();
+            if (showGameObjectName.Contains("haiou"))
+                {
+                    showGameObject.GetComponent<Haiou>().Init();
+                }
+            else
+            {
+                UnityHelper.FaceToGoal(showGameObject.transform, GameObject.FindGameObjectWithTag(Tags.MainCamera).transform, 0.1f);
 
+            }
 
         }
     }

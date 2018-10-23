@@ -52,7 +52,7 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
 
     Button functionBtn;
 
-    Text intensityText, lightLeftText, lightUpText, rotateText;
+    Text intensityText, rotateText;
 
 
     public UnityEngine.UI.Button FunctionBtn
@@ -343,6 +343,21 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
         ShowEffectPanel();
         SetIntroductionText("", false);
         ShowButtonPanel();
+#if UNITY_IOS || UNITY_IPHONE
+        GroundPlaneUI.Instance.ShouZujiBtn(true);
+
+#elif UNITY_ANDROID
+
+        if (SceneManager.GetActiveScene().name == "yiyou")
+        {
+            GroundPlaneUI.Instance.ShouZujiBtn(true);
+
+        }
+        else
+        {
+            WikiSLAMUIController.Instance.ShouZujiBtn(true);
+        }
+#endif
     }
 
 

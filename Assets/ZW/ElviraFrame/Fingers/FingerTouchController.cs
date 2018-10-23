@@ -24,7 +24,7 @@ public class FingerTouchController : MonoBehaviour
                 return;
             }
 
-        //单点触摸， 水平上下移动
+        //单点触摸， x   z   移动
         if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Moved)
         {
             var deltaposition = Input.GetTouch(0).deltaPosition;
@@ -51,14 +51,14 @@ public class FingerTouchController : MonoBehaviour
             float offset = newDistance - oldDistance;
 
             //放大因子， 一个像素按 0.01倍来算(100可调整)  
-            float scaleFactor = offset / 100f;
+            float scaleFactor = offset / 200f;
             Vector3 localScale = transform.localScale;
-            Vector3 scale = new Vector3(localScale.x + scaleFactor,
-                                        localScale.y + scaleFactor,
-                                        localScale.z + scaleFactor);
+            Vector3 scale = new Vector3(Mathf.Abs(localScale.x + scaleFactor),
+                                     Mathf.Abs(localScale.y + scaleFactor),
+                                    Mathf.Abs(localScale.z + scaleFactor));
 
             //最小缩放到 0.3 倍  
-            if ((scale.x > 1f && scale.y > 1f && scale.z > 1f)|| (scale.x < 1.3f && scale.y < 1.3f && scale.z < 1.3f))
+            if ((scale.x >=0.3f && scale.y >= 0.3f && scale.z >= 0.3f) && (scale.x <= 1.3f && scale.y <= 1.3f && scale.z <= 1.3f))
             {
                 transform.localScale = scale;
             }
