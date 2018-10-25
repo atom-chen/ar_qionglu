@@ -79,7 +79,7 @@ public class CopyFileSystem : SingletonMono<CopyFileSystem>
         if (load.isDone)
         {
             // 写到持久化目录
-            Debug.Log("load.text==" + load.text);
+        //    Debug.Log("load.text==" + load.text);
             File.WriteAllText(targetFile, load.text,System.Text.Encoding.UTF8);
         }
     }

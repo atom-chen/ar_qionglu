@@ -94,14 +94,14 @@ public class ARScanManager : MonoBehaviour
     }
     public void LoadAllXML()
     {
-        //1.ÕÒµ½×ÊÔ´±£´æµÄÎÄ¼ş¼Ğ
+        //1.æ‰¾åˆ°èµ„æºä¿å­˜çš„æ–‡ä»¶å¤¹
         string assetDirectory = PublicAttribute.LocalFilePath + "dataset";
 
         DirectoryInfo directoryInfo = new DirectoryInfo(assetDirectory);
 
         if (directoryInfo == null)
         {
-            Debug.LogError(directoryInfo + " ²»´æÔÚ!");
+            Debug.LogError(directoryInfo + " ä¸å­˜åœ¨!");
             return;
         }
         else
@@ -134,7 +134,7 @@ public class ARScanManager : MonoBehaviour
 
                 if (directoryInfo == null)
                 {
-                    Debug.LogError(directoryInfo + " ²»´æÔÚ!");
+                    Debug.LogError(directoryInfo + " ä¸å­˜åœ¨!");
                     return;
                 }
                 else
@@ -164,7 +164,7 @@ public class ARScanManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ½«Ã¿¸öImageTarget¸ÄÃû²¢ÇÒ¹ÒÉÏ½Å±¾
+    /// å°†æ¯ä¸ªImageTargetæ”¹åå¹¶ä¸”æŒ‚ä¸Šè„šæœ¬
     /// </summary>
     public void InitImageTarget()
     {
@@ -180,6 +180,7 @@ public class ARScanManager : MonoBehaviour
     }
     public void LoadScene(string scenename)
     {
+        Screen.orientation = ScreenOrientation.Portrait;
         SceneManager.LoadScene(scenename);
     }
 
@@ -190,7 +191,10 @@ public class ARScanManager : MonoBehaviour
 
     public void ShowScanGuide()
     {
-        StartCoroutine(ScanGuide());
+        // StartCoroutine(ScanGuide());
+        Screen.orientation = ScreenOrientation.Portrait;
+        ARScanGuide.SetActive(true);
+        
     }
     IEnumerator ScanGuide()
     {
@@ -200,8 +204,8 @@ public class ARScanManager : MonoBehaviour
 
     public void HideScanGuide()
     {
-        StopCoroutine(ScanGuide());
-        ScanGuideImg.texture = ScanGuideTex[0];
+        // StopCoroutine(ScanGuide());
+        // ScanGuideImg.texture = ScanGuideTex[0];
         ARScanGuide.SetActive(false);
         Screen.orientation = ScreenOrientation.LandscapeLeft;
     }

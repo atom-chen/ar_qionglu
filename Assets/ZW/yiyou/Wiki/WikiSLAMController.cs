@@ -190,7 +190,8 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
     }
     private void InitLight()
     {
-        MainLight.transform.transform.position = Vector3.zero;
+        MainLight.transform.parent.position = GameObject.FindGameObjectWithTag(Tags.MainCamera).transform.position;
+        //MainLight.transform.transform.position = Vector3.zero;
         MainLight.transform.localPosition = Vector3.zero;
         MainLight.transform.parent.eulerAngles = new UnityEngine.Vector3(0, 180f, 0);
 
@@ -479,7 +480,7 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
             {
                 showGameObject.gameObject.SetActive(true);
                 showGameObject.transform.position = Vector3.zero;
-                showGameObject.transform.localScale = Vector3.one;
+                showGameObject.transform.localScale = Vector3.one*0.5f;
                 showGameObject.transform.localEulerAngles = Vector3.zero;
          YiyouStaticDataManager.Instance.ShowModel = showGameObject;
                 WriteItem writeItem = showGameObject.GetComponent<WriteItem>();
@@ -508,7 +509,8 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
                 }
             else
             {
-                UnityHelper.FaceToGoal(showGameObject.transform, GameObject.FindGameObjectWithTag(Tags.MainCamera).transform, 0.1f);
+                UnityHelper.RotateTowardCameraWiki(GameObject.FindGameObjectWithTag(Tags.MainCamera).gameObject, showGameObject);
+                
 
             }
 

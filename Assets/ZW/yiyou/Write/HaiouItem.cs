@@ -49,6 +49,20 @@ public class HaiouItem : MonoBehaviour
        
     }
 
+    private void Fly()
+    {
+        anim.CrossFade("flap");
+        timer = 0;
+        time = Random.Range(5, 40);
+    }
+
+    private void Soar()
+    {
+        anim.CrossFade("soar");
+        timer = 0;
+        time = Random.Range(1, 5);
+    }
+
     // Update is called once per frame
     void Update ()
     {
@@ -62,16 +76,19 @@ public class HaiouItem : MonoBehaviour
                 switch ((int)timer%2)
                 {
                     case 0:
-                        anim.CrossFade("flap");
+                        //飞行
+                        Fly();
+
                         break;
                     case 1:
-                        anim.CrossFade("soar");
+                        //滑翔
+                        Soar();
+
                         break;
                     default:
                         break;
                 }
-                timer = 0;
-                time = Random.Range(5, 40);
+          
             }
         }
 	}

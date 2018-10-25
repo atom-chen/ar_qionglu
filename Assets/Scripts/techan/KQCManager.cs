@@ -52,7 +52,6 @@ public class KQCManager : MonoBehaviour
         CiqiManager.instance.LostEvent();
         BDManager._Instance.OnTrackingLost();
         roleGo.transform.parent.gameObject.SetActive(true);
-        AudioManager.instance.StopAll();
         roleGo.GetComponent<Animator>().Play("start");
         aud.Play();
 
@@ -62,7 +61,7 @@ public class KQCManager : MonoBehaviour
         yield return new WaitForSeconds(SpeakTime - 1f);
         videoGo.gameObject.SetActive(true);
         roleGo.GetComponent<Animator>().Play("Idle");
-        AudioManager.instance.StopAll();
+        aud.Stop();
         videoGo.transform.DOLocalMove(new Vector3(-1f, 0.1f, 0.18f), 1f);
 
 
@@ -80,7 +79,6 @@ public class KQCManager : MonoBehaviour
             videoPlayer.Stop();
             roleGo.GetComponent<Animator>().Play("Zero");
         }
-        AudioManager.instance.StopAll();
         videoGo.transform.localPosition = new Vector3(0f, -1f, 0f);
 
         videoGo.gameObject.SetActive(false);

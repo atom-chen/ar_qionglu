@@ -242,5 +242,22 @@ public static   class UnityHelper
         yield return  www;
 
     }
+    /// <summary>
+    /// 将物体旋转面对wiki摄像机
+    /// </summary>
+    /// <param name="wikiCamera"></param>
+    /// <param name="augmentation"></param>
+    public static void RotateTowardCameraWiki(GameObject  wikiCamera,GameObject augmentation)
+    {
+        if (wikiCamera.transform != null)
+        {
+            var lookAtPosition = wikiCamera.transform.position - augmentation.transform.position;
+            lookAtPosition.y = 0;
+            var rotation = Quaternion.LookRotation(lookAtPosition);
+            augmentation.transform.rotation = rotation;
+        }
+    }
+
+
 }
 

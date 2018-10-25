@@ -180,12 +180,12 @@ namespace ElviraFrame
             if (gesture.State == GestureRecognizerState.Executing&&targetGameObject!=null)
             {
 
-                float deltaX = panGesture.DeltaX / moveSpeedDelta*-1f;
-                float deltaZ = panGesture.DeltaY / moveSpeedDelta * -1f;
-                Vector3 pos = targetGameObject.transform.localPosition;
+                float deltaX = panGesture.DeltaX / moveSpeedDelta*1f;
+                float deltaZ = panGesture.DeltaY / moveSpeedDelta * 1f;
+                Vector3 pos = targetGameObject.transform.position;
                 pos.x += deltaX;
                 pos.z+= deltaZ;
-                targetGameObject.transform.localPosition = pos;
+                targetGameObject.transform.position = pos;
             }
         }
 
@@ -208,13 +208,16 @@ namespace ElviraFrame
             }
       
             if (gesture.State == GestureRecognizerState.Executing&&targetGameObject!=null)
-            {
-                float clamp = Mathf.Clamp(scaleGesture.ScaleMultiplier, 0.3f, 1.3f);
+            {   
 
-                if (targetGameObject.transform.localScale.x >= 1.3f || targetGameObject.transform.localScale.x <= 0.3f)
-                    return;
-                     targetGameObject.transform.localScale *=clamp;
-
+                Vector3 localscale = targetGameObject.transform.localScale;
+                Vector3 scale = new Vector3(localscale.x * scaleGesture.ScaleMultiplier, localscale.y * scaleGesture.ScaleMultiplier, localscale.z * scaleGesture.ScaleMultiplier);
+                if (scale.x>=0.3f&&scale.x<=1.3f)
+                {
+                    targetGameObject.transform.localScale = scale ;
+                }
+           
+               
             }
 
             if (gesture.State == GestureRecognizerState.Ended && targetGameObject != null)

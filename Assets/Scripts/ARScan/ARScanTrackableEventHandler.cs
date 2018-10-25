@@ -38,7 +38,7 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
     #endregion // UNITY_MONOBEHAVIOUR_METHODS
 
     #region PUBLIC_METHODS
-    bool istracking;
+    bool istracking,isloaded;
     /// <summary>
     ///     Implementation of the ITrackableEventHandler function called when the
     ///     tracking state changes.
@@ -50,18 +50,18 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
         if (newStatus == TrackableBehaviour.Status.DETECTED ||
             newStatus == TrackableBehaviour.Status.TRACKED )
         {
-
+            OnTrackingFound();
             istracking = true;
             name = mTrackableBehaviour.TrackableName;
             transform.name = name;
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
-            if (transform.childCount < 2 && !isLoading)
+            if (!isLoading && !isloaded)
             {
                 loadingImg.transform.localScale = Vector3.one *0.03f;
                 LoadAssetbundle();
                 isLoading = true;
             }
-            else
+            else if (isloaded)
             {
                 ShowInfo();
             }
@@ -69,18 +69,21 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
         else if (previousStatus == TrackableBehaviour.Status.TRACKED &&
                  newStatus == TrackableBehaviour.Status.NO_POSE||
             newStatus == TrackableBehaviour.Status.EXTENDED_TRACKED)
-        {
+        {        
+            OnTrackingLost();
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
             istracking = false;
-            if (transform.childCount >= 2 && !isLoading)
-                HideInfo();
+            if (child != null)
+                if(child.GetComponent<Targets>()!=null)
+                    HideInfo();
         }
         else
         {
             istracking = false;
             OnTrackingLost();
-            if (transform.childCount >= 2&& !isLoading)
-                HideInfo();
+            if (child != null)
+                if(child.GetComponent<Targets>()!=null)
+                    HideInfo();
         }
     }
 
@@ -149,7 +152,7 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
                 break;
 
         }
-        WWW bundle = new WWW("file:///" + path);
+        WWW bundle = WWW.LoadFromCacheOrDownload("file:///" + path,0);
         yield return bundle;
         Debug.Log("Target" + name);
         Object obj = bundle.assetBundle.LoadAsset("Target"+ name);
@@ -160,6 +163,8 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
         child.transform.localScale = Vector3.one;
         loadingImg.transform.localScale = Vector3.zero;
         isLoading = false;
+        isloaded = true;
+        yield return new WaitForEndOfFrame();
         if (istracking)
             ShowInfo();
     }

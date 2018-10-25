@@ -160,7 +160,7 @@ public class GpsConvert : MonoBehaviour
                             item.name = info.baseEntity.name;
                             item.height = info.baseEntity.height;
                             item.typeName = info.type;
-                            item.content = info.baseEntity.content;
+                            item.content = info.baseEntity.description;
                             item.thumbnail = info.baseEntity.thumbnail;
                             item.address = info.baseEntity.address;
                             GPSItems.Add(item);
@@ -513,12 +513,12 @@ public class GpsConvert : MonoBehaviour
     public void ShowDirectSpot(string id)
     {
         if (!IsShowDirectSpot)
-        {
+        {                   
+            IsShowDirectSpot = true;
             foreach (GPSItem item in GPSItems)
             {
                 if (item.id == id)
                 {
-                    IsShowDirectSpot = true;
                     if (item.icon != null)
                         item.icon.ShowDirectSpot();
                 }

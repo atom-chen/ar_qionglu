@@ -37,7 +37,7 @@ public class PushManager : MonoBehaviour
     /// </summary>
     List<PushItem> nearIndexList = new List<PushItem>();
 
-    int lastPushId = -1;
+   
     IEnumerator Start()
     {
         MobPushInit();
@@ -56,7 +56,7 @@ public class PushManager : MonoBehaviour
         //}
 
 
-          InvokeRepeating("GetCurerntLocation", 0f, 60f);
+          InvokeRepeating("GetCurerntLocation", 60f, 60f);
 
        //GetCurerntLocation();
     }
@@ -110,7 +110,7 @@ public class PushManager : MonoBehaviour
     public void AddPoint()
     {
         PushItemManager pointdata = Resources.Load<PushItemManager>("DataAssets/PushItem");
-        Debug.Log("pointdata====" + pointdata.dataArray.Length);
+    //    Debug.Log("pointdata====" + pointdata.dataArray.Length);
         foreach (PushItem item in pointdata.dataArray)
         {
             PushItem pushItemMsg = new PushItem();
@@ -131,7 +131,7 @@ public class PushManager : MonoBehaviour
 
 
 
-            Debug.Log("pointdata====" + pushItemMsg.title+"--"+ pushItemMsg.msg + "--" + pushItemMsg.pos);
+      //      Debug.Log("pointdata====" + pushItemMsg.title+"--"+ pushItemMsg.msg + "--" + pushItemMsg.pos);
             pushPointIndexV2Dic.Add(int.Parse(pushItemMsg.id), pushItemMsg);
         }
     }
@@ -168,7 +168,7 @@ public class PushManager : MonoBehaviour
         Vector2 currentGps = new Vector2(104.067304f, 30.597963f);
 #else
       String location = GetBDGPSLocation();
-        Debug.Log("GPS::::::::::" + location);
+   //     Debug.Log("GPS::::::::::" + location);
         JsonData zb = JsonMapper.ToObject(location);
         float x = float.Parse(zb["longitude"].ToString());
         float y = float.Parse(zb["latitude"].ToString());
@@ -205,7 +205,7 @@ public class PushManager : MonoBehaviour
         }
         if (nearIndexList.Count != 0)
         {
-            Debug.Log("nearIndexList.Count==" + nearIndexList.Count);
+         //   Debug.Log("nearIndexList.Count==" + nearIndexList.Count);
 
             nearIndexList.Sort((x, y) => { return x.distance.CompareTo(y.distance); });
             foreach (var item in nearIndexList)
@@ -225,7 +225,7 @@ public class PushManager : MonoBehaviour
         {
 
             PushItem newPushMsg = pushPointIndexV2Dic[int.Parse(nearIndexList[0].id)];
-            if (lastPushId != int.Parse(newPushMsg.id))
+            if (GlobalParameter.lastPushId != int.Parse(newPushMsg.id))
             {
                 NotifyCallBack notifyCallBack = new NotifyCallBack()
                 {
@@ -235,7 +235,7 @@ public class PushManager : MonoBehaviour
                 AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
                 AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
                 jo.Call("notifySimpleMessage", newPushMsg.title, newPushMsg.msg, JsonMapper.ToJson(notifyCallBack));
-                lastPushId = int.Parse(newPushMsg.id);
+                GlobalParameter.lastPushId = int.Parse(newPushMsg.id);
 #elif UNITY_IOS || UNITY_IPHONE
 
          pushState = 0;
@@ -247,7 +247,7 @@ public class PushManager : MonoBehaviour
 			style.setTitle (newPushMsg.title);
             style.addHashParams(args);
       	mobPush.setMobPushLocalNotification (style);
-             lastPushId = int.Parse(newPushMsg.id);
+             GlobalParameter.lastPushId = int.Parse(newPushMsg.id);
 #endif
             }
         }

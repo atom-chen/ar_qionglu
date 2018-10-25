@@ -10,7 +10,7 @@ using UnityEngine;
 public static class UtilityHelper
 {
 
-    public static void RotateTowardCamera(GameObject augmentation)
+    public static void RotateTowardCameraVuforia(GameObject augmentation)
     {
         if (Vuforia.VuforiaManager.Instance.ARCameraTransform != null)
         {

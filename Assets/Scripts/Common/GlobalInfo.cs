@@ -1,4 +1,5 @@
 public class GlobalInfo {
-    //È«¾°ÊÓÆµµØÖ·
+    //å…¨æ™¯è§†é¢‘
     public static string VideoURL360;
+    public static string VideoURL2D;
 }

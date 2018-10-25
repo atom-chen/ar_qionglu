@@ -87,6 +87,6 @@ public class ListItem : MonoBehaviour {
     }
     public void OpenWeb()
     {
-        web.LoadWeb(address);
+        web.LoadWebSetTitle(address,name);
     }
 }

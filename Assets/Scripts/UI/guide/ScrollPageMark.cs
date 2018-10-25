@@ -43,6 +43,21 @@ public class ScrollPageMark : MonoBehaviour
         {
             toggleList[currentPageIndex].isOn = true;
         }
+
+        if (currentPageIndex==pageCount-1)
+        {
+            for(int i=0; i< toggleList.Count; i++)
+            {
+                toggleList[i].gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            for(int i=0; i< toggleList.Count; i++)
+            {
+                toggleList[i].gameObject.SetActive(true);
+            }
+        }
     }
 
     Toggle CreateToggle()

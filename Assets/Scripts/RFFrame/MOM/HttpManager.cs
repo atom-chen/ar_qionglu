@@ -978,7 +978,8 @@ public class HttpManager : Singleton<HttpManager>
                     ni.baseEntity = new BaseEntity
                     {
                         id = baseEntity["id"].ToString(),
-                        name = baseEntity["name"].ToString()
+                        name = baseEntity["name"].ToString(),
+                        description = baseEntity["description"].ToString()
                     };
                     var tempthumb = baseEntity["thumbnail"];
                     ni.baseEntity.thumbnail = new Thumbnail()
@@ -1193,7 +1194,7 @@ public class HttpManager : Singleton<HttpManager>
     /// <param name="callback"></param>
     public void Register(string userName, string pwd, string smsCode, Action<string> callback)
     {
-        HttpBase.POST(PortClass.Instance.Register, new KeyValuePair<string, string>[]
+        HttpBase.POST(PortClass.Instance.VisitorLogin, new KeyValuePair<string, string>[]
         {
             new KeyValuePair<string, string>("username", userName), new KeyValuePair<string, string>("password", pwd), new KeyValuePair<string, string>("code", smsCode),
         }, ((request, response) =>
@@ -1363,7 +1364,7 @@ public class HttpManager : Singleton<HttpManager>
     /// <param name="callback"></param>
     public void ChangePhoneNo(string phoneNo, string smsCode, Action<string> callback)
     {
-        Debug.Log(phoneNo +"  "+ smsCode);
+        Debug.Log(phoneNo + "  " + smsCode);
         HttpBase.POST(PortClass.Instance.PhoChange, new KeyValuePair<string, string>[]
         {
             new KeyValuePair<string, string>("telephone", phoneNo), new KeyValuePair<string, string>("code", smsCode),
@@ -1389,7 +1390,7 @@ public class HttpManager : Singleton<HttpManager>
                 }
             }
             response.Dispose();
-        }),PublicAttribute.Token);
+        }), PublicAttribute.Token);
     }
     /// <summary>
     /// 通过token获取用户信息
@@ -1424,6 +1425,15 @@ public class HttpManager : Singleton<HttpManager>
                     Debug.Log(response.DataAsText.Trim().ToString());
                     JsonData date = content["data"];
                     string phoneNo = date["username"].ToString();
+                    
+                    JsonData role=date["role"];
+                    string rolename = role["name"].ToString();
+                    if (rolename != "USER")
+                    {
+                        callback(true);
+                        return;
+                    }
+
                     string userName = date["userExtDto"]["userNickName"].ToString();
                     Debug.Log(phoneNo);
                     var userHeadPhoto = date["userExtDto"]["userHeadPhoto"];
@@ -1596,6 +1606,44 @@ public class HttpManager : Singleton<HttpManager>
         ));
     }
 
+
+
+
+    public void VisitorLogin(Action<string> callback)
+    {
+
+        Debug.Log("visitor1");
+
+        HttpBase.POST(PortClass.Instance.VisitorLogin, null, ((request, response) =>
+          {
+              Debug.Log("visitor2");
+              if (response.IsSuccess)
+              {
+                  Debug.Log("visitor3");
+                  if (callback != null)
+                  {
+                      Debug.Log("visitor4");
+                      JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
+                      Debug.Log(content.ToString());
+                      if (response.DataAsText.Trim().Contains("200"))
+                      {
+                          PublicAttribute.Token = "VSZ " + content["data"].ToString();
+                      }
+                      callback(content["status"].ToString());
+                  }
+              }
+              else
+              {
+
+                  Debug.Log("request==="+request.ToString() + " response  ==== " + response.StatusCode);
+                  if (callback != null)
+                  {
+                      callback("Error");
+                  }
+              }
+              response.Dispose();
+          }));
+    }
     #endregion 与登陆相关的所有接口调用
 
     #region 到此一游相关的所有接口
@@ -1962,7 +2010,7 @@ public class HttpManager : Singleton<HttpManager>
                 {
                     callback(false);
                 }
-                DebugManager.Instance.LogError("请求失败！");
+                  Debug.LogError("请求失败！");
                 return;
             }
             Debug.Log(response.DataAsText.Trim());

@@ -120,7 +120,15 @@ public class ChangeItem : MonoBehaviour {
             foreach (var item in VersionFilesItems.Where(item => item.extName == "mp4"))
             {
                 Debug.Log(item.filename);
-                VideoURL  = PublicAttribute.LocalFilePath + "/Panorama/1/"+item.filename;
+                if (item.filename.Contains("qionghaixingcheng"))
+                {
+                    GlobalInfo.VideoURL2D  = PublicAttribute.LocalFilePath + "/Panorama/1/"+item.filename;
+                }
+                else
+                {
+                    VideoURL  = PublicAttribute.LocalFilePath + "/Panorama/1/"+item.filename;
+                }
+              
             }
         }
         else
@@ -131,7 +139,7 @@ public class ChangeItem : MonoBehaviour {
 
     public void OpenWeb()
     {
-        web.LoadWeb(address);
+        web.LoadWebSetTitle(address,name);
     }
     private IEnumerator LoadAssets(string path)
     {

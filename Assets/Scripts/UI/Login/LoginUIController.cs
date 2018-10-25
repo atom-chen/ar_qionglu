@@ -83,7 +83,7 @@ public class LoginUIController : SingletonMono<LoginUIController>
 
     public void PopupInfo(string status)
     {
-        PublicAttribute.isVisitor = false;
+        GlobalParameter.isVisitor = false;
             //不是游客登录
         Debug.Log(status);
         switch (status)
@@ -104,14 +104,16 @@ public class LoginUIController : SingletonMono<LoginUIController>
                 tipPanel.ShowPopup("手机号格式错误", "请输入正确的手机号码");
                 break;
             case "1006":
-                tipPanel.ShowPopupAndDoSomeThing("操作成功", "请妥善保管账号和密码", 1.5f, InitState);
+                //注册成功
+                tipPanel.ShowPopupAndDoSomeThing("操作成功", "请妥善保管账号和密码", 1.5f, LoadMainScene);
                 //tipPanel.ShowPopup("操作成功", "请妥善保管账号和密码");
                 break;
             case "1007":
+                //密码修改
                 tipPanel.ShowPopupAndDoSomeThing("密码修改成功", "请妥善保管账号和密码", 1.5f, InitState);
                 break;
             case "1010":
-                ScenesManager.Instance.LoadMainScene();
+                LoadMainScene();
                 break;
             case "1011":
                 tipPanel.ShowPopup("未设置密码", "密码未设置，请尽快完善密码");
@@ -125,6 +127,9 @@ public class LoginUIController : SingletonMono<LoginUIController>
             case "Error":
                 tipPanel.ShowPopup("请求失败", "请稍候重试");
                 break;
+            case "Third":
+                tipPanel.ShowPopupAndDoSomeThing("登录成功", "登录成功", 1.5f, LoadMainScene);
+                break;
             default:
                 break;
         
@@ -133,6 +138,12 @@ public class LoginUIController : SingletonMono<LoginUIController>
 
 
     }
+
+    private static void LoadMainScene()
+    {
+        ScenesManager.Instance.LoadMainScene();
+    }
+
     public void ShowPopup(string title, string content)
     {
         tipPanel.ShowPopup(title, content);

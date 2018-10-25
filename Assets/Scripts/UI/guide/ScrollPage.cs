@@ -260,7 +260,8 @@ public class ScrollPage : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     }
 
     public void EnterMain()
-    {
+    {         
+        initScene.FirstEnter = 1;
         HttpManager.Instance.GetUserInfoByToken((b =>
         {
             if (b)

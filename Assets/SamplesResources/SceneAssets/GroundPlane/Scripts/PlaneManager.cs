@@ -204,7 +204,8 @@ public    Light mainLight;
 
                 showGameObject.transform.localPosition = Vector3.zero;
                 showGameObject.transform.localEulerAngles = Vector3.zero;
-                //    UtilityHelper.RotateTowardCamera(showGameObject);
+                showGameObject.transform.localScale = Vector3.one * 0.5f;
+                UtilityHelper.RotateTowardCameraVuforia(showGameObject);
                 YiyouStaticDataManager.Instance.ShowModel = showGameObject;
 
                 WriteItem writeItem = showGameObject.GetComponent<WriteItem>();
@@ -225,18 +226,7 @@ public    Light mainLight;
      ShowEffectPanel();
                 GroundPlaneUI.Instance.SetReticleVisiblity(false);
                 WriteManager.Instance.SetGoodsEnum(showGameObject.GetComponent<WriteItem>().goodsEnum);
-
-
-
                 InitLight();
-
-
-                if (showGameObjectName != "haiou")
-                {
-                    //   UnityHelper.FaceToGoal(showGameObject.transform, GameObject.FindGameObjectWithTag(Tags.MainCamera).transform, 0.1f);
-                    showGameObject.transform.eulerAngles = Vector3.zero;
-                }
-              
             }
             else
             {
@@ -247,7 +237,8 @@ public    Light mainLight;
     }
     private void InitLight()
     {
-        mainLight.transform.transform.position = Vector3.zero;
+        mainLight.transform.parent.position = GameObject.FindGameObjectWithTag(Tags.MainCamera).transform.position;
+        //mainLight.transform.transform.position = Vector3.zero;
         mainLight.transform.localPosition = Vector3.zero;
         mainLight.transform.parent.eulerAngles = new UnityEngine.Vector3(0, 180f, 0);
 
@@ -286,7 +277,7 @@ public    Light mainLight;
             showGameObject.transform.parent = planeAnchor.transform;
             showGameObject.transform.localPosition = Vector3.zero;
 
-            UtilityHelper.RotateTowardCamera(showGameObject);
+            UtilityHelper.RotateTowardCameraVuforia(showGameObject);
             ShowInput();
         }
     }

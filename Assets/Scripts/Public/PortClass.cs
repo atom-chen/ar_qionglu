@@ -1,4 +1,4 @@
-using UnityEditor;
+﻿using UnityEditor;
 
 public class PortClass : Singleton<PortClass>
 {
@@ -351,6 +351,23 @@ public class PortClass : Singleton<PortClass>
         set { smssLogin = value; }
     }
 
+    private string visitorLogin;
+    /// <summary>
+    /// 游客登陆 POST
+    /// http://192.168.30.22:9999/auth/suggest
+    /// </summary>
+    public string VisitorLogin
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(visitorLogin))
+            {
+                visitorLogin = PublicAttribute.URL + "auth/suggest";
+            }
+            return visitorLogin;
+        }
+        set { visitorLogin = value; }
+    }
     private string ChangePho;
     /// <summary>
     /// 使用短信验证码登陆 POST

@@ -10,7 +10,7 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 {
 
     /// <summary>
-    /// ÓÃÓÚ·µ»ØÒ»¸öÒ³Âë£¬-1ËµÃ÷pageµÄÊı¾İÎª0
+    /// ç”¨äºè¿”å›ä¸€ä¸ªé¡µç ï¼Œ-1è¯´æ˜pageçš„æ•°æ®ä¸º0
     /// </summary>
     public System.Action<int, int> OnPageChanged;
 
@@ -19,9 +19,9 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
     void Awake()
     {
-        //Òıµ¼Ò³µ÷ÓÃ
+        //å¼•å¯¼é¡µè°ƒç”¨
         DownloadProp.Instance.AutoCheckUpdateLocalComponent();
-        //Òıµ¼Ò³µ÷ÓÃ
+        //å¼•å¯¼é¡µè°ƒç”¨
         DownloadProp.Instance.UpdatePreview();
     }
     static bool isdown;
@@ -85,8 +85,8 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {
         if (Time.time < startime + delay) return;
         UpdatePages();
-        //Èç¹û²»ÅĞ¶Ï¡£µ±ÔÚÍÏ×§µÄÊ±ºòÒªÒ²»áÖ´ĞĞ²åÖµ£¬ËùÒÔ»á³öÏÖÉÁË¸µÄĞ§¹û
-        //ÕâÀïÖ»ÒªÔÚÍÏ¶¯½áÊøµÄÊ±ºò¡£ÔÚ½øĞĞ²åÖµ
+        //å¦‚æœä¸åˆ¤æ–­ã€‚å½“åœ¨æ‹–æ‹½çš„æ—¶å€™è¦ä¹Ÿä¼šæ‰§è¡Œæ’å€¼ï¼Œæ‰€ä»¥ä¼šå‡ºç°é—ªçƒçš„æ•ˆæœ
+        //è¿™é‡Œåªè¦åœ¨æ‹–åŠ¨ç»“æŸçš„æ—¶å€™ã€‚åœ¨è¿›è¡Œæ’å€¼
         if (!isDrag && pages.Count > 0)
         {
             rect.horizontalNormalizedPosition = Mathf.Lerp(rect.horizontalNormalizedPosition, targethorizontal, Time.deltaTime * smooting);
@@ -113,20 +113,20 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         }
     }
 
-    #region »¬¶¯
+    #region æ»‘åŠ¨
     private float page;
     ScrollRect rect;
 
     List<float> pages = new List<float>();
     private int currentPageIndex = -1;
 
-    //»¬¶¯ËÙ¶È
+    //æ»‘åŠ¨é€Ÿåº¦
     private float smooting = 4;
 
-    //»¬¶¯µÄÆğÊ¼×ø±ê
+    //æ»‘åŠ¨çš„èµ·å§‹åæ ‡
     private float targethorizontal = 0;
 
-    //ÊÇ·ñÍÏ×§½áÊø
+    //æ˜¯å¦æ‹–æ‹½ç»“æŸ
     private bool isDrag = false;
     private float pos1, pos2;
     private int lastpage = 0;
@@ -145,7 +145,7 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         isDrag = false;
 
         float posX = rect.horizontalNormalizedPosition;
-        //¼ÙÉèÀëµÚÒ»Î»×î½ü
+        //å‡è®¾ç¦»ç¬¬ä¸€ä½æœ€è¿‘
         float offset = Mathf.Abs(pages[index] - posX);
 
         if ((pos1 - pos2) > 0 && (pos1 - pos2) > 1 / ((page - 1) * 4))
@@ -174,7 +174,7 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
     void UpdatePages()
     {
-        // »ñÈ¡×Ó¶ÔÏóµÄÊıÁ¿
+        // è·å–å­å¯¹è±¡çš„æ•°é‡
         int count = rect.content.childCount;
         int temp = 0;
         for (int i = 0; i < count; i++)
@@ -211,7 +211,7 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     public int pageCount;
     List<string> filename = new List<string>();
     /// <summary>
-    /// »ñÈ¡Í¼Æ¬ÁĞ±í
+    /// è·å–å›¾ç‰‡åˆ—è¡¨
     /// </summary>
     void GetImageList()
     {
@@ -219,14 +219,14 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
         #region MyRegion
 
-        ////1.ÕÒµ½×ÊÔ´±£´æµÄÎÄ¼ş¼Ğ
+        ////1.æ‰¾åˆ°èµ„æºä¿å­˜çš„æ–‡ä»¶å¤¹
         //string assetDirectory = PublicAttribute.LocalFilePath + "PageThumb/MainPageGuide/QL";
 
         //DirectoryInfo directoryInfo = new DirectoryInfo(assetDirectory);
 
         //if (directoryInfo == null)
         //{
-        //    Debug.LogError(directoryInfo + " ²»´æÔÚ!");
+        //    Debug.LogError(directoryInfo + " ä¸å­˜åœ¨!");
         //    return;
         //}
         //else
@@ -267,14 +267,14 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
         //DirectoryInfo[] ScenicDirectories = directoryInfo.GetDirectories();
 
-        ////2.±éÀúÀïÃæµÄÃ¿¸ö³¡¾°ÎÄ¼ş¼Ğ
+        ////2.éå†é‡Œé¢çš„æ¯ä¸ªåœºæ™¯æ–‡ä»¶å¤¹
         //foreach (DirectoryInfo tmpDirectoryInfo in ScenicDirectories)
         //{
         //    string ScenicDirectory = assetDirectory + "/" + tmpDirectoryInfo.Name;
         //    DirectoryInfo ScenicDirectoryInfo = new DirectoryInfo(ScenicDirectory);
         //    if (ScenicDirectoryInfo == null)
         //    {
-        //        Debug.LogError(ScenicDirectory + " ²»´æÔÚ!");
+        //        Debug.LogError(ScenicDirectory + " ä¸å­˜åœ¨!");
         //        return;
         //    }
         //    else
@@ -302,8 +302,8 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
         #endregion
     }
-    //offsetMin ÊÇvector2(left, bottom);
-    //offsetMax ÊÇvector2(right, top)
+    //offsetMin æ˜¯vector2(left, bottom);
+    //offsetMax æ˜¯vector2(right, top)
     void SetContent(int Count)
     {
         //Content.offsetMax = new Vector2(0,0);

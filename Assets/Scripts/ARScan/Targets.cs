@@ -37,72 +37,75 @@ public class Targets : MonoBehaviour
         ARScanManager.instance.isScan = true;
         switch (id)
         {
-            case 1:
-                //ɨһɨ-��ɽ��������·����ͼ
+               case 1:
+                //扫一扫-泸山索滑道线路导览图
                 StartCoroutine(target1());
                 break;
             case 2:
-                //ɨһɨ-����ˮ�絼��ͼ
+                //扫一扫-梦里水乡导览图
                 if (vp != null)
                 {
                     vp.url = ARScanManager.scan_more_Path + "/shuixiang1.mp4";
                     vp.Play();
-                    Debug.Log(vp.url);
                     women.gameObject.SetActive(true);
                     women.Play("start");
                 }
                 break;
             case 3:
-                //ɨһɨ-����ȫ��ͼ�����񵺣�
+                //扫一扫-邛海全景图（观鸟岛）
                 speaktime = 3;
                 StartCoroutine(PlayAnimOneShot());
-                aud.Play();
                 break;
             case 4:
-                //ɨһɨ-С���
+                //扫一扫-小渔村
                 StartCoroutine(target4());
                 break;
             case 5:
-                //ɨһɨ-�����δ��۸�ʾ��
-                StartCoroutine(target5());
+                //扫一扫-邛海游船价格公示栏
+                if (vp != null)
+                {
+                    vp.url = ARScanManager.scan_more_Path + "/youchuan.mp4";
+                    vp.Play();
+                    women.gameObject.SetActive(true);
+                    women.Play("start");
+                }
                 break;
             case 6:
-                //ɨһɨ-�������Ƶ�ʯͷ
+                //扫一扫-赛波府酒店石头
                 StartCoroutine(target6());
                 break;
             case 7:
-                //ɨһɨ-ϡ��ʯͷ\
+                //扫一扫-稀客石头\
                 StartCoroutine(showtex());
                 break;
             case 8:
-                //ɨһɨ-��ɫ����С����ͷ
+                //扫一扫-月色风情小镇码头
                 if (vp != null)
                 {
                     vp.url = ARScanManager.scan_more_Path + "/matou.mp4";
                     vp.Play();
-                    Debug.Log(vp.url);
                     women.gameObject.SetActive(true);
                     women.Play("start");
                 }
                 break;
             case 9:
-                //��ɽ��Ʊ
+                //泸山门票
                 ShowTicket(9);
                 break;
             case 10:
-                //ˮ����Ʊ
+                //水乡门票
                 ShowTicket(10);
                 break;
             case 11:
-                //�ز�����
+                //特产瓷器
                 CiqiManager.instance.OnTrackingFound();
                 break;
             case 12:
-                //�ز������
+                //特产苦荞茶
                 KQCManager._Instance.OnTrackingFound();
                 break;
             case 13:
-                //�ز�����
+                //特产杯垫
                 BDManager._Instance.OnTrackingFound();
                 break;
         }
@@ -114,7 +117,7 @@ public class Targets : MonoBehaviour
         switch (id)
         {
             case 1:
-                //ɨһɨ-��ɽ��������·����ͼ
+                //扫一扫-泸山索滑道线路导览图
                 StopCoroutine(target1());
                 mat.mainTexture = target1tex[0];
                 aud.Stop();
@@ -122,64 +125,76 @@ public class Targets : MonoBehaviour
                 line[1].SetActive(false);
                 break;
             case 2:
-                //ɨһɨ-����ˮ�絼��ͼ
-                vp.Stop();
-                women.gameObject.SetActive(false);
+                //扫一扫-梦里水乡导览图
+                if (vp != null)
+                {
+                    vp.Stop();
+                    women.Play("Idle");
+                    women.gameObject.SetActive(false);
+                }
                 break;
             case 3:
-                //ɨһɨ-����ȫ��ͼ�����񵺣�
+                //扫一扫-邛海全景图（观鸟岛）
                 StopCoroutine(PlayAnimOneShot());
                 women.gameObject.SetActive(false);
                 women.Play("Idle");
                 aud.Stop();
                 break;
             case 4:
-                //ɨһɨ-����ȫ��ͼ��孺�ͤ��
+                //扫一扫-邛海全景图（瀛海亭）
                 StopCoroutine(target4());
                 women.gameObject.SetActive(false);
                 women.Play("Idle");
                 aud.Stop();
                 break;
             case 5:
-                //ɨһɨ-С���
-                Target5Lost();
+                //扫一扫-小渔村
+                if (vp != null)
+                {
+                    vp.Stop();
+                    women.Play("Idle");
+                    women.gameObject.SetActive(false);
+                }
                 break;
             case 6:
-                //ɨһɨ-�������Ƶ�ʯͷ
+                //扫一扫-赛波府酒店石头
                 StopCoroutine(target6());
                 women.gameObject.SetActive(false);
                 women.Play("Idle");
                 aud.Stop();
                 break;
             case 7:
-                //ɨһɨ-ϡ��ʯͷ
+                //扫一扫-稀客石头
                 StopCoroutine(showtex());
                 women.gameObject.SetActive(false);
                 women.Play("Idle");
                 aud.Stop();
                 break;
             case 8:
-                //ɨһɨ-��ɫ����С����ͷ
-                vp.Stop();
-                women.gameObject.SetActive(false);
+                //扫一扫-月色风情小镇码头
+                if (vp != null)
+                {
+                    vp.Stop();
+                    women.gameObject.SetActive(false);
+                }
                 break;
             case 9:
-                //��ɽ��Ʊ
+                //泸山门票
                 HideTicket(9);
                 break;
             case 10:
-                //ˮ����Ʊ
+                //水乡门票
                 HideTicket(10);
                 break;
             case 11:
                 CiqiManager.instance.OnTrackingLost();
                 break;
             case 12:
-                //�ز������
+                //特产苦荞茶
                 KQCManager._Instance.OnTrackingLost();
                 break;
             case 13:
-                //�ز�����
+                //特产杯垫
                 BDManager._Instance.OnTrackingLost();
                 break;
         }
@@ -188,11 +203,11 @@ public class Targets : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = new Ray(transform.position, -transform.up);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
-                Debug.Log("��ײ����: " + hit.collider.name);
+                Debug.Log("碰撞对象: " + hit.collider.name);
                 switch (id)
                 {
                     case 3:

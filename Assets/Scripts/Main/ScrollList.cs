@@ -13,20 +13,19 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     public static ScrollList instance;
 
     /// <summary>
-    /// ÓÃÓÚ·µ»ØÒ»¸öÒ³Âë£¬-1ËµÃ÷pageµÄÊı¾İÎª0
+    /// ç”¨äºè¿”å›ä¸€ä¸ªé¡µç ï¼Œ-1è¯´æ˜pageçš„æ•°æ®ä¸º0
     /// </summary>
     public System.Action<int, int> OnPageChanged;
 
+    public Text[] labels;
     float startime = 0f;
     float delay = 0.1f;
-
-    public DOTweenAnimation dot;
     void Awake()
     {
         instance = this;
-        //Òıµ¼Ò³µ÷ÓÃ
+        //å¼•å¯¼é¡µè°ƒç”¨
         DownloadProp.Instance.AutoCheckUpdateLocalComponent();
-        //Òıµ¼Ò³µ÷ÓÃ
+        //å¼•å¯¼é¡µè°ƒç”¨
         DownloadProp.Instance.UpdatePreview();
     }
     // Use this for initialization
@@ -41,8 +40,8 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {
         if (Time.time < startime + delay) return;
         UpdatePages();
-        //Èç¹û²»ÅĞ¶Ï¡£µ±ÔÚÍÏ×§µÄÊ±ºòÒªÒ²»áÖ´ĞĞ²åÖµ£¬ËùÒÔ»á³öÏÖÉÁË¸µÄĞ§¹û
-        //ÕâÀïÖ»ÒªÔÚÍÏ¶¯½áÊøµÄÊ±ºò¡£ÔÚ½øĞĞ²åÖµ
+        //å¦‚æœä¸åˆ¤æ–­ã€‚å½“åœ¨æ‹–æ‹½çš„æ—¶å€™è¦ä¹Ÿä¼šæ‰§è¡Œæ’å€¼ï¼Œæ‰€ä»¥ä¼šå‡ºç°é—ªçƒçš„æ•ˆæœ
+        //è¿™é‡Œåªè¦åœ¨æ‹–åŠ¨ç»“æŸçš„æ—¶å€™ã€‚åœ¨è¿›è¡Œæ’å€¼
         if (!isDrag && pages.Count > 0)
         {
             rect.horizontalNormalizedPosition = Mathf.Lerp(rect.horizontalNormalizedPosition, targethorizontal, Time.deltaTime * smooting);
@@ -50,20 +49,20 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         }
     }
 
-    #region »¬¶¯
+    #region æ»‘åŠ¨
     private float page;
     ScrollRect rect;
 
     List<float> pages = new List<float>();
     private int currentPageIndex = -1;
 
-    //»¬¶¯ËÙ¶È
+    //æ»‘åŠ¨é€Ÿåº¦
     private float smooting = 4;
 
-    //»¬¶¯µÄÆğÊ¼×ø±ê
+    //æ»‘åŠ¨çš„èµ·å§‹åæ ‡
     private float targethorizontal = 0;
 
-    //ÊÇ·ñÍÏ×§½áÊø
+    //æ˜¯å¦æ‹–æ‹½ç»“æŸ
     private bool isDrag = false;
     private float pos1, pos2;
     private int lastpage = 0;
@@ -80,7 +79,7 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         isDrag = false;
 
         float posX = rect.horizontalNormalizedPosition;
-        //¼ÙÉèÀëµÚÒ»Î»×î½ü
+        //å‡è®¾ç¦»ç¬¬ä¸€ä½æœ€è¿‘
         float offset = Mathf.Abs(pages[index] - posX);
 
         if ((pos1 - pos2) > 0 && (pos1 - pos2) > 1 / ((page - 1) * 4))
@@ -108,7 +107,7 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     }
     void UpdatePages()
     {
-        // »ñÈ¡×Ó¶ÔÏóµÄÊıÁ¿
+        // è·å–å­å¯¹è±¡çš„æ•°é‡
         int count = rect.content.childCount;
         int temp = 0;
         for (int i = 0; i < count; i++)
@@ -144,11 +143,11 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     public int[] pageCount = new int[3];
     List<string> filename = new List<string>();
     /// <summary>
-    /// »ñÈ¡Í¼Æ¬ÁĞ±í
+    /// è·å–å›¾ç‰‡åˆ—è¡¨
     /// </summary>
     public void GetImageList(float type)
     {
-        //¾°µã¼ÓÔØ
+        //æ™¯ç‚¹åŠ è½½
         if (type == 0)
         {
             if (JsonClass.Instance.TraitScenicSpotInfoS.Count == 0)
@@ -189,7 +188,7 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                 }));
             }
         }
-        //ÌØ²ú¼ÓÔØ
+        //ç‰¹äº§åŠ è½½
         if (type == 1)
         {
             if (JsonClass.Instance.LocalSpecialtyS.Count == 0 )
@@ -230,7 +229,7 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                 }));
             }
         }
-        //ÉÌ¼Ò¼ÓÔØ
+        //å•†å®¶åŠ è½½
         if (type == 2)
         {
             if (JsonClass.Instance.ShopInfoS.Count == 0)
@@ -274,8 +273,8 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
             }
         }
     }
-    //offsetMin ÊÇvector2(left, bottom);
-    //offsetMax ÊÇvector2(right, top)
+    //offsetMin æ˜¯vector2(left, bottom);
+    //offsetMax æ˜¯vector2(right, top)
 
     void SetContent(int Count)
     {
@@ -332,11 +331,13 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                     {
                         SetContent(pageCount[i]);
                     }
+                    labels[i].color=Color.red;
 
                 }
                 else
                 {
                     ShowContent[i].gameObject.SetActive(false);
+                    labels[i].color=Color.black;
                 }
             }
         }

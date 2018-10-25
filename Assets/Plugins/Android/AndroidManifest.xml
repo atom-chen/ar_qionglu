@@ -50,7 +50,8 @@
     android:name="com.mob.MobApplication"
     android:label="AR游"
     android:allowBackup="true"
-    android:icon="@drawable/ic_launcher">
+    android:icon="@drawable/ic_launcher"
+    android:roundIcon="@drawable/ic_launcher">
     <activity android:name="com.secondfury.galleryscreenshot.MainActivity" />
     <activity
       		

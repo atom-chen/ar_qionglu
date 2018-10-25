@@ -5,41 +5,41 @@ using UnityEngine;
 public class GPSItem : MonoBehaviour
 {
     /// <summary>
-    /// Êµ¾°µãID
+    /// å®æ™¯ç‚¹ID
     /// </summary>
     public string id;
 
     /// <summary>
-    /// Êµ¾°µãÃû³Æ
+    /// å®æ™¯ç‚¹åç§°
     /// </summary>
     public string name;
 
     /// <summary>
-    /// Êµ¾°µã¾­¶È
+    /// å®æ™¯ç‚¹ç»åº¦
     /// </summary>
     public string locationX;
 
     /// <summary>
-    /// Êµ¾°µãÎ³¶È
+    /// å®æ™¯ç‚¹çº¬åº¦
     /// </summary>
     public string locationY;
 
     /// <summary>
-    /// Êµ¾°µãº£°Î
+    /// å®æ™¯ç‚¹æµ·æ‹”
     /// </summary>
     public string height;
     /// <summary>
-    /// Êµ¾°µãÏêÇé
+    /// å®æ™¯ç‚¹è¯¦æƒ…
     /// </summary>
     public string content;
 
     /// <summary>
-    /// ÍøÒ³ÏêÇéµØÖ·
+    /// ç½‘é¡µè¯¦æƒ…åœ°å€
     /// </summary>
     public string address;
 
     /// <summary>
-    /// ¾°µã·ÖÀà 
+    /// æ™¯ç‚¹åˆ†ç±» 
     /// </summary>
     public string typeName;
 

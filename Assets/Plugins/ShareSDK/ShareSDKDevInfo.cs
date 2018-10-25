@@ -74,7 +74,7 @@ public		 string auth_type = "both";	//can pass "both","sso",or "web"
         /// <summary>
         /// false 是不绕过，true是绕过审核
         /// </summary>
-		public bool BypassApproval = true;
+		public bool BypassApproval = false;
 		public bool WithShareTicket = true;
 		public string MiniprogramType = "0";
 #elif UNITY_IPHONE
@@ -94,7 +94,7 @@ public		 string auth_type = "both";	//can pass "both","sso",or "web"
 		public const int type = (int) PlatformType.WeChatMoments;
 		public string AppId = "wxeb8daa830f75dd72";
 		public string AppSecret = "1b184835d62aa12ab80de7e635716828";
-		public bool BypassApproval = true;
+		public bool BypassApproval = false;
 #elif UNITY_IPHONE
 		public const int type = (int) PlatformType.WeChatMoments;
 		public string app_id = "wx4868b35061f87885";

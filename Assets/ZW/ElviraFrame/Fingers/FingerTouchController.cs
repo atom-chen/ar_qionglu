@@ -57,8 +57,8 @@ public class FingerTouchController : MonoBehaviour
                                      Mathf.Abs(localScale.y + scaleFactor),
                                     Mathf.Abs(localScale.z + scaleFactor));
 
-            //最小缩放到 0.3 倍  
-            if ((scale.x >=0.3f && scale.y >= 0.3f && scale.z >= 0.3f) && (scale.x <= 1.3f && scale.y <= 1.3f && scale.z <= 1.3f))
+            //最小缩放到 1 倍  
+            if ((scale.x >=1f && scale.y >= 1f && scale.z >= 1f) && (scale.x <= 1.3f && scale.y <= 1.3f && scale.z <= 1.3f))
             {
                 transform.localScale = scale;
             }

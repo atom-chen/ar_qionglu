@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class webrequest : MonoBehaviour {
     private UniWebView web;
     public static webrequest instance;
     public GameObject webobj;
-
+    public Text title;
     void Awake()
     {
         instance = this;
@@ -18,6 +19,26 @@ public class webrequest : MonoBehaviour {
     }
     public void LoadWeb(string url)
     {
+        Debug.Log("web::::::" + url);
+        if (GameObject.Find("webpage") != null)
+        {
+            Destroy(GameObject.Find("webpage"));
+            web.Stop();
+            web = null;
+        }
+        GameObject obj=  GameObject.Instantiate(webobj);
+        obj.transform.name = "webpage";
+        obj.SetActive(true);
+        web = obj.GetComponent<UniWebView>();
+        web.OnMessageReceived += _view_OnMessageReceived;
+        web.SetHeaderField("Authorization", PublicAttribute.Token);
+        web.Load(url);
+        web.Show();
+    }
+
+    public void LoadWebSetTitle(string url,string name)
+    {
+        title.text = name;
         Debug.Log("web::::::" + url);
         if (GameObject.Find("webpage") != null)
         {
@@ -61,7 +82,7 @@ public class webrequest : MonoBehaviour {
         }
         else if (action == "Panorama")
         {
-            SceneManager.LoadScene("ARScan");
+            ChangeList.instance.ShowCurPanorama(id);
         }
         else if (action == "Navigation")
         {
@@ -69,7 +90,7 @@ public class webrequest : MonoBehaviour {
         }
         else if (action == "Visit")
         {
-            SceneManager.LoadScene("gpsConvert");
+            SceneManager.LoadScene("yiyou");
         }
     }
 

@@ -8,15 +8,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -2067402452, guid: 8a9a760f95896c34689febc965510927, type: 3}
+  m_Script: {fileID: -2067402452, guid: bab6fa851cf5a1a4bba3cec5f191cb8e, type: 3}
   m_Name: VuforiaConfiguration
   m_EditorClassIdentifier: 
   vuforia:
-    vuforiaLicenseKey: AfPE0DL/////AAAAAMxr8XriQkkEs9P+WO7x2isFcKLE+xy7YPGyC0xNV+SeEpQjba6oG+Y9fbWQ0RETDN9dtvZeR3t1hvhIvxt1UuRm+UQzPnoJ1pvfPAFAR5oNYc6Js4E+BDoTGZAn+QntgT3QTEhuBnSMpjafB1h3UuG1KpRTFMIa2NC+BsaxQDjqhb3Lork52ojBcSYyD+rIO6nbLZz1r37ixX4hC3QjBZ2bm1liMna3/We9EW6Xo9mD2vXd3XWoWJ4eqqV0IFmUSwqN+/lLmcWrUJZcH5W5jeyRXXN0v8+a3QLMcugk2yLvYjHv2DOokzG0C/2n81ABBDK32x5H7oPzRp0PK5IiXh5caU+hkJq4Sr0IR/XepjO5
-    ufoLicenseKey: QWU1RFpFNy8vLy8vQUFBQUtESzNlU0ZwM2tmVmo5UURINXNLWDBoRUZDTEJpVmlNdnNGQm5CSWtlSFNYVUZKRGlvcks0NXdWN3NjcXhtTjhkRGcrQWY0WlQ3MkVPclQwMEN1Z3pQS1VaL0l6cW1RdnBUOEYvcUJNdURRa3UrZ3NpME5jQUI5NlJycENvc0MwSUNVTjd1L1B4YXh1TDdUS3Z0SFBKa0JFU2VzanRrYjYvbkhXTFNmWmJLUXpHcHFmclhqTHR3cERnbzNqZUJucUpVR0dreVR0b0RxV2NOM3FZOVRzdXp6akVIS3VxWkxaU3BRa3dKTXJ6eUF4VC9pVCthUlloNG5qWUUyQ3FLdm9XekhzeEt6SVkzNVZlM2JrN2k2aHJMVERISXhwbitFZG5mYXZUWmVSZnhCQ0hqZFMyeldNbkRmb2thNTB6aXArbnlTa1RoNW9rSVdFaWRDT2RhSXFXaU5rWm1nbWZOcnMvK3g2Q0EyVjJjKzU=
+    vuforiaLicenseKey: AUzBvJP/////AAAACLEuh/ELrEQivVebzgspYtKC3yhCAJ6WuijftMjnBrxTJeFcwf+re1Y+budYVFHGNNKTGyOUTy94O9eS+fYSSVFMjiwAfiFASpHrOP2gN0cluUkE8hqf1Ty5BfImzNDzn3SIvnpeOmW7CBGXGAOUVWk+kwqyhMiRwBTIAHxunN6vK6SQs3e8sV9RWth10rU9st5po5E0D9tg2DId9Gv8+PD6IXVe8cCBjvQlIIlB+VwvvGxkRkm3smmmDj8CUFW5y+hwB30BlE8k2JF7Qvhwkz1278Wh/nlyjNFv2yTiwG31711O287xYWdktKe9S1uL+1OvCM/cvGIeZ5LH+ItIfJwCeWg5xMFpb8NrmIckEfTI
+    ufoLicenseKey: QVg1MmtFdi8vLy8vQUFBQUtNRmxmaDBvMVVqcXM0OThFd2xnMmlsQ0FFTENkUjZhdk52WVc3MHNYRUpBZEJHTTZjSFpSYmVwQWd0T1lNUDZXcmI1OTVWZkd3dngyTHBxYWVQSDd0ZHlaWjlkWGRyOWozVXR2bEFNOHlrWS9IUzNVNWVxWTd3SCtmY0ZVMUZKbFI5ZkNHN2g4dFFROUVLbWhNUEJ0MUFLT25yTXJkQXFGYmQ3RG96TjM5a1hoR0VwMk5ZUVREMUlSK3RHSVJGMnVqVkFKNEsybFhRZlBoSEIwVDNkSVI2aFlZaTJ1Qktvb1ZYZHJqQkN4Vkc1TE96U0FKUWVjSkZoaTIwbnhlSFVjclFQYnpNdWw2QkFoQWE2amRqdHpVdzAzTUNldVhJODhGcUNrTXBtMmpKc25CejFvQXFqSVpIY0RJSkpEQ0hsK1JGRnhKVGsvLzRuWGU4QUM3N0NyelZSMXRtaUJEcDhJdXRYbm9Oengwak0=
     delayedInitialization: 0
     cameraDeviceModeSetting: -1
-    maxSimultaneousImageTargets: 4
+    maxSimultaneousImageTargets: 1
     maxSimultaneousObjectTargets: 1
     useDelayedLoadingObjectTargets: 0
     cameraDirection: 0
@@ -53,7 +53,7 @@ MonoBehaviour:
   deviceTracker:
     autoInitTracker: 0
     autoStartTracker: 0
-    trackingMode: 0
+    trackingMode: 1
     posePrediction: 0
     modelCorrectionMode: 0
     modelTransformEnabled: 0

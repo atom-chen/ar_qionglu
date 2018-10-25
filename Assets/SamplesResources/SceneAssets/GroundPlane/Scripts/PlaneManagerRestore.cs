@@ -54,7 +54,7 @@ public class PlaneManagerRestore : PlaneManager
                 showGameObject.transform.localEulerAngles = tempTrans.localEulerAngles;
                 showGameObject.transform.localScale = tempTrans.localScale;
  
-                UtilityHelper.RotateTowardCamera(showGameObject);
+                UtilityHelper.RotateTowardCameraVuforia(showGameObject);
                 WriteManager.Instance.SetText(YiyouRestoreManager.Instance.GetModelText());
                 WriteManager.Instance.SetFont(font: YiyouRestoreManager.Instance.GetModelFont());
                 GroundPlaneUI.Instance.ShowEffectPanel();

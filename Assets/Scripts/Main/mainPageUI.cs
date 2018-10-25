@@ -11,9 +11,7 @@ public class mainPageUI : MonoBehaviour
 {
     public static mainPageUI instance;
     public RectTransform[] ChildPanel;
-    public RectTransform[] ConnectPanel;
-
-    public DOTweenAnimation my_panel;
+    public GameObject[] centerPanel;
     public GameObject DownPanel;
 
     public static AreaInfo SceneID;
@@ -41,11 +39,20 @@ public class mainPageUI : MonoBehaviour
         set {PlayerPrefs.SetInt("HeadId", value);}
         get { return PlayerPrefs.GetInt("HeadId");}
     }
-
     public static float scale;
     void Awake()
     {
         instance = this;
+        if (GlobalParameter.isVisitor)
+        {
+            centerPanel[0].SetActive(true);
+            centerPanel[1].SetActive(false);
+        }
+        else
+        {
+            centerPanel[0].SetActive(false);
+            centerPanel[1].SetActive(true);
+        }
         scale = (((float) Screen.height / (float)Screen.width) * 1440)/2560f;
         for (int i = 0; i < ChildPanel.Length; i++)
         {

@@ -15,7 +15,5 @@ public class ARCameraFocus : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
             Vuforia.CameraDevice.Instance.SetFocusMode(Vuforia.CameraDevice.FocusMode.FOCUS_MODE_CONTINUOUSAUTO);
-        if (Input.GetKeyDown(KeyCode.Escape))
-            Application.Quit();
     }
 }

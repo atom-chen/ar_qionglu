@@ -18,5 +18,10 @@ public class GlobalParameter
     public static string defaultFont = "songti";
 
     public static bool isNeedRestore = false;
+    public   static int lastPushId = -1;
+    /// <summary>
+    /// 是否是游客登录
+    /// </summary>
+    public static bool isVisitor = false;
 
 }

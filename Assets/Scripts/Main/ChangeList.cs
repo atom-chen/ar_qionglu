@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using System;
-using System.Collections;
-using System.IO;
 using UnityEngine.SceneManagement;
-using System.Linq;
+using DG.Tweening;
 
 public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 {
@@ -16,6 +13,8 @@ public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     /// </summary>
     public System.Action<int, int> OnPageChanged;
 
+    public DOTweenAnimation change_panel;
+    public GameObject disWarn;
     float startime = 0f;
     float delay = 0.1f;
 
@@ -205,5 +204,18 @@ public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     public void EnterMain()
     {
         SceneManager.LoadScene("main");
+    }
+    
+    public void ShowCurPanorama(string id)
+    {
+        change_panel.DOPlayForward();
+        foreach (var item in itemObj)
+        {
+            if (item.GetComponent<ChangeItem>().id==id)
+            {
+                item.GetComponent<ChangeItem>().BtnOnClick(disWarn);
+                break;
+            }
+        }
     }
 }

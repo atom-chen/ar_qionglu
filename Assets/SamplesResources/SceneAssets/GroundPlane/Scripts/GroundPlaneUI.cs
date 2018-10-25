@@ -481,14 +481,8 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
 
     internal void ShowEffectPanel(bool  flag=true)
     {
-        string modelName = YiyouStaticDataManager.Instance.ShowModel.name;
-        if (modelName != "haiou" )
-        {
-
             EffectPanelGo.gameObject.SetActive(flag);
             EffectPanelUI.Instance.HideToggle();
-        }
-
     }
 
     internal void ShowButtonPanel()

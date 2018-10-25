@@ -11,6 +11,7 @@ public class ReturnToMain : MonoBehaviour
     private Button Btn;
     public GameObject toastObj;
     public VideoPlayer vp;
+    public VideoPlayer vp2;
     void Awake()
     {
         Btn = GetComponent<Button>();
@@ -23,8 +24,23 @@ public class ReturnToMain : MonoBehaviour
         if (vp != null)
         {
             vp.url = GlobalInfo.VideoURL360;
-            vp.url = PublicAttribute.LocalFilePath + "Panorama/1/jiulonghanbai.mp4";
             vp.Play();
+        }
+
+        if (vp2 != null)
+        {
+            vp2.url = GlobalInfo.VideoURL2D;
+            vp2.Play();
+            CoroutineWrapper.EXES(37f, () =>
+            {
+                if (vp != null)
+                {    
+                    vp2.Stop();
+                    vp.url = GlobalInfo.VideoURL360;
+                    vp.Play();
+                    vp2.gameObject.SetActive(false);
+                }
+            });
         }
     }
     private bool isShooting;

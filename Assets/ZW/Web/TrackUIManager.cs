@@ -5,28 +5,30 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using ElviraFrame;
-public class TrackUIManager : SingletonMono<TrackUIManager> {
+public class TrackUIManager : SingletonMono<TrackUIManager>
+{
 
     public Text titleText;
-    private int curState=0;
+    private int curState = 0;
 
     public Button backBtn;
 
 
 
-    
-    GameObject bigImage=null;
+
+    GameObject bigImage = null;
 
     public GameObject loadTipImage;
 
     public GameObject resultGo;
     public UnityEngine.UI.Button BackBtn
     {
-        get {
+        get
+        {
             if (backBtn == null)
             {
                 backBtn = transform.Find("Title/BackButton").GetComponent<Button>();
-              
+
             }
             return backBtn;
         }
@@ -35,38 +37,48 @@ public class TrackUIManager : SingletonMono<TrackUIManager> {
 
     private void BackBtnClick()
     {
-        //    if (FingerTouchEL.Instance.targetGameObject!=null)
-        //    {
-        //        Destroy(FingerTouchEL.Instance.targetGameObject);
-        //        FingerTouchEL.Instance.targetGameObject = null;
-        //    }
-        //else 
-
-
-        if (bigImage!=null)
+        if (bigImage != null)
         {
             Destroy(bigImage.gameObject);
         }
-      else  if (curState==1)
-        {
-            Destroy(GalleryImageManager.Instance.ImageScrollView);
-            WebView.Instance.CreateWebView();
-            SetTitleText("我的足迹", 0);
-        }
         else
         {
-            SceneManager.LoadScene("main");
+            switch (curState)
+            {
+                case 0:
+                    {
+                        WebView.Instance.ClearWebView();
+                        SceneManager.LoadScene("main");
+                        curState--;
+                        curState = Mathf.Clamp(curState, 0, 1);
+                    }
+                    break;
+                case 1:
+                    {
+                        Destroy(GalleryImageManager.Instance.ImageScrollView);
+                        WebView.Instance.CreateWebView();
+                        SetTitleText("我的足迹", 0);
+                        curState--;
+                        curState = Mathf.Clamp(curState, 0, 1);
+                    }
+                    break;
+                default:
+                    
+                    break;
+            }
         }
-        curState--;
-        curState = Mathf.Clamp(curState, 0, 1);
+
+
+
     }
 
 
 
     public UnityEngine.UI.Text TitleText
     {
-        get {
-            if (titleText==null)
+        get
+        {
+            if (titleText == null)
             {
                 titleText = transform.Find("Title").GetComponent<Text>();
             }
@@ -76,18 +88,19 @@ public class TrackUIManager : SingletonMono<TrackUIManager> {
     }
     internal void SetTitleText(string v1, int v2)
     {
-        
-            TitleText.text = v1;
+
+        TitleText.text = v1;
         curState = v2;
     }
 
     private void Start()
     {
-   
+
         BackBtn.onClick.AddListener(BackBtnClick);
         loadTipImage.gameObject.SetActive(true);
 
-        resultGo.GetComponentInChildren<Button>().onClick.AddListener(()=> {
+        resultGo.GetComponentInChildren<Button>().onClick.AddListener(() =>
+        {
 
             resultGo.SetActive(false);
             WebView.Instance.CreateWebView();
@@ -98,15 +111,15 @@ public class TrackUIManager : SingletonMono<TrackUIManager> {
     }
 
 
-  
-    public void ShowBigImage(Sprite  sps)
+
+    public void ShowBigImage(Sprite sps)
     {
         bigImage = Instantiate<GameObject>(Resources.Load<GameObject>("Model/ShowImage"), this.transform);
 
         bigImage.gameObject.SetActive(true);
         bigImage.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
         bigImage.GetComponent<RectTransform>().offsetMax = new Vector2(0, -90);
-        bigImage.transform.Find("Image"). GetComponent<Image>().sprite = sps;
+        bigImage.transform.Find("Image").GetComponent<Image>().sprite = sps;
         //FingerTouchEL.Instance.targetGameObject = go;
     }
     internal void LoadStart()

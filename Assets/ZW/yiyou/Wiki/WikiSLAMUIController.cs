@@ -403,12 +403,10 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
     }
     internal void ShowEffectPanel(bool v)
     {
-        string modelName = YiyouStaticDataManager.Instance.ShowModel.name;
-        if (modelName != "haiou" )
-        {
+   
             EffectPanelGo.gameObject.SetActive(v);
             EffectPanelUI.Instance.HideToggle();
-        }
+       
 
     }
     internal void ShowButtonPanel(bool v = true)

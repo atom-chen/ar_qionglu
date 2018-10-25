@@ -42,7 +42,23 @@ public class LoginPanelUI : UIWindowsBase
 
     public Toggle SMSSType;
     #endregion
+    #region   三方登录
 
+
+
+    /// <summary>
+    /// 第三方登录时的OpenID
+    /// </summary>
+    public string ThirdOpenID;
+    /// <summary>
+    /// 第三方登录时的用户昵称
+    /// </summary>
+    public string UserName;
+    /// <summary>
+    /// 第三方登录时的用户头像
+    /// </summary>
+    public string UserIcon;
+    #endregion
     public override void Awake()
     {
         base.Awake();
@@ -153,8 +169,11 @@ public class LoginPanelUI : UIWindowsBase
 
 
         visitorBtn.onClick.AddListener(()=> {
-            PublicAttribute.isVisitor = true;
-            SceneManager.LoadScene("main");
+       
+            GlobalParameter.isVisitor = true;
+            HttpManager.Instance.VisitorLogin(VisitorSuccess);
+
+       
         });
 
         #endregion
@@ -162,6 +181,24 @@ public class LoginPanelUI : UIWindowsBase
 
         Init();
 
+    }
+    /// <summary>
+    /// 游客登录成功
+    /// </summary>
+    /// <param name="obj"></param>
+    private void VisitorSuccess(string obj)
+    {
+        if (obj=="200")
+        {
+            //提示成功
+            //    LoginUIController.Instance.PopupInfo("200");
+
+            //场景跳转
+            SceneManager.LoadScene("main");
+
+
+
+        }
     }
 
     private void Init()

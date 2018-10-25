@@ -110,7 +110,9 @@ public class WebView : SingletonMono<WebView>
         TrackUIManager.Instance.SetTitleText("相册", 1);
 
     }
-
+    /// <summary>
+    /// 清除地图
+    /// </summary>
     public void ClearWebView()
     {
         webView.CleanCache();

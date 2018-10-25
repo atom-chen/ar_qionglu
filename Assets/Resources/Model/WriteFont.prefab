@@ -214,8 +214,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1487297213135432}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -76.3, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -996, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4791756289741738}
@@ -287,6 +287,7 @@ MonoBehaviour:
   goodsEnum: 0
   fontUIParent: {fileID: 0}
   fontUIItem: {fileID: 1181168832152258, guid: 0a56bc422981b7149a73c045206d08db, type: 2}
+  fontGoList: []
 --- !u!114 &114274641771532392
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -299,7 +300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 0, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

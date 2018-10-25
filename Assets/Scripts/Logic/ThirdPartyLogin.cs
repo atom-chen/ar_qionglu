@@ -18,7 +18,7 @@ public class ThirdPartyLogin : MonoBehaviour
     public GameObject BinDingPhonePage;
 
 
-    private LoginUISwitch LUIS;
+    private LoginPanelUI loginPanelUI;
 
     private string UserID;
     private string ExpiresTime;
@@ -31,7 +31,7 @@ public class ThirdPartyLogin : MonoBehaviour
 
     private void Awake()
     {
-        LUIS = GetComponent<LoginUISwitch>();
+        loginPanelUI = transform.parent.parent.GetComponent<LoginPanelUI>();
         ssdk = GameObject.FindObjectOfType<ShareSDK>();
         if (ssdk==null)
         {
@@ -48,7 +48,7 @@ public class ThirdPartyLogin : MonoBehaviour
             {
                 return;
             }
-            ssdk.DisableSSO(false);
+            //ssdk.DisableSSO(false);
             ssdk.GetUserInfo(PlatformType.WeChat);
         });
 
@@ -58,7 +58,7 @@ public class ThirdPartyLogin : MonoBehaviour
             {
                 return;
             }
-            ssdk.DisableSSO(false);
+            //ssdk.DisableSSO(false);
             ssdk.GetUserInfo(PlatformType.QQ);
         });
 
@@ -68,7 +68,7 @@ public class ThirdPartyLogin : MonoBehaviour
             {
                 return;
             }
-            ssdk.DisableSSO(false);
+            //ssdk.DisableSSO(false);
             ssdk.GetUserInfo(PlatformType.SinaWeibo);
         });
     }
@@ -102,18 +102,19 @@ public class ThirdPartyLogin : MonoBehaviour
                 {
                     case 1:
                       Debug.Log("未绑定手机号");
-                        BinDingPhonePage.SetActive(true);
-                        LUIS.ThirdOpenID = UserID;
-                        LUIS.UserName = UserName;
-                        LUIS.UserIcon = UserIcon;
+                        LoginUIController.Instance.SetNextUIState(LoginUIState.BinDingPhonePage);
+                        loginPanelUI.ThirdOpenID = UserID;
+                        loginPanelUI.UserName = UserName;
+                        loginPanelUI.UserIcon = UserIcon;
                         break;
                     case 2:
                         Debug.Log("登录成功");
-                        ScenesManager.Instance.LoadMainScene();
+                        LoginUIController.Instance.PopupInfo("Third");
+                     
                         break;
                     default:
                         Debug.Log("登录异常");
-                        LUIS.PopupInfo("Error");
+                        LoginUIController.Instance.PopupInfo("Error");
                         break;
                 }
             }));

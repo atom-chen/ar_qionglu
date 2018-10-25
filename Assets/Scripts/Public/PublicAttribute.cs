@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -6,10 +6,7 @@ using UnityEngine;
 public class PublicAttribute
 {
 	
-	 /// <summary>
-    /// 是否是游客登录
-    /// </summary>
-    public static bool isVisitor = false;
+
     /// <summary>
     /// app资源版本json文件
     /// </summary>
@@ -115,7 +112,9 @@ public class PublicAttribute
             {
                 localFilePath = Application.persistentDataPath + "/DownloadFile/";
             }
-            else if (Application.platform == RuntimePlatform.WindowsEditor)
+            else if (Application.platform == RuntimePlatform.WindowsEditor 
+                     ||Application.platform == RuntimePlatform.OSXEditor
+                     ||Application.platform == RuntimePlatform.OSXPlayer)
             {
                 localFilePath = Application.dataPath + "/DownloadFile/";
             }

@@ -155,32 +155,33 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
             string id = pointDataParams.data[i].id;
             string jingdu = pointDataParams.data[i].jingdu;
             string weidu = pointDataParams.data[i].weidu;
-            string count = pointDataParams.data[i].count;
+         
             List<Paths> path = pointDataParams.data[i].paths;
 
             PointScrollShowClass ptClass = new PointScrollShowClass();
             ptClass.id = id;
             ptClass.jingdu = jingdu;
             ptClass.weidu = weidu;
-            ptClass.count = count;
+ 
             ptClass.paths = new Dictionary<string, Dictionary<string, List<string>>>();
-
+            int imagecount = 0;
             Dictionary<string, List<string>> pathChild = new Dictionary<string, List<string>>();
             for (int j = 0; j < path.Count; j++)
             {
                 List<string> imagePathList = new List<string>();
 
 
-
+              //  imagecount++;
                 for (int k = 0; k < path[j].timepaths.Count; k++)
                 {
                     imagePathList.Add(path[j].timepaths[k].imagepath);
-                    Debug.Log(path[j].timepaths[k].imagepath);
+                    imagecount++;
                 }
                 pathChild.Add(path[j].time, imagePathList);
                 Debug.Log(path[j].time);
                 //ptClass.paths.Add(path[j].time, pathChild);
             }
+            ptClass.count = imagecount.ToString();
             ptClass.paths.Add(id, pathChild);
             items.Add(ptClass);
         }
@@ -208,13 +209,10 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
 
         string jingdu = x.ToString("F5");
         string weidu = y.ToString("F5");
-        Debug.Log("x========" + jingdu + ";;;;;;y============" + weidu+ ";;;;;;;;;;;imagepath" + imagepath);
 
         String date = System.DateTime.Now.ToString("yyyy/MM/dd");
-        Debug.Log("date======="+date);
         date = date.Replace("/", "");
  
-        Debug.Log("date=======" + date+ ";;;;;;;x====" + jingdu + ";;;;;;y=======" + weidu + ";;;;;;imagepath" + imagepath+";;;;;;;;;;"+maxIndex.ToString());
         AddPoint(jingdu, weidu, imagepath, "1", (maxIndex+1).ToString());
         AddPointToPointClass(maxIndex+1, jingdu, weidu, imagepath, date);
         maxIndex++;

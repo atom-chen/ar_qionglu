@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Ports
 {
@@ -37,81 +38,131 @@ public class initScene : MonoBehaviour
     public static string localFilePath;
 
     public GameObject root;
-    // Use this for initialization
+    public webrequest web;
+    public static int FirstEnter
+    {
+        set {PlayerPrefs.SetInt("FirstEnter", value);}
+        get { return PlayerPrefs.GetInt("FirstEnter");}
+    }
     void Awake()
     {
-#if UNITY_ANDROID
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            localFilePath = Application.persistentDataPath + "/port.json";
-        }
-        else if (Application.platform == RuntimePlatform.WindowsEditor)
-        {
-            localFilePath = Application.persistentDataPath + "/port.json";
-        }
-        Debug.Log(localFilePath);
-        if (!File.Exists(localFilePath))
-        {
-            string jsonText = Resources.Load<TextAsset>("port").ToString();
-            JsonData jsonData = JsonMapper.ToObject(jsonText);
-            for (int i = 0; i < jsonData["allports"].Count; i++)
-            {
-                allport.Add(JsonMapper.ToObject<Ports>(jsonData["allports"][i].ToJson().ToString()));
-            }
+// #if UNITY_ANDROID
+//         if (Application.platform == RuntimePlatform.Android)
+//         {
+//             localFilePath = Application.persistentDataPath + "/port.json";
+//         }
+//         else if (Application.platform == RuntimePlatform.WindowsEditor)
+//         {
+//             localFilePath = Application.persistentDataPath + "/port.json";
+//         }
+//         Debug.Log(localFilePath);
+//         if (!File.Exists(localFilePath))
+//         {
+//             string jsonText = Resources.Load<TextAsset>("port").ToString();
+//             JsonData jsonData = JsonMapper.ToObject(jsonText);
+//             for (int i = 0; i < jsonData["allports"].Count; i++)
+//             {
+//                 allport.Add(JsonMapper.ToObject<Ports>(jsonData["allports"][i].ToJson().ToString()));
+//             }
+//
+//             PortsStatus gameStatus = new PortsStatus();
+//             gameStatus.allports = new connect[jsonData["allports"].Count];
+//
+//             for (int i = 0; i < jsonData["allports"].Count; i++)
+//             {
+//                 gameStatus.allports[i] = new connect();
+//                 gameStatus.allports[i].address = allport[i].address;
+//                 gameStatus.allports[i].portnum = allport[i].portnum;
+//             }
+//             string json = JsonMapper.ToJson(gameStatus);
+//             Regex reg = new Regex(@"(?i)\\[uU]([0-9a-f]{4})");
+//             var ss = reg.Replace(json, delegate (Match m) { return ((char)Convert.ToInt32(m.Groups[1].Value, 16)).ToString(); });
+//
+//             File.WriteAllText(localFilePath, ss, Encoding.UTF8);
+//
+//         }
+//         else
+//         {
+//             StreamReader sr = new StreamReader(localFilePath);
+//             string jsonText = sr.ReadToEnd();
+//             sr.Close();
+//             sr.Dispose();
+//
+//             JsonData jsonData = JsonMapper.ToObject(jsonText);
+//             for (int i = 0; i < jsonData["allports"].Count; i++)
+//             {
+//                 allport.Add(JsonMapper.ToObject<Ports>(jsonData["allports"][i].ToJson().ToString()));
+//                 Debug.Log(allport[i].address+allport[i].portnum);
+//             }
+//
+//             PublicAttribute.URL =allport[0].address + allport[0].portnum;
+//             Debug.Log(PublicAttribute.URL);
+//         }      
+// #endif
 
-            PortsStatus gameStatus = new PortsStatus();
-            gameStatus.allports = new connect[jsonData["allports"].Count];
-
-            for (int i = 0; i < jsonData["allports"].Count; i++)
-            {
-                gameStatus.allports[i] = new connect();
-                gameStatus.allports[i].address = allport[i].address;
-                gameStatus.allports[i].portnum = allport[i].portnum;
-            }
-            string json = JsonMapper.ToJson(gameStatus);
-            Regex reg = new Regex(@"(?i)\\[uU]([0-9a-f]{4})");
-            var ss = reg.Replace(json, delegate (Match m) { return ((char)Convert.ToInt32(m.Groups[1].Value, 16)).ToString(); });
-
-            File.WriteAllText(localFilePath, ss, Encoding.UTF8);
-
-        }
-        else
-        {
-            StreamReader sr = new StreamReader(localFilePath);
-            string jsonText = sr.ReadToEnd();
-            sr.Close();
-            sr.Dispose();
-
-            JsonData jsonData = JsonMapper.ToObject(jsonText);
-            for (int i = 0; i < jsonData["allports"].Count; i++)
-            {
-                allport.Add(JsonMapper.ToObject<Ports>(jsonData["allports"][i].ToJson().ToString()));
-                Debug.Log(allport[i].address+allport[i].portnum);
-            }
-
-            PublicAttribute.URL =allport[0].address + allport[0].portnum;
-            Debug.Log(PublicAttribute.URL);
-        }
-                
-#endif
     }
 
-    IEnumerator Start ()
+    IEnumerator Start()
     {
         //屏幕常亮
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        HttpManager.Instance.GetAds((b =>
+        {
+            if (b)
+            {
+                foreach (var page in JsonClass.Instance.AdsPages)
+                {            
+                    ads.GetComponent<Button>().onClick.AddListener(delegate
+                    {
+                        web.LoadWeb(page.address);
+                    });
+                    HttpManager.Instance.Download(page.Thumbnail, (() =>
+                    {
+          
+                    }));
+                }
+            }
+        }));
         yield return new WaitForSeconds(1);
         root.SetActive(true);
         yield return new WaitForSeconds(2);
         guide.SetActive(true);
         splash.gameObject.SetActive(false);
-        yield return new WaitForSeconds(3);
-	    ads.SetActive(false);
-    }
 
+        yield return new WaitForSeconds(3);
+        if (FirstEnter == 0)
+        {           
+            ads.SetActive(false);
+        }
+        else
+        {            
+            EnterMain();
+        }
+    }
+    public void EnterMain()
+    {
+        HttpManager.Instance.GetUserInfoByToken((b =>
+        {
+            if (b)
+            {
+                ScenesManager.Instance.LoadMainScene();
+            }
+            else
+            {
+                ScenesManager.Instance.LoadLoginScene();
+            }
+        }));
+    }
     public void HideAds()
     {
-        ads.SetActive(false);
+        if (FirstEnter == 0)
+        {           
+            ads.SetActive(false);
+        }
+        else
+        {
+            EnterMain();
+        }
     }
 
     public void GetState()

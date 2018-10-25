@@ -285,12 +285,7 @@ Prefab:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1860651263457968, guid: b8659f4719d74b84dad880b3cc4ca006, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 114888540230101868, guid: b8659f4719d74b84dad880b3cc4ca006, type: 2}
+    m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b8659f4719d74b84dad880b3cc4ca006, type: 2}
   m_IsPrefabParent: 0
 --- !u!224 &192196397 stripped
@@ -2346,7 +2341,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1501114392
 Transform:
   m_ObjectHideFlags: 0
@@ -2538,10 +2533,6 @@ Prefab:
         type: 2}
       propertyPath: m_Pivot.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1603427407043886, guid: ef6d3b387e807f040819d99afb979cff, type: 2}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ef6d3b387e807f040819d99afb979cff, type: 2}

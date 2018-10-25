@@ -30,7 +30,7 @@ public class BananrItem : MonoBehaviour {
             {
                 if (response == null || !response.IsSuccess)
                 {
-                    DebugManager.Instance.LogError("ÇëÇóÊ§°Ü£¡");
+                    DebugManager.Instance.LogError("è¯·æ±‚å¤±è´¥ï¼");
                     return;
                 }
                 tex.LoadImage(response.Data);
@@ -42,7 +42,7 @@ public class BananrItem : MonoBehaviour {
         }
     }
     /// <summary>
-    /// ¼ì²éÎÄ¼şÊÇ·ñ´æÔÚ
+    /// æ£€æŸ¥æ–‡ä»¶æ˜¯å¦å­˜åœ¨
     /// </summary>
     /// <param name="imgURl"></param>
     /// <returns></returns>
