@@ -4,7 +4,7 @@
 [Bb]uild/
 [Bb]uilds/
 Assets/AssetStoreTools*
-
+Assets/DownloadFile
 # Visual Studio cache directory
 .vs/
 
@@ -43,3 +43,4 @@ Assets/DownloadFile/Ads/963.jpg
 Assets/DownloadFile/Ads/963.jpg.meta
 ProjectSettings/EditorBuildSettings.asset
 ProjectSettings/EditorBuildSettings.asset
+Assets/DownloadFile/Ads.meta
