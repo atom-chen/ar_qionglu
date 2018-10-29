@@ -7,8 +7,6 @@ using UnityEngine.SceneManagement;
 public class Root : MonoBehaviour
 {
 
-
-    static  int  id=0;
     private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
@@ -28,14 +26,17 @@ public class Root : MonoBehaviour
     /// 推送的回调
     /// </summary>
     /// <param name="message"></param>
-    public void Notify(string backid)
+    public void Notify(string jsonData)
     {
-        Debug.Log("点击了通知!!!,传回的消息是    " + backid);
-        NotifyCallBack nt =  JsonMapper.ToObject<NotifyCallBack>(backid);
-        id = int.Parse(backid);
+        Debug.Log("点击了通知!!!,传回的消息是    " +jsonData);
+        NotifyCallBack nt =  JsonMapper.ToObject<NotifyCallBack>(jsonData);
+
 
         //TODO
         //跳转到gpsConvert
+        GpsConvert.instance.ShowdirectPoint(nt.type,float.Parse(nt.dbid));
+
+
     }
 
 

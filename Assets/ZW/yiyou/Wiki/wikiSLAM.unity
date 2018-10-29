@@ -581,15 +581,6 @@ Prefab:
       propertyPath: fontUIParent
       value: 
       objectReference: {fileID: 1036444536}
-    - target: {fileID: 1487297213135432, guid: 0e898a611625bd8479ee6a86a6ae1f04, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114274641771532392, guid: 0e898a611625bd8479ee6a86a6ae1f04,
-        type: 2}
-      propertyPath: m_FontData.m_Alignment
-      value: 4
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0e898a611625bd8479ee6a86a6ae1f04, type: 2}
   m_IsPrefabParent: 0
@@ -1653,6 +1644,7 @@ MonoBehaviour:
   DisabledColor: {r: 1, g: 0.2, b: 0.2, a: 0.8}
   showGameObject: {fileID: 0}
   btns: []
+  mainLight: {fileID: 0}
 --- !u!114 &1435189053
 MonoBehaviour:
   m_ObjectHideFlags: 0

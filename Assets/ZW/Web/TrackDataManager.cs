@@ -54,64 +54,7 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
         }
 
     }
-//    public  void CopyFile()
-//    {
 
-//        string htmlPath = UnityHelper.LocalFilePath + "Web/a.txt";
-//        string pushcontentPath = UnityHelper.LocalFilePath + "Push/a.txt";
-//        if (!File.Exists(htmlPath))
-//        {
-//            if (!Directory.Exists(Path.GetDirectoryName(htmlPath)))
-//            {
-//                Directory.CreateDirectory(Path.GetDirectoryName(htmlPath));
-//            }
-//            if (!Directory.Exists(Path.GetDirectoryName(pushcontentPath)))
-//            {
-//                Directory.CreateDirectory(Path.GetDirectoryName(pushcontentPath));
-//            }
-//            FileStream fs = new FileStream(htmlPath, FileMode.OpenOrCreate);
-//            StreamWriter sw = new StreamWriter(fs);
-//            sw.Close();
-     
-//        }
-//   string htmltargetFile = UnityHelper.LocalFilePath + "Web/" + "CustomOverlay.html";
-
-
-//#if UNITY_ANDROID
-//        StartCoroutine(Load(htmltargetFile, "CustomOverlay.html"));
-
-//#else
-//        string sourceFile = Application.streamingAssetsPath + "/Web/CustomOverlay.html";
-     
-   
-//        File.Copy(sourceFile,targetFile,true);
-
-//#endif
-
-
-
-
-//    }
-    /// <summary>
-    /// 从移动端的streamingAssets目录下读取并且写到移动端app的安装目录下
-    /// </summary>
-    /// <param name="targetFile"></param>
-    /// <param name="fileName"></param>
-    /// <param name="suffix"></param>
-    /// <returns></returns>
-    IEnumerator Load(string targetFile,string  fileName)
-    {
-
-        WWW load = new WWW("jar:file://" + Application.dataPath + "!/assets/Web/" + fileName);  // 安卓下streamingAssets目录
-
-        yield return load;
-        if (load.isDone)
-        {
-            // 写到持久化目录
-            Debug.Log("load.text==" + load.text);
-            File.WriteAllText(targetFile, load.text);
-        }
-    }
     private void AddToLinkList(PointClass pointDataParams)
     {
      //   Debug.Log("AddToLinkList");

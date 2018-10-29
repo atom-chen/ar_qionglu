@@ -15,13 +15,6 @@ using com.mob.mobpush;
 
 
 
-public class DistanceComparer : IComparer<PushMsg>
-{
-    public int Compare(PushMsg x, PushMsg y)
-    {
-        return x.distance.CompareTo(y.distance);
-    }
-}
 
 public class PushManager : MonoBehaviour
 {
@@ -115,7 +108,7 @@ public class PushManager : MonoBehaviour
         {
             PushItem pushItemMsg = new PushItem();
             pushItemMsg.id = item.id;
-
+            pushItemMsg.name = item.name;
             pushItemMsg.locationX = item.locationX;
 
 
@@ -123,15 +116,14 @@ public class PushManager : MonoBehaviour
             pushItemMsg.pos = item.pos;
 
             pushItemMsg.height = item.height;
-            pushItemMsg.time = item.time;
-            pushItemMsg.url = item.url;
+
             pushItemMsg.title = item.title;
             pushItemMsg.msg = item.msg;
             pushItemMsg.distance =item.distance;
 
-
-
-      //      Debug.Log("pointdata====" + pushItemMsg.title+"--"+ pushItemMsg.msg + "--" + pushItemMsg.pos);
+            pushItemMsg.dbid = item.dbid;
+            pushItemMsg.type = item.type;
+            //      Debug.Log("pointdata====" + pushItemMsg.title+"--"+ pushItemMsg.msg + "--" + pushItemMsg.pos);
             pushPointIndexV2Dic.Add(int.Parse(pushItemMsg.id), pushItemMsg);
         }
     }
@@ -208,12 +200,11 @@ public class PushManager : MonoBehaviour
          //   Debug.Log("nearIndexList.Count==" + nearIndexList.Count);
 
             nearIndexList.Sort((x, y) => { return x.distance.CompareTo(y.distance); });
-            foreach (var item in nearIndexList)
-            {
-                Debug.Log(item.distance);
-            }
+      
             return  nearIndexList ;
         }
+
+
         return null;
     }
 
@@ -229,7 +220,8 @@ public class PushManager : MonoBehaviour
             {
                 NotifyCallBack notifyCallBack = new NotifyCallBack()
                 {
-                    id = newPushMsg.id
+                    dbid = newPushMsg.dbid,
+                    type = newPushMsg.type
                 };
 #if UNITY_ANDROID
                 AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
@@ -241,8 +233,8 @@ public class PushManager : MonoBehaviour
          pushState = 0;
 			LocalNotifyStyle style = new LocalNotifyStyle ();
             Hashtable args = new Hashtable();
-            args["pushId"] = newPushMsg.id;
-   
+            args["dbId"] = newPushMsg.dbid;
+              args["type"] = newPushMsg.type;
 			style.setContent (newPushMsg.msg);
 			style.setTitle (newPushMsg.title);
             style.addHashParams(args);
@@ -271,14 +263,20 @@ public class PushManager : MonoBehaviour
                 case 1:
                     Debug.Log("点击推送点击推送点击推送点击推送点击推送");
                     pushState = 0;
-  
-    JsonData jsonData=JsonMapper.ToObject(iOSMobPushImpl.reqJson);
-    string  result=jsonData["pushId"]. ToString();
-    if (string.IsNullOrEmpty(result))
+    if (string.IsNullOrEmpty(iOSMobPushImpl.reqJson))
 	{
-    Root root=GameObject.FindObjectOfType<Root>();
-    root.Notify(result);
+                Root root = GameObject.FindObjectOfType<Root>();
+            JsonData  jsonData=JsonMapper.ToJson(iOSMobPushImpl.reqJson);
+            NotifyCallBack notifyCallBack = new NotifyCallBack()
+            {
+                dbid = jsonData["dbid"].ToString(),
+                type = jsonData["type"].ToString()
+            };
+      
+            root.Notify(JsonMapper.ToJson(notifyCallBack));
 	}
+
+
                     break;
                 default:
                     break;

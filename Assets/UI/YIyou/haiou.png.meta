@@ -3,7 +3,7 @@ guid: d876e4403fe30f646aed6d338666a0d6
 TextureImporter:
   fileIDToRecycleName: {}
   externalObjects: {}
-  serializedVersion: 6
+  serializedVersion: 5
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -21,8 +21,6 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
-  streamingMipmaps: 0
-  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -95,7 +93,7 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 128
     resizeAlgorithm: 0
-    textureFormat: 47
+    textureFormat: 45
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0

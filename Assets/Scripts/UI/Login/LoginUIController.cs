@@ -55,9 +55,21 @@ public class LoginUIController : SingletonMono<LoginUIController>
         {
             if (item.name == name)
             {
-      
+
                 item.SetActive(false);
                 item.GetComponent<UIWindowsBase>().ClearInputFieldText();
+            }
+        }
+    }
+    internal void ShowUIState(LoginUIState loginUIState)
+    {
+        foreach (var item in uiPanels)
+        {
+            if (item.name == loginUIState.ToString())
+            {
+
+                item.SetActive(true);
+                
             }
         }
     }
@@ -105,7 +117,7 @@ public class LoginUIController : SingletonMono<LoginUIController>
                 break;
             case "1006":
                 //注册成功
-                tipPanel.ShowPopupAndDoSomeThing("操作成功", "请妥善保管账号和密码", 1.5f, LoadMainScene);
+                tipPanel.ShowPopupAndDoSomeThing("注册成功", "您已成功使用该手机号注册，当前自动登录该账号", 1.5f, LoadMainScene);
                 //tipPanel.ShowPopup("操作成功", "请妥善保管账号和密码");
                 break;
             case "1007":
@@ -169,7 +181,7 @@ public class LoginUIController : SingletonMono<LoginUIController>
         btn.interactable = false;
         while (time > 0)
         {
-            text.text = time + "";
+            text.text = time + "s";
             //暂停一秒
             yield return new WaitForSeconds(1);
             time--;

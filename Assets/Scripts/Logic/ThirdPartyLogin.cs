@@ -102,10 +102,11 @@ public class ThirdPartyLogin : MonoBehaviour
                 {
                     case 1:
                       Debug.Log("未绑定手机号");
-                        LoginUIController.Instance.SetNextUIState(LoginUIState.BinDingPhonePage);
                         loginPanelUI.ThirdOpenID = UserID;
                         loginPanelUI.UserName = UserName;
                         loginPanelUI.UserIcon = UserIcon;
+                        LoginUIController.Instance.SetNextUIState(LoginUIState.BinDingPhonePage);
+
                         break;
                     case 2:
                         Debug.Log("登录成功");

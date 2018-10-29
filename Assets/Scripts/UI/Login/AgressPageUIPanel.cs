@@ -16,8 +16,8 @@ public class AgressPageUIPanel : UIWindowsBase {
         backBtn.onClick.AddListener(()=> {
 
 
-            LoginUIController.Instance.HideCurrentUIState(this.gameObject.name);
-
+            LoginUIController.Instance.SetNextUIState(LoginUIState.LoginPanel);
+            LoginUIController.Instance.ShowUIState(LoginUIState.ProtocolPanel); 
 
         });
 

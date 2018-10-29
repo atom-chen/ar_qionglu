@@ -204,7 +204,15 @@ public    Light mainLight;
 
                 showGameObject.transform.localPosition = Vector3.zero;
                 showGameObject.transform.localEulerAngles = Vector3.zero;
+                if (showGameObject.name=="wurenji")
+                {
+                    showGameObject.GetComponentInChildren<Cloth>().enabled = false;
+                }
                 showGameObject.transform.localScale = Vector3.one * 0.5f;
+                if (showGameObject.name == "wurenji")
+                {
+                    showGameObject.GetComponentInChildren<Cloth>().enabled = true;
+                }
                 UtilityHelper.RotateTowardCameraVuforia(showGameObject);
                 YiyouStaticDataManager.Instance.ShowModel = showGameObject;
 
@@ -226,7 +234,7 @@ public    Light mainLight;
      ShowEffectPanel();
                 GroundPlaneUI.Instance.SetReticleVisiblity(false);
                 WriteManager.Instance.SetGoodsEnum(showGameObject.GetComponent<WriteItem>().goodsEnum);
-                InitLight();
+                InitLight(showGameObject.name);
             }
             else
             {
@@ -235,7 +243,8 @@ public    Light mainLight;
 
         }
     }
-    private void InitLight()
+
+    private void InitLight(string goName)
     {
         mainLight.transform.parent.position = GameObject.FindGameObjectWithTag(Tags.MainCamera).transform.position;
         //mainLight.transform.transform.position = Vector3.zero;
@@ -243,10 +252,16 @@ public    Light mainLight;
         mainLight.transform.parent.eulerAngles = new UnityEngine.Vector3(0, 180f, 0);
 
         mainLight.transform.localEulerAngles = new UnityEngine.Vector3(30, 0f, 0);
-
+        if (goName == "shabao")
+        {
+            mainLight.intensity = 0;
+        }
+        else
+        {
+            mainLight.intensity = 0.5f;
+        }
 
     }
-
     private void ShowInput()
     {
 
@@ -254,9 +269,9 @@ public    Light mainLight;
     }
     private void ShowEffectPanel()
     {
-       
-            GroundPlaneUI.Instance.ShowEffectPanel();
 
+        GroundPlaneUI.Instance.ShowEffectPanel();
+ 
         
     }
     

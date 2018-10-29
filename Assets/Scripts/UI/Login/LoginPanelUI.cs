@@ -69,26 +69,33 @@ public class LoginPanelUI : UIWindowsBase
         });
 
         #region   账号密码响应事件
-
+        //手机号注册按钮
         registerBtn.onClick.AddListener((() =>
             {
                 LoginUIController.Instance.SetNextUIState(LoginUIState.RegistPanel);
             }));
-
+        //账号密码登录按钮
         AccountsUserPwdLogin.onClick.AddListener((() =>
         {
             if (!LoginUIController.Instance.VerifyAgreeToggle())
             {
                 return;
             }
-
-            if (LoginUIController.Instance.VerifyPhoneNo(AccountsphoneInput.text) && LoginUIController.Instance.VerifyPwd(AccountsPwInpPut.text))
+            if (string.IsNullOrEmpty(AccountsphoneInput.text))
+            {
+                LoginUIController.Instance.ShowPopup("", "请输入登录账号");
+            }
+            else if (string.IsNullOrEmpty(AccountsPwInpPut.text))
+            {
+                LoginUIController.Instance.ShowPopup("", "请输入密码");
+            }
+            else if (LoginUIController.Instance.VerifyPhoneNo(AccountsphoneInput.text) && LoginUIController.Instance.VerifyPwd(AccountsPwInpPut.text))
             {
                 HttpManager.Instance.Login_UserPwd(AccountsphoneInput.text, AccountsPwInpPut.text, (LoginUIController.Instance.PopupInfo));
             }
             else
             {
-                LoginUIController.Instance.ShowPopup("格式不正确", "请输入正确的格式");
+                LoginUIController.Instance.ShowPopup("登录失败", "请输入正确的账号和密码");
             }
         }));
         AccountseyeBtn.onClick.AddListener((() =>

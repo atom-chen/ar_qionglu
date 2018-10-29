@@ -560,7 +560,7 @@ public class Downloader
             FileStream fs = null;
             if (response == null || !response.IsSuccess)
             {
-                Debug.Log("请求失败！" + response.StatusCode);
+                Debug.Log("请求失败！" + response.StatusCode + " "+downUnit.downUrl);
                 if (fs != null)
                 {
                     fs.Flush();

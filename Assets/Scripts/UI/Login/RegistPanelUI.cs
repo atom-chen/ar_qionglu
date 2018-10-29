@@ -46,7 +46,19 @@ public class RegistPanelUI : UIWindowsBase
 
         registerBtn.onClick.AddListener((() =>
         {
-            if (LoginUIController.Instance.VerifyPhoneNo(phoneNoInput.text) && LoginUIController.Instance.VerifyPwd(pwInput.text) && LoginUIController.Instance.VerifySMSCode(smssInput.text))
+            if (string.IsNullOrEmpty(phoneNoInput.text))
+            {
+                LoginUIController.Instance.ShowPopup("", "请输入手机号");
+            }
+            else if (string.IsNullOrEmpty(pwInput.text))
+            {
+                LoginUIController.Instance.ShowPopup("", "请输入密码");
+            }
+            else if (string.IsNullOrEmpty(smssInput.text))
+            {
+                LoginUIController.Instance.ShowPopup("", "请输入验证码");
+            }
+            else     if (LoginUIController.Instance.VerifyPhoneNo(phoneNoInput.text) && LoginUIController.Instance.VerifyPwd(pwInput.text) && LoginUIController.Instance.VerifySMSCode(smssInput.text))
             {
                 HttpManager.Instance.Register(phoneNoInput.text, pwInput.text, smssInput.text, (LoginUIController.Instance.PopupInfo));
             }

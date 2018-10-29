@@ -35,18 +35,8 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
     public List<GameObject> btns = new List<GameObject>();
   
     private bool _isTracking = false;
-    Light mainLight;
-    public UnityEngine.Light MainLight
-    {
-        get {
-            if (mainLight==null)
-            {
-                mainLight = GameObject.FindGameObjectWithTag(Tags.Light).GetComponent<Light>();
-            }
-            return mainLight;
-        }
-        set { mainLight = value; }
-    }
+  public  Light mainLight;
+
     public InstantTrackingState CurrentState
     {
         get { return _currentState; }
@@ -77,6 +67,7 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
         //instantTrackable.OnSceneLost.AddListener(OnSceneLost);
         _gridRenderer = GetComponent<GridRenderer>();
 
+        mainLight = GameObject.FindGameObjectWithTag(Tags.Light).GetComponent<Light>();
 
     }
 
@@ -91,7 +82,6 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
         StartCoroutine(CheckPlatformAssistedTrackingSupport());
 
 
-     
     }
 
     private IEnumerator CheckPlatformAssistedTrackingSupport()
@@ -169,14 +159,14 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
 
     internal void SetIntensityValue(float value)
     {
-        MainLight.intensity = value;
+        mainLight.intensity = value;
     }
 
     internal void SetLightLeftValue(float value)
     {
 
-        Vector3 rot = MainLight.transform.parent.localEulerAngles;
-        MainLight.transform.parent.localEulerAngles = new UnityEngine.Vector3(rot.x,-value,rot.z);
+        Vector3 rot = mainLight.transform.parent.localEulerAngles;
+        mainLight.transform.parent.localEulerAngles = new UnityEngine.Vector3(rot.x,-value,rot.z);
 
     }
 
@@ -184,20 +174,26 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
     {
 
 
-        Vector3 rot = MainLight.transform.localEulerAngles;
-  
-        MainLight.transform.localEulerAngles = new UnityEngine.Vector3(value, rot.y, rot.z);
+        Vector3 rot = mainLight.transform.localEulerAngles;
+
+        mainLight.transform.localEulerAngles = new UnityEngine.Vector3(value, rot.y, rot.z);
     }
-    private void InitLight()
+    private void InitLight(string  goName)
     {
-        MainLight.transform.parent.position = GameObject.FindGameObjectWithTag(Tags.MainCamera).transform.position;
+        mainLight.transform.parent.position = GameObject.FindGameObjectWithTag(Tags.MainCamera).transform.position;
         //MainLight.transform.transform.position = Vector3.zero;
-        MainLight.transform.localPosition = Vector3.zero;
-        MainLight.transform.parent.eulerAngles = new UnityEngine.Vector3(0, 180f, 0);
+        mainLight.transform.localPosition = Vector3.zero;
+        mainLight.transform.parent.eulerAngles = new UnityEngine.Vector3(0, 180f, 0);
 
-        MainLight.transform.localEulerAngles = new UnityEngine.Vector3(30, 0f, 0);
-
-
+        mainLight.transform.localEulerAngles = new UnityEngine.Vector3(30, 0f, 0);
+        if (goName=="shabao")
+        {
+            mainLight.intensity = 0;
+        }
+        else
+        {
+            mainLight.intensity = 0.5f;
+        }
     }
     internal void SetRotateValue(float value)
     {
@@ -480,8 +476,16 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
             {
                 showGameObject.gameObject.SetActive(true);
                 showGameObject.transform.position = Vector3.zero;
-                showGameObject.transform.localScale = Vector3.one*0.5f;
-                showGameObject.transform.localEulerAngles = Vector3.zero;
+            if (showGameObject.name == "wurenji")
+            {
+                showGameObject.GetComponentInChildren<Cloth>().enabled = false;
+            }
+            showGameObject.transform.localScale = Vector3.one*0.5f;
+            if (showGameObject.name == "wurenji")
+            {
+                showGameObject.GetComponentInChildren<Cloth>().enabled = true;
+            }
+            showGameObject.transform.localEulerAngles = Vector3.zero;
          YiyouStaticDataManager.Instance.ShowModel = showGameObject;
                 WriteItem writeItem = showGameObject.GetComponent<WriteItem>();
                 if (writeItem != null && writeItem.goodsEnum != GoodsWriteEnum.None)
@@ -494,7 +498,8 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
                     WikiSLAMUIController.Instance.SetIntroductionText("", false);
                     WikiSLAMUIController.Instance.ShowButtonPanel(true);
                 }
-            EffectPanelUI.Instance.ShowToggle();
+            WikiSLAMUIController.Instance.ShowEffectPanel(true);
+
 
 
 
@@ -502,7 +507,8 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
             WriteManager.Instance.SetGoodsEnum(showGameObject.GetComponent<WriteItem>().goodsEnum);
                 _activeModels.Add(showGameObject);
 
-            InitLight();
+
+            InitLight(showGameObject.name);
             if (showGameObjectName.Contains("haiou"))
                 {
                     showGameObject.GetComponent<Haiou>().Init();

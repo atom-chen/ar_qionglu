@@ -239,7 +239,7 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
         {
             case ChangeSliderEnum.Intensity:
                 intensitySlider.gameObject.SetActive(true);
-                intensityBar.value = WikiSLAMController.Instance.MainLight.GetComponent<Light>().intensity;
+                intensityBar.value = WikiSLAMController.Instance.mainLight.GetComponent<Light>().intensity;
                 intensityText.text = (intensityBar.value).ToString("f2");
                 lightSlider.gameObject.SetActive(false);
                 rotateSlider.gameObject.SetActive(false);
@@ -248,8 +248,8 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
                 intensitySlider.gameObject.SetActive(false);
                 lightSlider.gameObject.SetActive(true);
 
-                leftBar.value = WikiSLAMController.Instance.MainLight.transform.parent.localEulerAngles.y;
-                upBar.value = WikiSLAMController.Instance.MainLight.transform.eulerAngles.x;
+                leftBar.value = WikiSLAMController.Instance.mainLight.transform.parent.localEulerAngles.y;
+                upBar.value = WikiSLAMController.Instance.mainLight.transform.eulerAngles.x;
 
 
 

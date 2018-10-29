@@ -7,5 +7,9 @@ public class NotifyCallBack
     /// <summary>
     /// 对应的id
     /// </summary>
-    public string id { get; set; }
+    public string dbid { get; set; }
+
+
+
+    public string type { get; set; }
 }

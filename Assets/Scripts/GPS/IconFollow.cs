@@ -82,9 +82,10 @@ public class IconFollow : MonoBehaviour
             switch (type)
             {
                 case "vsz-facilities":
-                case "vsz-building":
-                case "vsz-business":
+                case "vsz-washroom":
+                case "vsz-hotel":
                 case "vsz-sell-ticket":
+                case  "vsz-lease":
                     iconbg.gameObject.SetActive(true);
                     break;
                 case "vsz-special-scenery":
@@ -110,8 +111,27 @@ public class IconFollow : MonoBehaviour
         type = spottype;
         switch (spottype)
         {
-            //公共设施
-            case "vsz-facilities":
+            //租赁点
+            case "vsz-lease":
+                iconraw = state.transform.Find("iconbg/icon").GetComponent<RawImage>();
+                iconraw.texture = Resources.Load<Texture>("GPS/自行车");
+
+                disText = state.transform.Find("iconbg/distance").GetComponent<Text>();
+                btn = iconraw.transform.GetComponent<Button>();
+                btn.onClick.AddListener(delegate ()
+                {
+                    GpsConvert.instance.ShowDirectSpot(item.id);
+                });
+
+                infobg.gameObject.SetActive(false);
+                iconbg.gameObject.SetActive(true);
+                namebg1.gameObject.SetActive(false);
+                namebg2.gameObject.SetActive(false);
+
+                break;
+            
+            //厕所
+            case "vsz-washroom":
                 iconraw = state.transform.Find("iconbg/icon").GetComponent<RawImage>();
                 iconraw.texture = Resources.Load<Texture>("GPS/厕所");
 
@@ -131,7 +151,7 @@ public class IconFollow : MonoBehaviour
             //市政建筑
             case "vsz-building":
                 iconraw = state.transform.Find("iconbg/icon").GetComponent<RawImage>();
-                iconraw.texture = Resources.Load<Texture>("GPS/自行车");
+                iconraw.texture = Resources.Load<Texture>("GPS/酒店");
 
                 disText = state.transform.Find("iconbg/distance").GetComponent<Text>();
                 btn = iconraw.transform.GetComponent<Button>();
@@ -146,8 +166,8 @@ public class IconFollow : MonoBehaviour
                 namebg2.gameObject.SetActive(false);
 
                 break;
-            //商家
-            case "vsz-business":
+            //酒店
+            case "vsz-hotel":
                 iconraw = state.transform.Find("iconbg/icon").GetComponent<RawImage>();
                 iconraw.texture = Resources.Load<Texture>("GPS/餐饮");
 

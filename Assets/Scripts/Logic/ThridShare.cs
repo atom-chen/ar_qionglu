@@ -54,7 +54,7 @@ public class ThridShare : MonoBehaviour
 
         content.SetText("只留精彩，不留遗憾。");
         content.SetImageUrl("http://git.oschina.net/alexyu.yxj/MyTmpFiles/raw/master/kmk_pic_fld/small/107.JPG");
-        content.SetTitle("AR凉山游");
+        content.SetTitle("AR游");
         content.SetTitleUrl("http://www.visizen.com");
         content.SetUrl("http://www.visizen.com");
 

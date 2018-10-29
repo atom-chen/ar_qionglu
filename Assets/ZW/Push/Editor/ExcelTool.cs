@@ -32,17 +32,20 @@ namespace ElviraFrame.Excel
                 PushItem item = new PushItem();
                 //解析每列的数据
                 item.id = collect[i][0].ToString();
-                item.locationX = collect[i][1].ToString();
-                item.locationY = collect[i][2].ToString();
+                item.name= collect[i][1].ToString();
+                item.locationX = collect[i][2].ToString();
+                item.locationY = collect[i][3].ToString();
 
 
-                item.height = collect[i][3].ToString();
-                item.time = collect[i][4].ToString();
-                item.url = collect[i][5].ToString();
+                item.height = collect[i][4].ToString();
+          
+          
 
 
-                item.title = collect[i][6].ToString();
-                item.msg = collect[i][7].ToString();
+                item.title = collect[i][5].ToString();
+                item.msg = collect[i][6].ToString();
+      item.dbid = collect[i][7].ToString();
+                item.type= collect[i][8].ToString();
                 item.pos = new Vector2(float.Parse(item.locationX), float.Parse(item.locationY));
                 item.distance = 100000;
                 array[i - 1] = item;

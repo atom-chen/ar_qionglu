@@ -118,6 +118,10 @@ public class GpsConvert : MonoBehaviour
     public GameObject GPSHelp;
 
     public static bool isDown;
+
+    public static bool direct;
+
+    public static float id;
     // Use this for initialization
     private void Awake()
     {
@@ -192,7 +196,7 @@ public class GpsConvert : MonoBehaviour
                     item.name = info.baseEntity.name;
                     item.height = info.baseEntity.height;
                     item.typeName = info.type;
-                    item.content = info.baseEntity.content;
+                    item.content = info.baseEntity.description;
                     item.thumbnail = info.baseEntity.thumbnail;
                     item.address = info.baseEntity.address;
                     GPSItems.Add(item);
@@ -223,6 +227,13 @@ public class GpsConvert : MonoBehaviour
         dd.value = 3;
         //GetPoint();
     }
+
+    public void ShowdirectPoint(string type,float SpotId)
+    {
+        direct = true;
+        id = SpotId;
+    }
+
     private float timer = 1f;
     private void Update()
     {
@@ -567,6 +578,7 @@ public class GpsConvert : MonoBehaviour
         }
         else
         {
+            direct = false;
             SceneManager.LoadScene("main");
         }
     }
