@@ -140,7 +140,7 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     public RectTransform Content;
     public Texture[] defaultTex;
     public ListItem pageItemPrefab;
-    public int[] pageCount = new int[3];
+    private int[] pageCount = new int[4];
     List<string> filename = new List<string>();
     /// <summary>
     /// 获取图片列表
@@ -264,7 +264,48 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                     Loom.QueueOnMainThread((() =>
                     {
                         pageCount[2]++;
-                        SetContent(pageCount[2]);
+                        SetContent(pageCount[2] + pageCount[3]);
+                        item.gameObject.SetActive(true);
+                        item._init(item.thumbnail.localPath);
+                    }));
+                }));
+
+            }
+        }
+        
+        if (type == 3)
+        {
+            if (JsonClass.Instance.HotelInfoS.Count == 0)
+            {
+                CoroutineWrapper.EXES(1f, () =>
+                {
+                    GetImageList(type);
+                });
+                return;
+            }
+
+            if (pageCount[3] > 0)
+            {
+                return;
+            }
+        
+            for (int i = 0; i < JsonClass.Instance.HotelInfoS.Count; i++)
+            {
+                ListItem item = GameObject.Instantiate<ListItem>(pageItemPrefab);
+                item.transform.SetParent(ShowContent[2].transform);
+                item.transform.localScale = Vector3.one;
+                item.transform.localPosition = Vector3.zero;
+
+                item.id = JsonClass.Instance.HotelInfoS[i].id;
+                item.name = JsonClass.Instance.HotelInfoS[i].name;
+                item.thumbnail = JsonClass.Instance.HotelInfoS[i].thumbnail;
+                item.address = JsonClass.Instance.HotelInfoS[i].address;
+                HttpManager.Instance.Download(item.thumbnail, (() =>
+                {
+                    Loom.QueueOnMainThread((() =>
+                    {
+                        pageCount[3]++;
+                        SetContent(pageCount[2] + pageCount[3]);
                         item.gameObject.SetActive(true);
                         item._init(item.thumbnail.localPath);
                     }));
@@ -280,24 +321,24 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {
         if (Count <= 6)
         {
-            Content.sizeDelta = new Vector2(1440, 1600 / mainPageUI.scale);
+            Content.sizeDelta = new Vector2(1080, 1400 / mainPageUI.scale);
         }
         else if (Count > 6 && Count <= 9)
         {
-            Content.sizeDelta = new Vector2(1440, 1800 / mainPageUI.scale);
+            Content.sizeDelta = new Vector2(1080, 1400 / mainPageUI.scale);
         }
         else if (Count > 9)
         {
             if ((Count - 9) % 3 != 0)
             {
-                Content.sizeDelta = new Vector2(1440, 1745f/ mainPageUI.scale + 465 * (int)((Count - 9) / 3 + 1));
+                Content.sizeDelta = new Vector2(1080, 1400/ mainPageUI.scale + 365 * (int)((Count - 9) / 3 + 1));
             }
             else
             {
-                Content.sizeDelta = new Vector2(1440, 1745 / mainPageUI.scale + 465 * (int)((Count - 9) / 3));
+                Content.sizeDelta = new Vector2(1080, 1400 / mainPageUI.scale + 365 * (int)((Count - 9) / 3));
             }
         }
-        Content.anchoredPosition = new Vector2(-720, 0);
+        Content.anchoredPosition = new Vector2(-540, 0);
     }
 
     public void EnterMain()
@@ -311,7 +352,7 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         webObj.transform.SetParent(GameObject.Find("Canvas").transform);
         webObj.transform.localPosition = Vector3.zero;
         webObj.transform.localEulerAngles = Vector3.zero;
-        webObj.GetComponent<RectTransform>().sizeDelta = new Vector2(1440, 2560);
+        webObj.GetComponent<RectTransform>().sizeDelta = new Vector2(1080, 2560);
         webObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
     }
 
@@ -325,14 +366,27 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
             {
                 if (tog[i].isOn == true)
                 {
-                    GetImageList(i);
-                    ShowContent[i].gameObject.SetActive(true);
-                    if (pageCount[i]>0)
+                    if (i==2)
                     {
-                        SetContent(pageCount[i]);
+                        GetImageList(i);
+                        GetImageList(3);
+                        ShowContent[i].gameObject.SetActive(true);
+                        if ((pageCount[i]+pageCount[3])>0)
+                        {
+                            SetContent(pageCount[i]+pageCount[3]);
+                        }
+                        labels[i].color=Color.red;
                     }
-                    labels[i].color=Color.red;
-
+                    else
+                    {
+                        GetImageList(i);
+                        ShowContent[i].gameObject.SetActive(true);
+                        if (pageCount[i]>0)
+                        {
+                            SetContent(pageCount[i]);
+                        }
+                        labels[i].color=Color.red;
+                    }
                 }
                 else
                 {

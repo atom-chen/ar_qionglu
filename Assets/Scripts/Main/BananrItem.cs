@@ -14,7 +14,7 @@ public class BananrItem : MonoBehaviour {
     // Use this for initialization
     public void _init(string assetpath)
     {
-        web = GameObject.Find("UniWebView").GetComponent<webrequest>();
+        web = GameObject.Find(GlobalInfo.websiterequest).GetComponent<webrequest>();
         StartCoroutine(LoadImgFromCache(assetpath, jpg));
     }
 
@@ -53,6 +53,6 @@ public class BananrItem : MonoBehaviour {
     public void OpenWeb()
     {
         Debug.Log(address);
-        web.LoadWeb(address);
+        web.LoadWebSetTitle(address,"详情");
     }
 }

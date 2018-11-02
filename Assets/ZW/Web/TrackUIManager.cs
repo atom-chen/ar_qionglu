@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using ElviraFrame;
+using ElviraFrame.ScrollView;
+
 public class TrackUIManager : SingletonMono<TrackUIManager>
 {
 
@@ -21,6 +23,8 @@ public class TrackUIManager : SingletonMono<TrackUIManager>
     public GameObject loadTipImage;
 
     public GameObject resultGo;
+
+    public List<string> childSps = new List<string>();
     public UnityEngine.UI.Button BackBtn
     {
         get
@@ -48,9 +52,10 @@ public class TrackUIManager : SingletonMono<TrackUIManager>
                 case 0:
                     {
                         WebView.Instance.ClearWebView();
-                        SceneManager.LoadScene("main");
+
                         curState--;
                         curState = Mathf.Clamp(curState, 0, 1);
+                        UnityHelper.LoadNextScene("main");
                     }
                     break;
                 case 1:
@@ -63,7 +68,7 @@ public class TrackUIManager : SingletonMono<TrackUIManager>
                     }
                     break;
                 default:
-                    
+
                     break;
             }
         }
@@ -91,6 +96,7 @@ public class TrackUIManager : SingletonMono<TrackUIManager>
 
         TitleText.text = v1;
         curState = v2;
+        childSps.Clear();
     }
 
     private void Start()
@@ -110,17 +116,24 @@ public class TrackUIManager : SingletonMono<TrackUIManager>
         resultGo.SetActive(false);
     }
 
-
-
-    public void ShowBigImage(Sprite sps)
+    public void AddChildSprite(string  path)
     {
-        bigImage = Instantiate<GameObject>(Resources.Load<GameObject>("Model/ShowImage"), this.transform);
+        if (childSps==null)
+        {
+            childSps = new List<string>();
+            childSps.Clear();
+        }
+        childSps.Add(path);
+    }
+
+    public void ShowBigImage()
+    {
+        bigImage = Instantiate<GameObject>(Resources.Load<GameObject>("Model/UI/ScrollViewPanel"), this.transform);
 
         bigImage.gameObject.SetActive(true);
         bigImage.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
-        bigImage.GetComponent<RectTransform>().offsetMax = new Vector2(0, -90);
-        bigImage.transform.Find("Image").GetComponent<Image>().sprite = sps;
-        //FingerTouchEL.Instance.targetGameObject = go;
+        bigImage.GetComponent<RectTransform>().offsetMax = new Vector2(0, -130f);
+        bigImage.GetComponent<ScrollViewPanel>().AddItem(childSps);
     }
     internal void LoadStart()
     {
@@ -141,6 +154,7 @@ public class TrackUIManager : SingletonMono<TrackUIManager>
         {
             loadTipImage.transform.Rotate(-Vector3.forward * 100f * Time.deltaTime, Space.Self);
         }
+
     }
 
 

@@ -410,6 +410,7 @@ public class Downloader
                         Loom.QueueOnMainThread((() =>
                         {
                             WriteIntoTxt(j + "DownloadSuccess::::" + file.Key.downUrl + "    " + file.Value.endpoint + "    " + file.Key.fileName + "    " + file.Key.size, "down");
+                            j++;
                         }));
 
 
@@ -428,6 +429,7 @@ public class Downloader
                         Loom.QueueOnMainThread((() =>
                         {
                             WriteIntoTxt(j + "DownloadFail::::" + file.Key.downUrl + "    " + file.Value.endpoint + "    " + file.Key.fileName + "    " + file.Key.size, "down");
+                            j++;
                         }));
 
                         if (float.Parse(file.Key.size) <= 0 || file.Key.size == null)
@@ -449,7 +451,6 @@ public class Downloader
                         }
                     }
 
-                    j++;
                     Debug.LogWarning("总共  " + list.Count + "    当前  " + cureentDownCount);
                     HttpManager.Instance.DownloadPercent((float)cureentDownCount / (float)list.Count);
                     if (cureentDownCount == list.Count)
@@ -558,9 +559,10 @@ public class Downloader
             //originalRequest.ConnectTimeout = new TimeSpan(600000);
             //originalRequest.Timeout = new TimeSpan(600000);
             FileStream fs = null;
-            if (response == null || !response.IsSuccess)
+            if (response == null)
             {
-                Debug.Log("请求失败！" + response.StatusCode + " "+downUnit.downUrl);
+                Debug.Log("请求为空");
+                //Debug.Log("请求为空" +downUnit.downUrl);
                 if (fs != null)
                 {
                     fs.Flush();
@@ -575,7 +577,23 @@ public class Downloader
 
                 return;
             }
+            if (!response.IsSuccess)
+            {
+               // Debug.Log("请求失败！" + response.StatusCode + " "+downUnit.downUrl);
+                if (fs != null)
+                {
+                    fs.Flush();
+                    fs.Close();
+                    fs = null;
+                }
 
+                if (callback != null)
+                {
+                    callback(false);
+                }
+
+                return;
+            }
             try
             {
                 if (System.IO.File.Exists(tempFile))

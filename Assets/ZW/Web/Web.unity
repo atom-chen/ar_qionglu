@@ -369,6 +369,8 @@ GameObject:
   - component: {fileID: 798141416}
   - component: {fileID: 798141415}
   - component: {fileID: 798141414}
+  - component: {fileID: 798141418}
+  - component: {fileID: 798141419}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -439,6 +441,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &798141418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 798141413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63313eb37e96d774796fa0b3e3f8c56c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WebUI: {fileID: 1891738388}
+  webView: {fileID: 0}
+--- !u!114 &798141419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 798141413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8f6066dbbce0d74489cc7c38106c688, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items: []
 --- !u!1 &1097294409
 GameObject:
   m_ObjectHideFlags: 0
@@ -499,7 +526,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1421222550
 GameObject:
@@ -577,7 +604,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1939185182}
+      - m_Target: {fileID: 0}
         m_MethodName: CreateWebView
         m_Mode: 1
         m_Arguments:
@@ -858,63 +885,3 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224679360417378872, guid: 32f7f3455e28cf64e99e45fc6e6cb79d,
     type: 2}
   m_PrefabInternal: {fileID: 1891738387}
---- !u!1001 &1939185180
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4617992714447236, guid: a5b600fbee6b7b5438bdb0d92df3ce34, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -34.576797
-      objectReference: {fileID: 0}
-    - target: {fileID: 4617992714447236, guid: a5b600fbee6b7b5438bdb0d92df3ce34, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 1991.4453
-      objectReference: {fileID: 0}
-    - target: {fileID: 4617992714447236, guid: a5b600fbee6b7b5438bdb0d92df3ce34, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: -6.8263454
-      objectReference: {fileID: 0}
-    - target: {fileID: 4617992714447236, guid: a5b600fbee6b7b5438bdb0d92df3ce34, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4617992714447236, guid: a5b600fbee6b7b5438bdb0d92df3ce34, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4617992714447236, guid: a5b600fbee6b7b5438bdb0d92df3ce34, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4617992714447236, guid: a5b600fbee6b7b5438bdb0d92df3ce34, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4617992714447236, guid: a5b600fbee6b7b5438bdb0d92df3ce34, type: 2}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: a5b600fbee6b7b5438bdb0d92df3ce34, type: 2}
-  m_IsPrefabParent: 0
---- !u!1 &1939185181 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1015808695228552, guid: a5b600fbee6b7b5438bdb0d92df3ce34,
-    type: 2}
-  m_PrefabInternal: {fileID: 1939185180}
---- !u!114 &1939185182
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1939185181}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63313eb37e96d774796fa0b3e3f8c56c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WebUI: {fileID: 1891738388}
-  webView: {fileID: 0}

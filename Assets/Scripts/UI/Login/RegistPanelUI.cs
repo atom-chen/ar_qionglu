@@ -39,33 +39,44 @@ public class RegistPanelUI : UIWindowsBase
             }
             else
             {
-                LoginUIController.Instance.ShowPopup("格式不正确", "请输入正确的手机号");
+            
+                LoginUIController.Instance.ShowPopup(GlobalParameter.WrongFormat, GlobalParameter.InputPhoneNumber);
             }
         }));
 
 
         registerBtn.onClick.AddListener((() =>
         {
-            if (string.IsNullOrEmpty(phoneNoInput.text))
+            if (LoginUIController.Instance.VerifyAgreeToggle() == false)
             {
-                LoginUIController.Instance.ShowPopup("", "请输入手机号");
+
+                LoginUIController.Instance.ShowPopup("", GlobalParameter.AgrrToggle);
+                return;
             }
-            else if (string.IsNullOrEmpty(pwInput.text))
+
+            if (string.IsNullOrEmpty(phoneNoInput.text)||phoneNoInput.text.Length!=11)
             {
-                LoginUIController.Instance.ShowPopup("", "请输入密码");
+    
+                LoginUIController.Instance.ShowPopup("", GlobalParameter.InputPhoneNumber);
+                return;
             }
-            else if (string.IsNullOrEmpty(smssInput.text))
+             if (string.IsNullOrEmpty(pwInput.text))
             {
-                LoginUIController.Instance.ShowPopup("", "请输入验证码");
+                LoginUIController.Instance.ShowPopup("", GlobalParameter.InputPassword);
+              
+                return;
             }
-            else     if (LoginUIController.Instance.VerifyPhoneNo(phoneNoInput.text) && LoginUIController.Instance.VerifyPwd(pwInput.text) && LoginUIController.Instance.VerifySMSCode(smssInput.text))
+             if (string.IsNullOrEmpty(smssInput.text)||smssInput.text.Length!=6)
+            {
+             
+                LoginUIController.Instance.ShowPopup("", GlobalParameter.InputSMSS);
+                return;
+            }
+                 if (LoginUIController.Instance.VerifyPhoneNo(phoneNoInput.text) && LoginUIController.Instance.VerifyPwd(pwInput.text) && LoginUIController.Instance.VerifySMSCode(smssInput.text))
             {
                 HttpManager.Instance.Register(phoneNoInput.text, pwInput.text, smssInput.text, (LoginUIController.Instance.PopupInfo));
             }
-            else
-            {
-                LoginUIController.Instance.ShowPopup("格式不正确", "请输入正确的格式");
-            }
+   
         }));
 
 

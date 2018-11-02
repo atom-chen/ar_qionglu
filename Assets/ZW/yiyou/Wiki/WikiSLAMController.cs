@@ -80,7 +80,7 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
 
         QualitySettings.shadowDistance = 4.0f;
         StartCoroutine(CheckPlatformAssistedTrackingSupport());
-
+        YiyouStaticDataManager.Instance.StartLoadABAssets();
 
     }
 
@@ -118,43 +118,35 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
     }
     protected void Update()
     {
-
-        if (Input.GetMouseButtonDown(0))
+        if (btns.Count != 0)
         {
-      
-
-            Debug.Log("Input.mousePosition11===" + Input.mousePosition+"         "+_isTracking);
-            if (_isTracking )
+            foreach (var button in btns)
             {
-                //Tracker.ConvertScreenCoordinate(Input.mousePosition);
-    
-                // Set model position at touch position
-                var cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-                Plane p = new Plane(Vector3.up, Vector3.zero);
-                float enter;
-                if (p.Raycast(cameraRay, out enter))
-                {
-                  //  PlaceModel(cameraRay.GetPoint(enter));
-                    Debug.Log("Input.mousePosition2222222222====" + cameraRay.GetPoint(enter));
-                }
+                button.transform.Find("BgImage").GetComponent<Button>().interactable = _isTracking;
             }
         }
+       
+     if (_isTracking == true)
+        {
+         if (showGameObject!=null)    
+            {
+           
+     WikiSLAMUIController.Instance.SetIntroductionText("",false);
+            }
+            else if (showGameObject == null)
+            {
+                WikiSLAMUIController.Instance.SetIntroductionText("请将镜头朝向地面并选择合影道具");
+            }
+        }
+        else if (_isTracking == false)
+        {
+            if (showGameObject != null)
+            {
+                WikiSLAMUIController.Instance.SetIntroductionText("请对准合影道具摆放位置");
 
-        //if (_currentState == InstantTrackingState.Initializing)
-        //{
-        //    if (Tracker.CanStartTracking())
-        //    {
-        //        _gridRenderer.TargetColor = Color.green;
-        //    }
-        //    else
-        //    {
-        //        _gridRenderer.TargetColor = GridRenderer.DefaultTargetColor;
-        //    }
-        //}
-        //else
-        //{
-        //    _gridRenderer.TargetColor = GridRenderer.DefaultTargetColor;
-        //}
+            }
+           
+        }
     }
 
     internal void SetIntensityValue(float value)
@@ -445,7 +437,7 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
             foreach (var button in btns)
             {
                 button.GetComponent<SelectItemUI>().SetActive(active);
-
+             
             }
         }
 

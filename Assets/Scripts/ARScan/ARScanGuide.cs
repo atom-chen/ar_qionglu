@@ -13,6 +13,7 @@ public class ARScanGuide : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     public System.Action<int, int> OnPageChanged;
     float startime = 0f;
     float delay = 0.1f;
+    private bool first;
     void Awake()
     {
         //引导页调用
@@ -29,6 +30,8 @@ public class ARScanGuide : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         rect = transform.GetComponent<ScrollRect>();
         startime = Time.time;
         OnPageChanged += ScrollPageMark.instance.OnScrollPageChanged;
+        OnPageChanged(5, 0);
+        first = true;
     }
 
     private float autoChangeTime = 10;
@@ -222,6 +225,20 @@ public class ARScanGuide : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         Content.anchoredPosition = new Vector2(-1440 / 2, 2560 / 2);
     }
 
+    public void ReSetPos()
+    {
+        if (first)
+        {
+                    lastpage = 0;
+                    currentPageIndex = 0;
+                    OnPageChanged(5, 0);  
+                 
+                    targethorizontal = pages[0];
+                    
+                    Content.anchoredPosition = new Vector2(-1440 / 2, 2560 / 2);
+        }
+ 
+    }
     public void EnterMain()
     {
         SceneManager.LoadScene("main");

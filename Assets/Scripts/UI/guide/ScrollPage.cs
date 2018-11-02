@@ -255,8 +255,17 @@ public class ScrollPage : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {
         //Content.offsetMax = new Vector2(0,0);
         //Content.offsetMin = new Vector2(Screen.width*(pageCount-1), 0);
-        Content.sizeDelta = new Vector2(1440 * Count, 2560);
-        Content.anchoredPosition = new Vector2(-1440 / 2, 2560 / 2);
+        
+#if UNITY_ANDROID
+        Content.sizeDelta = new Vector2(Screen.width * Count, Screen.height);
+        Content.anchoredPosition = new Vector2(-Screen.width / 2, Screen.height / 2);
+#elif UNITY_IOS || UNITY_IPHONE
+        Content.sizeDelta = new Vector2(1080 * Count, 1920);
+        Content.anchoredPosition = new Vector2(-1080 / 2, 1920 / 2);
+#endif
+        
+        // Content.sizeDelta = new Vector2(1080 * Count, 1920);
+        // Content.anchoredPosition = new Vector2(-1080 / 2, 1920 / 2);
     }
 
     public void EnterMain()

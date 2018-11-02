@@ -13,7 +13,7 @@ public class GetJiuLongVideo : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log("¾ÅÁúºº°Ø");
+        Debug.Log("ä¹é¾™æ±‰æŸ");
         VP = GetComponent<VideoPlayer>();
         foreach (var info in PublicAttribute.AreaResoucesDic["1"].ResourcesInfos)
         {

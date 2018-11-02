@@ -13,6 +13,8 @@ public class webrequest : MonoBehaviour {
     {
         instance = this;
     }
+
+    private Scene sc;
 	// Use this for initialization
 	void Start () { 
 
@@ -77,25 +79,48 @@ public class webrequest : MonoBehaviour {
         }
 
         if (action=="ARScan")
-        {
-            SceneManager.LoadScene("ARScan");
+        {           
+            UnityHelper.LoadNextScene("ARScan");
         }
         else if (action == "Panorama")
         {
-            ChangeList.instance.ShowCurPanorama(id);
+            sc = SceneManager.GetActiveScene();
+            if (sc.name=="main")
+            {
+                ChangeList.instance.ShowCurPanorama(id);
+            }
+            else if (sc.name=="gpsConvert")
+            {
+                GpsConvert.instance.TurnChangeScene(id);
+            }
+           
         }
         else if (action == "Navigation")
         {
-            SceneManager.LoadScene("gpsConvert");
+            ShowdirectPoint("",float.Parse(id));
+            
+            UnityHelper.LoadNextScene("gpsConvert");
         }
         else if (action == "Visit")
         {
-            SceneManager.LoadScene("yiyou");
+            UnityHelper.LoadNextScene("yiyou");
         }
     }
 
+    public void ShowdirectPoint(string type,float SpotId)
+    {
+        GlobalInfo.GPSdirect = true;
+        GlobalInfo.GPSType = type;
+        GlobalInfo.GPSId = SpotId;
+    }
+    
     public void CloseWebView(GameObject obj)
     {
+        if (initScene.instance.isLookingAds)
+        {
+            initScene.instance.isLookingAds = false;
+            initScene.instance.EnterMain();
+        }
         obj.GetComponent<UniWebView>().Stop();
         Destroy(obj);
     }

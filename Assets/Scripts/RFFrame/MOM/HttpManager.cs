@@ -209,7 +209,7 @@ public class HttpManager : Singleton<HttpManager>
     }
 
     /// <summary>
-    /// 获取主页的商家信息
+    /// 获取主页的餐厅信息
     /// </summary>
     public void GetShopSInfo(Action<bool> callback = null)
     {
@@ -255,8 +255,8 @@ public class HttpManager : Singleton<HttpManager>
                     var tempthumb = date[i]["thumbnail"];
                     ssi.thumbnail = new Thumbnail()
                     {
-                        endPoint = "vsz-business",
-                        address = "vsz-business" + PublicAttribute.OSSUri + tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString(),
+                        endPoint = "vsz-restaurant",
+                        address = "vsz-restaurant" + PublicAttribute.OSSUri + tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString(),
 
                         id = tempthumb["id"].ToString(),
                         md5 = tempthumb["md5"].ToString(),
@@ -275,6 +275,89 @@ public class HttpManager : Singleton<HttpManager>
                     };
                     ssi.address = date[i]["address"].ToString();
                     JsonClass.Instance.ShopInfoS.Add(ssi);
+                }
+                if (callback != null)
+                {
+                    callback(true);
+                }
+            }
+            else
+            {
+                if (callback != null)
+                {
+                    callback(false);
+                }
+            }
+            response.Dispose();
+        }), PublicAttribute.Token);
+    }
+    /// <summary>
+    /// 获取主页的酒店信息
+    /// </summary>
+    public void GetHotelsInfo(Action<bool> callback = null)
+    {
+        HttpBase.GET(PortClass.Instance.HotelsInfo, ((request, response) =>
+        {
+            if (response == null || !response.IsSuccess)
+            {
+                if (callback != null)
+                {
+                    callback(false);
+                }
+                DebugManager.Instance.LogError("请求失败！");
+                return;
+            }
+            Debug.Log("获取酒店信息:::"+response.DataAsText.Trim());
+            JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
+            if (content["status"].ToString() != "200")
+            {
+                if (callback != null)
+                {
+                    callback(false);
+                }
+                return;
+            }
+            if (content["data"] == null)
+            {
+                if (callback != null)
+                {
+                    callback(false);
+                }
+                return;
+            }
+            JsonData date = content["data"];
+            if (date != null && date.Count > 0)
+            {
+                for (int i = 0; i < date.Count; i++)
+                {
+                    ScenicSpotItem ssi = new ScenicSpotItem();
+                    ssi.id = int.Parse(date[i]["id"].ToString());
+                    ssi.name = date[i]["name"].ToString();
+                    ssi.description = date[i]["description"].ToString();
+
+                    var tempthumb = date[i]["thumbnail"];
+                    ssi.thumbnail = new Thumbnail()
+                    {
+                        endPoint = "vsz-hotel",
+                        address = "vsz-hotel" + PublicAttribute.OSSUri + tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString(),
+
+                        id = tempthumb["id"].ToString(),
+                        md5 = tempthumb["md5"].ToString(),
+                        extName = tempthumb["extName"].ToString(),
+                        size = tempthumb["size"].ToString(),
+                        localPath = PublicAttribute.ThumbPath + tempthumb["id"].ToString() + "." + tempthumb["extName"].ToString()
+                    };
+                    //Download(ssi.thumbnail);
+                    ssi.locationX = date[i]["locationX"].ToString();
+                    ssi.locationY = date[i]["locationY"].ToString();
+                    ssi.height = date[i]["height"].ToString();
+                    ssi.sceneryArea = new SceneryArea()
+                    {
+                        id = int.Parse(date[i]["sceneryArea"]["id"].ToString()),
+                        name = date[i]["sceneryArea"]["name"].ToString()
+                    };
+                    ssi.address = date[i]["address"].ToString();
+                    JsonClass.Instance.HotelInfoS.Add(ssi);
                 }
                 if (callback != null)
                 {
@@ -946,7 +1029,7 @@ public class HttpManager : Singleton<HttpManager>
                 return;
             }
             JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
-            Debug.Log(response.DataAsText.Trim());
+            Debug.Log(request.Uri+" "+ response.DataAsText.Trim());
             if (content["status"].ToString() != "200")
             {
                 if (callback != null)
@@ -1103,9 +1186,13 @@ public class HttpManager : Singleton<HttpManager>
                 if (callback != null)
                 {
                     JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
+                 
                     if (response.DataAsText.Trim().Contains("1010"))
                     {
+
                         PublicAttribute.Token = "VSZ " + content["data"].ToString();
+                        GlobalParameter.nickName = userName;
+                        GlobalParameter.phone = userName;
                     }
                     callback(content["status"].ToString());
                 }
@@ -1142,6 +1229,8 @@ public class HttpManager : Singleton<HttpManager>
                     if (response.DataAsText.Trim().Contains("1010"))
                     {
                         PublicAttribute.Token = "VSZ " + content["data"].ToString();
+                        GlobalParameter.nickName = phoneNo;
+                        GlobalParameter.phone = phoneNo;
                     }
                     callback(content["status"].ToString());
                 }
@@ -1194,7 +1283,7 @@ public class HttpManager : Singleton<HttpManager>
     /// <param name="callback"></param>
     public void Register(string userName, string pwd, string smsCode, Action<string> callback)
     {
-        HttpBase.POST(PortClass.Instance.VisitorLogin, new KeyValuePair<string, string>[]
+        HttpBase.POST(PortClass.Instance.Register, new KeyValuePair<string, string>[]
         {
             new KeyValuePair<string, string>("username", userName), new KeyValuePair<string, string>("password", pwd), new KeyValuePair<string, string>("code", smsCode),
         }, ((request, response) =>
@@ -1204,7 +1293,14 @@ public class HttpManager : Singleton<HttpManager>
                 if (callback != null)
                 {
                     JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
+                    if (response.DataAsText.Trim().Contains("1006"))
+                    {
+                        PublicAttribute.Token = "VSZ " + content["data"].ToString();
+                        GlobalParameter.nickName = userName;
+                        GlobalParameter.phone = userName;
+                    }
                     callback(content["status"].ToString());
+
                 }
             }
             else
@@ -1226,10 +1322,11 @@ public class HttpManager : Singleton<HttpManager>
     /// <param name="smsCode">短信验证码</param>
     /// <param name="callback"></param>
     public void ResetPwd(string userName, string newPwd, string smsCode, Action<string> callback)
-    {
+    {        
+        Debug.Log(userName+"  "+newPwd + "  " + smsCode);
         HttpBase.POST(PortClass.Instance.ResetPwd, new KeyValuePair<string, string>[]
         {
-            new KeyValuePair<string, string>("username", userName), new KeyValuePair<string, string>("password", newPwd), new KeyValuePair<string, string>("code", smsCode),
+            new KeyValuePair<string, string>("username", userName), new KeyValuePair<string, string>("code", smsCode), new KeyValuePair<string, string>("password", newPwd),
         }, ((request, response) =>
         {
             if (response.IsSuccess)
@@ -1253,8 +1350,8 @@ public class HttpManager : Singleton<HttpManager>
 
     /// <summary>
     /// 第三方登录
-    /// 1、未绑定手机号 1013
-    /// 2、登录成功 1010
+    /// 1、未绑定手机号 1013；
+    /// 2、登录成功 1010；
     /// 3、登录失败v
     /// </summary>
     /// <param name="openID"></param>
@@ -1279,14 +1376,15 @@ public class HttpManager : Singleton<HttpManager>
                 if (response.DataAsText.Trim().Contains("1013"))
                 {
                     //未绑定手机号
-                    callback(1);
+                    callback(1013);
                 }
                 else if (response.DataAsText.Trim().Contains("1010"))
                 {
                     //登录成功 ，返回Token
                     JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
+                
                     PublicAttribute.Token = "VSZ " + content["data"].ToString();
-                    callback(2);
+                    callback(1010);
                 }
                 else
                 {
@@ -1331,16 +1429,21 @@ public class HttpManager : Singleton<HttpManager>
                   return;
               }
               if (response.IsSuccess)
-              {
+              {    Debug.Log(response.DataAsText);
                   if (response.DataAsText.Trim().Contains("1010"))
                   {
+                  
                       JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
                       PublicAttribute.Token = "VSZ " + content["data"].ToString();
+                      GlobalParameter.phone = phoneNo;
+                      GlobalParameter.nickName = phoneNo;
                   }
                   if (callback != null)
                   {
                       JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
+
                       callback(content["status"].ToString());
+
                   }
               }
               else
@@ -1428,8 +1531,13 @@ public class HttpManager : Singleton<HttpManager>
                     
                     JsonData role=date["role"];
                     string rolename = role["name"].ToString();
-                    if (rolename != "USER")
+                    
+                    
+                  
+                    
+           if (rolename == "SUGGEST")
                     {
+                        GlobalParameter.isVisitor = true;
                         callback(true);
                         return;
                     }
@@ -1437,7 +1545,20 @@ public class HttpManager : Singleton<HttpManager>
                     string userName = date["userExtDto"]["userNickName"].ToString();
                     Debug.Log(phoneNo);
                     var userHeadPhoto = date["userExtDto"]["userHeadPhoto"];
-
+                    
+                    PublicAttribute.UserInfo = new UserInfo()
+                    {
+                        PhoneNo = phoneNo,
+                        NickName = userName,
+                        UserIcon = null,
+                    };
+                    
+                    if (rolename != "USER")
+                    {
+                        callback(true);
+                        return;
+                    }
+                    
                     string downloadUrl = PublicAttribute.URL + "resource?filename=" + userHeadPhoto["md5"].ToString() + "." +
                                          userHeadPhoto["extName"].ToString() + "&type=user_photo&token=" + PublicAttribute.Token;
                     Debug.Log(downloadUrl);
@@ -1454,12 +1575,7 @@ public class HttpManager : Singleton<HttpManager>
                                fs.Close();
 
                                Sprite sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0f, 0f));
-                               PublicAttribute.UserInfo = new UserInfo()
-                               {
-                                   PhoneNo = phoneNo,
-                                   NickName = userName,
-                                   UserIcon = sprite,
-                               };
+
                                if (callback != null)
                                {
                                    callback(true);

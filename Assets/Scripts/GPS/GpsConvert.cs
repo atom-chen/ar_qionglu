@@ -111,35 +111,24 @@ public class GpsConvert : MonoBehaviour
 
     private Vector3 point;
 
-    public string localFilePath;
-
     public Dropdown dd;
 
-    public GameObject GPSHelp;
+    public GameObject GPSHelp,loadingImg;
 
     public static bool isDown;
 
-    public static bool direct;
+    private bool direct = false;
 
-    public static float id;
+    private static float id;
     // Use this for initialization
     private void Awake()
     {
         instance = this;
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            localFilePath = Application.persistentDataPath + "/location.json";
-        }
-        else if (Application.platform == RuntimePlatform.WindowsEditor)
-        {
-            localFilePath = Application.dataPath + "/StreamingAssets/location.json";
-        }
         n = (equatorialRadius - polarRadius) / (equatorialRadius + polarRadius);
         rm = POW(equatorialRadius * polarRadius, 1 / 2.0);
         e = Math.Sqrt(1 - POW(polarRadius / equatorialRadius, 2));
         e1sq = e * e / (1 - e * e);
-        //getLocation();
-        Debug.Log(mainPageUI.SceneID.id);
+
         if (!isDown)
         {
             HttpManager.Instance.GetNavigationInfo((b =>
@@ -226,12 +215,20 @@ public class GpsConvert : MonoBehaviour
         }
         dd.value = 3;
         //GetPoint();
+
+        if(GlobalInfo.GPSdirect)
+        {
+            GlobalInfo.GPSdirect = false;
+            ShowdirectPoint(GlobalInfo.GPSType,GlobalInfo.GPSId);
+        }
     }
 
     public void ShowdirectPoint(string type,float SpotId)
     {
         direct = true;
         id = SpotId;
+
+        ShowDirectSpot(id.ToString());
     }
 
     private float timer = 1f;
@@ -364,7 +361,7 @@ public class GpsConvert : MonoBehaviour
         float y = float.Parse(zb["latitude"].ToString());
         float z = float.Parse(zb["altitude"].ToString());
         return new Vector3(x,y,z);
-#elif UNITY_IOS
+#elif UNITY_IOS || UNITY_IPHONE
       string IosGet = GetLocation();
       Debug.Log(IosGet);
     if (IosGet.Length < 5)
@@ -450,39 +447,6 @@ public class GpsConvert : MonoBehaviour
                 GPSItems.Add(item);
             }));
         }
-
-        //        string jsonText;
-        //#if UNITY_IOS
-        //         jsonText = Resources.Load<TextAsset>("location").ToString();
-        //#elif UNITY_ANDROID
-        //        if (File.Exists(localFilePath))
-        //        {
-        //            StreamReader sr = new StreamReader(localFilePath);
-        //            jsonText = sr.ReadToEnd();
-        //            sr.Close();
-        //            sr.Dispose();
-        //        }
-        //        else
-        //        {
-        //            jsonText = Resources.Load<TextAsset>("location").ToString();
-        //        }
-        //#endif
-        //        Debug.Log(jsonText);
-        //        JsonData jsonData = JsonMapper.ToObject(jsonText);
-        //        for (int i = 0; i < jsonData["data"].Count; i++)
-        //        {
-        //            JsonData baseEntity = jsonData["data"][i]["baseEntity"];
-        //            GPSItem item = GameObject.Instantiate<GPSItem>(obj);
-
-
-        //            item.id = jsonData["data"][i]["id"].ToString();
-        //            item.locationX = baseEntity["locationX"].ToString();
-        //            item.locationY = baseEntity["locationY"].ToString();
-        //            item.name = baseEntity["name"].ToString();
-        //            item.height = baseEntity["height"].ToString();
-        //            item.typeName = jsonData["data"][i]["type"].ToString();
-        //            GPSItems.Add(item);
-        //        }
     }
     public static List<GameObject> icon = new List<GameObject>();
     private void CreatePoints(string typename)
@@ -579,9 +543,77 @@ public class GpsConvert : MonoBehaviour
         else
         {
             direct = false;
-            SceneManager.LoadScene("main");
+            UnityHelper.LoadNextScene("main");
         }
     }
+
+    private bool isChangeScene;
+    private string VideoURL;
+    public void TurnChangeScene(string id)
+    {
+        foreach (var ChangeInfo in mainPageUI.curScenicInfo.ResourcesInfos)
+        {
+            if (ChangeInfo.ResourcesKey == "vsz-more-change")
+                foreach (var gpsitem in ChangeInfo.DIS)
+                    if (gpsitem.id.ToString() == id)
+                    {
+                        if (!isChangeScene)
+                        {
+                            isChangeScene = true;
+                            Vector3 point = getLocation();
+        
+                            if (GlobalInfo.Distance(point.y, point.x,double.Parse(gpsitem.baseEntity.locationY),double.Parse(gpsitem.baseEntity.locationX)) < 40)
+                            {
+                                foreach (var item in gpsitem.VersionFilesItems.Where(item => item.extName == "mp4"))
+                                {
+                                    Debug.Log(item.filename);
+                                    if (item.filename.Contains("qionghaixingcheng"))
+                                    {
+                                        GlobalInfo.VideoURL2D  = PublicAttribute.LocalFilePath + "/Panorama/1/"+item.filename;
+                                    }
+                                    else
+                                    {
+                                        VideoURL  = PublicAttribute.LocalFilePath + "/Panorama/1/"+item.filename;
+                                        Debug.Log(VideoURL);
+                                    }
+                                }
+                    
+                                foreach (var item in gpsitem.VersionFilesItems.Where(item => item.extName == "vsz"))
+                                {
+                                    Debug.Log(item.localPath);
+                                    StartCoroutine(LoadAssets(item.localPath));
+                                }
+                            }
+                        }
+                    }
+        }
+    }
+    private IEnumerator LoadAssets(string path)
+    {
+        loadingImg.SetActive(true);
+        if (VideoURL != null)
+        {
+            GlobalInfo.VideoURL360 = VideoURL;
+        }
+
+        int index1 = path.LastIndexOf("/");
+        int index2 = path.LastIndexOf(".");
+        string suffix = path.Substring(index1 + 1, index2 - index1 - 1);
+
+        Debug.Log(File.Exists(path));
+        WWW bundle = new WWW("file:///" + path);
+        yield return bundle;
+        if (bundle.error!=null  || bundle.size <= 0)
+        {
+            loadingImg.SetActive(false);
+        }
+        else
+        {
+            var data = bundle.assetBundle;
+            SceneManager.LoadScene(suffix);               
+        }
+    }
+    #region GPS坐标计算
     /// <summary>
     /// 
     /// </summary>
@@ -608,7 +640,6 @@ public class GpsConvert : MonoBehaviour
         x = (lng / 180.0) * 20037508.34;
     }
 
-    #region GPS坐标计算
     public String convertLatLonToUTM(double latitude, double longitude)
     {
         validate(latitude, longitude);

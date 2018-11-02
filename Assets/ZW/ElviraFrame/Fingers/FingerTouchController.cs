@@ -28,7 +28,14 @@ public class FingerTouchController : MonoBehaviour
         if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Moved)
         {
             var deltaposition = Input.GetTouch(0).deltaPosition;
-            transform.Translate(-deltaposition.x * 0.1f, 0f, -deltaposition.y * 0.1f);
+            if (transform.name.Contains("Image"))
+            {
+                transform.Translate(deltaposition.x * 0.1f, 0f, deltaposition.y * 0.1f);
+            }
+            else
+            {
+                transform.Translate(-deltaposition.x * 0.1f, 0f, -deltaposition.y * 0.1f);
+            }
         }
 
         //多点触摸, 放大缩小  

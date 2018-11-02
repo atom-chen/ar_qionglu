@@ -31,6 +31,7 @@ public class connect
 }
 public class initScene : MonoBehaviour
 {
+    public static initScene instance;
     private List<Ports> allport = new List<Ports>();
     public GameObject guide,ads;
 
@@ -46,106 +47,97 @@ public class initScene : MonoBehaviour
     }
     void Awake()
     {
-// #if UNITY_ANDROID
-//         if (Application.platform == RuntimePlatform.Android)
-//         {
-//             localFilePath = Application.persistentDataPath + "/port.json";
-//         }
-//         else if (Application.platform == RuntimePlatform.WindowsEditor)
-//         {
-//             localFilePath = Application.persistentDataPath + "/port.json";
-//         }
-//         Debug.Log(localFilePath);
-//         if (!File.Exists(localFilePath))
-//         {
-//             string jsonText = Resources.Load<TextAsset>("port").ToString();
-//             JsonData jsonData = JsonMapper.ToObject(jsonText);
-//             for (int i = 0; i < jsonData["allports"].Count; i++)
-//             {
-//                 allport.Add(JsonMapper.ToObject<Ports>(jsonData["allports"][i].ToJson().ToString()));
-//             }
-//
-//             PortsStatus gameStatus = new PortsStatus();
-//             gameStatus.allports = new connect[jsonData["allports"].Count];
-//
-//             for (int i = 0; i < jsonData["allports"].Count; i++)
-//             {
-//                 gameStatus.allports[i] = new connect();
-//                 gameStatus.allports[i].address = allport[i].address;
-//                 gameStatus.allports[i].portnum = allport[i].portnum;
-//             }
-//             string json = JsonMapper.ToJson(gameStatus);
-//             Regex reg = new Regex(@"(?i)\\[uU]([0-9a-f]{4})");
-//             var ss = reg.Replace(json, delegate (Match m) { return ((char)Convert.ToInt32(m.Groups[1].Value, 16)).ToString(); });
-//
-//             File.WriteAllText(localFilePath, ss, Encoding.UTF8);
-//
-//         }
-//         else
-//         {
-//             StreamReader sr = new StreamReader(localFilePath);
-//             string jsonText = sr.ReadToEnd();
-//             sr.Close();
-//             sr.Dispose();
-//
-//             JsonData jsonData = JsonMapper.ToObject(jsonText);
-//             for (int i = 0; i < jsonData["allports"].Count; i++)
-//             {
-//                 allport.Add(JsonMapper.ToObject<Ports>(jsonData["allports"][i].ToJson().ToString()));
-//                 Debug.Log(allport[i].address+allport[i].portnum);
-//             }
-//
-//             PublicAttribute.URL =allport[0].address + allport[0].portnum;
-//             Debug.Log(PublicAttribute.URL);
-//         }      
-// #endif
-
+        instance = this;
+        
+        if (FirstEnter == 0)
+        {
+            ads.SetActive(false);
+        }
     }
 
+    public bool isLookingAds;
     IEnumerator Start()
     {
         //屏幕常亮
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        HttpManager.Instance.GetAds((b =>
-        {
-            if (b)
-            {
-                foreach (var page in JsonClass.Instance.AdsPages)
-                {            
-                    ads.GetComponent<Button>().onClick.AddListener(delegate
-                    {
-                        web.LoadWeb(page.address);
-                    });
-                    HttpManager.Instance.Download(page.Thumbnail, (() =>
-                    {
-          
-                    }));
-                }
-            }
-        }));
-        yield return new WaitForSeconds(1);
-        root.SetActive(true);
-        yield return new WaitForSeconds(2);
-        guide.SetActive(true);
-        splash.gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(3);
-        if (FirstEnter == 0)
-        {           
-            ads.SetActive(false);
+        if (GlobalInfo.LastAdsUrl.Length > 5 && GlobalInfo.LastAdsImgPath.Length > 5)
+        {
+            ads.GetComponent<Button>().onClick.AddListener(delegate
+            {
+                isLookingAds = true;
+                web.LoadWebSetTitle(GlobalInfo.LastAdsUrl,"特产详情"); 
+            });
+            StartCoroutine(LoadImgFromCache(GlobalInfo.LastAdsImgPath, ads.GetComponent<RawImage>()));
+            
+            yield return new WaitForEndOfFrame();
+            
+            HttpManager.Instance.GetAds((b =>
+            {
+                if (b)
+                {
+                    foreach (var page in JsonClass.Instance.AdsPages)
+                    {
+                        HttpManager.Instance.Download(page.Thumbnail, (() =>
+                        {                       
+                            GlobalInfo.LastAdsUrl = page.address;
+                            GlobalInfo.LastAdsImgPath = page.Thumbnail.localPath;
+                        }));
+                    }
+                }
+            }));       
         }
         else
-        {            
+        {
+            HttpManager.Instance.GetAds((b =>
+            {
+                if (b)
+                {
+                    foreach (var page in JsonClass.Instance.AdsPages)
+                       {            
+                           ads.GetComponent<Button>().onClick.AddListener(delegate
+                            {
+                              if (page.address.Length > 6)
+                              {
+                                isLookingAds = true;
+                                  web.LoadWebSetTitle(page.address,"特产详情"); 
+                              }    
+                          });
+                          HttpManager.Instance.Download(page.Thumbnail, (() =>
+                           {
+                               GlobalInfo.LastAdsUrl = page.address;
+                               GlobalInfo.LastAdsImgPath = page.Thumbnail.localPath;
+                               StartCoroutine(LoadImgFromCache(GlobalInfo.LastAdsImgPath, ads.GetComponent<RawImage>()));
+                           }));
+                      }
+                 }
+             }));            
+        }
+        yield return new WaitForEndOfFrame();
+        root.SetActive(true);
+        yield return new WaitForEndOfFrame();
+        // guide.SetActive(true);
+        // splash.gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(3);
+        if (FirstEnter==0)
+        {
+            FirstEnter = 1;
+        }
+        else if (!isLookingAds)
+        {
+            
             EnterMain();
         }
     }
     public void EnterMain()
     {
+        FirstEnter = 1;
         HttpManager.Instance.GetUserInfoByToken((b =>
         {
             if (b)
             {
-                ScenesManager.Instance.LoadMainScene();
+                UnityHelper.LoadNextScene("main");
             }
             else
             {
@@ -155,14 +147,7 @@ public class initScene : MonoBehaviour
     }
     public void HideAds()
     {
-        if (FirstEnter == 0)
-        {           
-            ads.SetActive(false);
-        }
-        else
-        {
-            EnterMain();
-        }
+        EnterMain();
     }
 
     public void GetState()
@@ -170,6 +155,37 @@ public class initScene : MonoBehaviour
 
     }
 
+    private IEnumerator LoadImgFromCache(string imgURl, RawImage img)
+    {
+        if (CheckCacheUrlIsExit(imgURl))
+        {
+            Texture2D tex = new Texture2D(256, 256, TextureFormat.ARGB32, false);
+            img.texture = tex;
+            HttpBase.Download(imgURl, ((request, downloaded, length) => { }), ((request, response)
+                =>
+            {
+                if (response == null || !response.IsSuccess)
+                {
+                    DebugManager.Instance.LogError("请求失败！");
+                    return;
+                }
+                tex.LoadImage(response.Data);
+            }));
+        }
+        else
+        {
+            yield break;
+        }
+    }
+    /// <summary>
+    /// 检查文件是否存在
+    /// </summary>
+    /// <param name="imgURl"></param>
+    /// <returns></returns>
+    private bool CheckCacheUrlIsExit(string imgURl)
+    {
+        return true;
+    }
     //private IEnumerator LoadAssets2()
     //{
     //    string path = Application.persistentDataPath + "/DownloadFile/Panorama/1/shajin.vsz";

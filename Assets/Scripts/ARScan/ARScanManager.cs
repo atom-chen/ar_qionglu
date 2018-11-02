@@ -1,10 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Vuforia;
 
@@ -14,16 +12,23 @@ public class ARScanManager : MonoBehaviour
 
     public RawImage ScanGuideImg;
     public Texture[] ScanGuideTex;
-    public GameObject ARScanGuide;
+    public GameObject ARScanGuide,btnPanel;
 
     public EdgeDetection ed;
     public DOTweenAnimation scanImg;
     public GameObject toastObj;
+    public GameObject ShotBtn;
 
     public static string scan_more_Path = "";
     public static string scan_ticket_Path = "";
     public static string scan_native_product_Path = "";
     public static string scan_Conjure_Path = "";
+
+
+    public ARScanGuide guide;
+    public bool isGuide;
+
+    public AudioSource shotclip;
     private void Awake()
     {
         instance = this;
@@ -58,11 +63,11 @@ public class ARScanManager : MonoBehaviour
         {
             PlayerPrefs.SetInt("ARScan", 1);
             ARScanGuide.SetActive(true);
-            Screen.orientation = ScreenOrientation.Portrait;
+            isGuide = true;
         }
         else
         {
-            Screen.orientation = ScreenOrientation.LandscapeLeft;
+            isGuide = false;
         }
         //Invoke("LoadAllXML", 1);
         Invoke("GetImageList", 1);
@@ -91,6 +96,15 @@ public class ARScanManager : MonoBehaviour
         {
             StartCoroutine(ImgTweenOver());
         }
+    }
+
+    public void ShowShotBtn()
+    {
+        ShotBtn.SetActive(true);
+    }
+    public void HideShotBtn()
+    {
+        ShotBtn.SetActive(false);
     }
     public void LoadAllXML()
     {
@@ -163,6 +177,8 @@ public class ARScanManager : MonoBehaviour
         tracker.Start();
     }
 
+    private List<ARScanTrackableEventHandler> trackerList = new List<ARScanTrackableEventHandler>();
+
     /// <summary>
     /// 将每个ImageTarget改名并且挂上脚本
     /// </summary>
@@ -175,13 +191,14 @@ public class ARScanManager : MonoBehaviour
                 go.AddComponent<TurnOffBehaviour>();
                 go.AddComponent<DefaultTrackableEventHandler>();
                 go.AddComponent<ARScanTrackableEventHandler>();
+                
+                trackerList.Add(go.GetComponent<ARScanTrackableEventHandler>());
             }
         }
     }
     public void LoadScene(string scenename)
     {
-        Screen.orientation = ScreenOrientation.Portrait;
-        SceneManager.LoadScene(scenename);
+        UnityHelper.LoadNextScene(scenename);
     }
 
     public void ShowGameObject(GameObject obj)
@@ -191,9 +208,13 @@ public class ARScanManager : MonoBehaviour
 
     public void ShowScanGuide()
     {
-        // StartCoroutine(ScanGuide());
-        Screen.orientation = ScreenOrientation.Portrait;
+        for (int i = 0; i < trackerList.Count; i++)
+        {
+            trackerList[i].HideInfo();
+        }
+        
         ARScanGuide.SetActive(true);
+        guide.ReSetPos();
         
     }
     IEnumerator ScanGuide()
@@ -204,10 +225,8 @@ public class ARScanManager : MonoBehaviour
 
     public void HideScanGuide()
     {
-        // StopCoroutine(ScanGuide());
-        // ScanGuideImg.texture = ScanGuideTex[0];
+        isGuide = false;
         ARScanGuide.SetActive(false);
-        Screen.orientation = ScreenOrientation.LandscapeLeft;
     }
 
     private bool isShooting;
@@ -216,17 +235,20 @@ public class ARScanManager : MonoBehaviour
         if (!isShooting)
         {
             isShooting = true;
+            btnPanel.SetActive(false);
+            shotclip.Play();
             ScreenshotManager.SaveScreenshot("Scan");
-            toastObj.SetActive(true);
             CoroutineWrapper.EXES(1.5f, () =>
             {
                 toastObj.SetActive(true);
                 CoroutineWrapper.EXES(1.5f, () =>
                 {
                     isShooting = false;
+                    btnPanel.SetActive(true);
                     toastObj.SetActive(false);
                 });
             });
         }
     }
-}
+    
+} 

@@ -34,7 +34,8 @@
   <uses-permission android:name="android.permission.READ_SMS" />
   <uses-permission android:name="android.permission.READ_CONTACTS" />
   <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
+    
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
       <uses-permission android:name="android.permission.WRITE_SETTINGS" />
   <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -50,6 +51,7 @@
     android:name="com.mob.MobApplication"
     android:label="AR游"
     android:allowBackup="true"
+    android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"
     android:icon="@drawable/ic_launcher"
     android:roundIcon="@drawable/ic_launcher">
     <activity android:name="com.secondfury.galleryscreenshot.MainActivity" />

@@ -161,18 +161,26 @@ public class ShareScriptsBase : SingletonMono<ShareScriptsBase>
         if (path == null) return;
         Debug.Log("path===" + path);
         ShareContent content = new ShareContent();
+        content.SetText("视觉美景+智能呈现  只留精彩，不留遗憾");//智能交互宣传
         content.SetImagePath(path);
-        content.SetText("视觉美景+智能交互  只留精彩，不留遗憾 ");//AR凉山游1
-        content.SetComment("AR凉山游2");
-        content.SetSite("AR凉山游3");
-        content.SetSiteUrl("http://download.vszapp.com");
-
-        content.SetTitle("AR凉山游");//AR凉山游4
-        content.SetTitleUrl("http://download.vszapp.com");
-
+        content.SetTitle("AR游");//AR游
         content.SetShareType(ContentType.Image);
-    
+        content.SetTitleUrl("http://download.vszapp.com");
+        content.SetUrl("http://download.vszapp.com");
 
+
+
+
+
+        ShareContent SinaShareParams = new ShareContent();
+        SinaShareParams.SetText("视觉美景+智能呈现  只留精彩，不留遗憾");
+        SinaShareParams.SetImagePath(path);
+        SinaShareParams.SetTitle("AR游");//AR游
+        SinaShareParams.SetShareType(ContentType.Image);
+        SinaShareParams.SetObjectID("SinaID");
+        SinaShareParams.SetTitleUrl("http://download.vszapp.com");
+        SinaShareParams.SetUrl("http://download.vszapp.com");
+        SinaShareParams.SetShareContentCustomize(PlatformType.SinaWeibo, SinaShareParams);
         //通过分享菜单分享
         ssdk.ShowPlatformList(null, content, 100, 100);
     }

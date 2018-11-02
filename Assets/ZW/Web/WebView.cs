@@ -17,7 +17,10 @@ public class WebView : SingletonMono<WebView>
 
     string lastId = string.Empty;
 
-
+    private void Start()
+    {
+        CreateWebView();
+    }
     /// <summary>
     /// 加载并显示WEB UI
     /// </summary>
@@ -86,6 +89,16 @@ public class WebView : SingletonMono<WebView>
         try
         {
             TrackUIManager.Instance.LoadComplete();
+           
+            String location = UnityHelper.GetBDGPSLocation();
+            JsonData zb = JsonMapper.ToObject(location);
+            string x = zb["longitude"].ToString();
+            string y = zb["latitude"].ToString();
+   
+            string jsString = @"PanTo(" + x + "," + y + ");";
+            Debug.Log(jsString);
+
+            webView.EvaluateJavaScript(jsString, CompletionHandler);
         }
         catch (System.Exception ex)
         {
@@ -115,9 +128,13 @@ public class WebView : SingletonMono<WebView>
     /// </summary>
     public void ClearWebView()
     {
-        webView.CleanCache();
-        Destroy(webView.gameObject);
-        webView = null;
+        if (webView!=null)
+        {
+            webView.CleanCache();
+            Destroy(webView.gameObject);
+            webView = null;
+        }
+
 
 
 
@@ -166,18 +183,30 @@ public class WebView : SingletonMono<WebView>
     }
  
   
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-           TrackDataManager.Instance. AddPointToPointClass(2, "333", "444", "asda.pngg", "2018|06|19");
-            TrackDataManager.Instance.AddPointToPointClass(4, "333", "444", "zw.png", "2018|10|19");
-        }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            TrackDataManager.Instance.SaveStringToFile();
-        }
-    }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Alpha1))
+    //    {
+    //       TrackDataManager.Instance. AddPointToPointClass("333", "444", "asda.pngg", "20180619");
+           
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.Alpha2))
+    //    {
+
+    //        TrackDataManager.Instance.AddPointToPointClass("333", "444", "zw.png", "20181019");
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.S))
+    //    {
+    //        TrackDataManager.Instance.SaveStringToFile();
+    //    }
+
+    //    if (Input.GetKeyDown(KeyCode.A))
+    //    {
+    //        ClearWebView();
+    //        GalleryImageManager.Instance.SpawnImage("1");
+    //        TrackUIManager.Instance.SetTitleText("相册", 1);
+    //    }
+    //}
  
 
 

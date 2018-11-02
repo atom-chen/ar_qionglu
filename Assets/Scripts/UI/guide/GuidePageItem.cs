@@ -7,9 +7,22 @@ using UnityEngine.UI;
 public class GuidePageItem : MonoBehaviour
 {
     public RawImage png;
+    public Image box;
     private List<Texture> AllTex = new List<Texture>();
 
     public string Url;
+
+    private void Start()
+    {
+        #if UNITY_ANDROID
+        GetComponent<RectTransform>().sizeDelta=new Vector2(Screen.width,Screen.height);
+        box.GetComponent<RectTransform>().sizeDelta=new Vector2(Screen.width,Screen.height);
+        box.GetComponent<RectTransform>().anchoredPosition=new Vector2(0,(1920-Screen.height)/2f);
+        #elif UNITY_IOS || UNITY_IPHONE
+
+        #endif
+    }
+
     // Use this for initialization
     public void _init (string assetpath)
     {

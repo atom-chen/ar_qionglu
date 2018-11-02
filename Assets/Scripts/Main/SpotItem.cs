@@ -44,7 +44,7 @@ public class SpotItem : MonoBehaviour
     webrequest web;
     public void Start()
     {
-        web = GameObject.Find("UniWebView").GetComponent<webrequest>();
+        web = GameObject.Find(GlobalInfo.websiterequest).GetComponent<webrequest>();
         nameTxt.text = name;
         _init(thumbnail.localPath);
         LocalAddress = thumbnail.localPath;

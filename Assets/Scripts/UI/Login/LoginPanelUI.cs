@@ -23,10 +23,13 @@ public class LoginPanelUI : UIWindowsBase
     public InputField AccountsphoneInput;
     public InputField AccountsPwInpPut;
     public Button AccountsUserPwdLogin;
-    public Button AccountseyeBtn;
+
 
 
     public Toggle UserType;
+
+
+    public List<InputField> accountInpueField;
     #endregion
 
 
@@ -41,27 +44,51 @@ public class LoginPanelUI : UIWindowsBase
 
 
     public Toggle SMSSType;
+
+
+    public List<InputField> smssInputField;
     #endregion
-    #region   三方登录
 
+    private void InitField()
+    {
+        if (accountInpueField==null)
+        {
+            accountInpueField = new List<InputField>();
 
+        }
+        else
+        {
+      accountInpueField.Clear();
+        }
+  
+        if (smssInputField == null)
+        {    smssInputField = new List<InputField>();
+        }
+        else
+        {    smssInputField.Clear();
 
-    /// <summary>
-    /// 第三方登录时的OpenID
-    /// </summary>
-    public string ThirdOpenID;
-    /// <summary>
-    /// 第三方登录时的用户昵称
-    /// </summary>
-    public string UserName;
-    /// <summary>
-    /// 第三方登录时的用户头像
-    /// </summary>
-    public string UserIcon;
-    #endregion
+        }
+    
+    
+        foreach (var item in inputFields)
+        {
+            if (item.transform.parent.name == "Accounts")
+            {
+                accountInpueField.Add(item);
+            }
+            else
+            {
+                smssInputField.Add(item);
+            }
+        }
+    }
+
     public override void Awake()
     {
         base.Awake();
+        InitField();
+
+
         ForgetPwdBtn.onClick.AddListener(() => {
 
             LoginUIController.Instance.SetNextUIState(LoginUIState.ForgetPwdPanel);
@@ -77,49 +104,47 @@ public class LoginPanelUI : UIWindowsBase
         //账号密码登录按钮
         AccountsUserPwdLogin.onClick.AddListener((() =>
         {
-            if (!LoginUIController.Instance.VerifyAgreeToggle())
+            if (LoginUIController.Instance.VerifyAgreeToggle() == false)
             {
+                LoginUIController.Instance.ShowPopup("", GlobalParameter.AgrrToggle);
                 return;
             }
-            if (string.IsNullOrEmpty(AccountsphoneInput.text))
+            if (string.IsNullOrEmpty(AccountsphoneInput.text) || AccountsphoneInput.text.Length != 11)
             {
-                LoginUIController.Instance.ShowPopup("", "请输入登录账号");
+                LoginUIController.Instance.ShowPopup("",GlobalParameter.InputPhoneNumber);
+                return;
             }
-            else if (string.IsNullOrEmpty(AccountsPwInpPut.text))
+             if (string.IsNullOrEmpty(AccountsPwInpPut.text) || AccountsPwInpPut.text.Length < 6)
             {
-                LoginUIController.Instance.ShowPopup("", "请输入密码");
+                LoginUIController.Instance.ShowPopup("", GlobalParameter.InputPassword);
+                return;
             }
-            else if (LoginUIController.Instance.VerifyPhoneNo(AccountsphoneInput.text) && LoginUIController.Instance.VerifyPwd(AccountsPwInpPut.text))
+             if (LoginUIController.Instance.VerifyPhoneNo(AccountsphoneInput.text) && LoginUIController.Instance.VerifyPwd(AccountsPwInpPut.text))
             {
                 HttpManager.Instance.Login_UserPwd(AccountsphoneInput.text, AccountsPwInpPut.text, (LoginUIController.Instance.PopupInfo));
             }
-            else
-            {
-                LoginUIController.Instance.ShowPopup("登录失败", "请输入正确的账号和密码");
-            }
+         
         }));
-        AccountseyeBtn.onClick.AddListener((() =>
-           {
-               if (AccountsPwInpPut.contentType == InputField.ContentType.Standard)
-               {
-                   AccountsPwInpPut.contentType = InputField.ContentType.Password;
-                   AccountsPwInpPut.enabled = false;
-                   AccountsPwInpPut.enabled = true;
-               }
-               else
-               {
-                   AccountsPwInpPut.contentType = InputField.ContentType.Standard;
-                   AccountsPwInpPut.enabled = false;
-                   AccountsPwInpPut.enabled = true;
-               }
-           }));
+
         UserType.onValueChanged.AddListener((bool args) =>
         {
 
             UserType.isOn = args;
             accountsGo.gameObject.SetActive(args);
+
             if (args)
             {
+                if (accountInpueField == null)
+                {
+                    accountInpueField = new List<InputField>();
+    accountInpueField.Add(AccountsphoneInput);
+                    accountInpueField.Add(AccountsPwInpPut);
+                }
+                else if (accountInpueField.Count == 0)
+                {
+                    accountInpueField.Add(AccountsphoneInput);
+                    accountInpueField.Add(AccountsPwInpPut);
+                }
                 AccountsphoneInput.text = "";
                 AccountsPwInpPut.text = "";
             }
@@ -131,21 +156,34 @@ public class LoginPanelUI : UIWindowsBase
 
         SMSSUserSMSSLogin.onClick.AddListener((() =>
         {
-            if (!LoginUIController.Instance.VerifyAgreeToggle())
+            if (LoginUIController.Instance.VerifyAgreeToggle() == false)
             {
+                LoginUIController.Instance.ShowPopup("", GlobalParameter.AgrrToggle);
+                return;
+            }
+            if (string.IsNullOrEmpty(SMSSphoneInput.text)|| SMSSphoneInput.text.Length!=11)
+            {
+                LoginUIController.Instance.ShowPopup("", GlobalParameter.InputPhoneNumber);
+                return;
+            }
+             if (string.IsNullOrEmpty(SMSSPwInpPut.text) || SMSSPwInpPut.text.Length != 6)
+            {
+                LoginUIController.Instance.ShowPopup("", GlobalParameter.InputSMSS);
                 return;
             }
             if (LoginUIController.Instance.VerifyPhoneNo(SMSSphoneInput.text) && LoginUIController.Instance.VerifySMSCode(SMSSPwInpPut.text))
             {
                 HttpManager.Instance.Login_SMSS(SMSSphoneInput.text, SMSSPwInpPut.text, (LoginUIController.Instance.PopupInfo));
             }
-            else
-            {
-                LoginUIController.Instance.ShowPopup("格式不正确", "请输入正确的格式");
-            }
+           
         }));
         SMSSgetSMSSBtn.onClick.AddListener((() =>
         {
+            if (string.IsNullOrEmpty(SMSSphoneInput.text) || SMSSphoneInput.text.Length != 11)
+            {
+                LoginUIController.Instance.ShowPopup("", GlobalParameter.InputPhoneNumber);
+                return;
+            }
             if (LoginUIController.Instance.VerifyPhoneNo(SMSSphoneInput.text))
             {
              LoginUIController.Instance.FreezeButton(SMSSgetSMSSBtn);
@@ -154,10 +192,7 @@ public class LoginPanelUI : UIWindowsBase
                     Debug.Log("获取短信验证码 " + b);
                 }));
             }
-            else
-            {
-                LoginUIController.Instance.ShowPopup("格式不正确", "请输入正确的手机号");
-            }
+      
         }));
         SMSSType.onValueChanged.AddListener((bool args) =>
         {
@@ -167,6 +202,18 @@ public class LoginPanelUI : UIWindowsBase
 
             if (args)
             {
+                if (smssInputField == null)
+                {
+                    smssInputField = new List<InputField>();
+                    smssInputField.Add(SMSSphoneInput);
+                    smssInputField.Add(SMSSPwInpPut);
+                }
+                else if (smssInputField.Count==0)
+                {
+                    smssInputField.Add(SMSSphoneInput);
+                    smssInputField.Add(SMSSPwInpPut);
+                }
+                
                 SMSSphoneInput.text = "";
                 SMSSPwInpPut.text = "";
             }
@@ -218,9 +265,61 @@ public class LoginPanelUI : UIWindowsBase
         SMSSType.isOn = false;
     }
 
+    public override void Update()
+    {
+        if (this.gameObject.activeSelf==true)
+        {
+            if (accountsGo.activeSelf)
+            {
+            for (int i = 0; i < accountInpueField.Count; i++)
+            {
+                if (!string.IsNullOrEmpty(accountInpueField[i].text))
+                {
+                    if (i == accountInpueField.Count - 1)
+                    {
+                            clickBtns[0].interactable = true;
+                        }
+                    else
+                        {
+                            continue;
+                    }
+                }
+                else
+                {
+                        clickBtns[0].interactable = false;
+                        break;
+                }
+            }
+            }
+            if (smssGo)
+            {
+                for (int i = 0; i < smssInputField.Count; i++)
+                {
+                    if (!string.IsNullOrEmpty(smssInputField[i].text))
+                    {
 
+                        if (i == smssInputField.Count - 1)
+                        {
+                  
+                            clickBtns[1].interactable = true;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                      
+                        clickBtns[1].interactable = false;
+                        break;
+                    }
+                }
+            }
+      
+        }
 
-
+    }
 
 
 

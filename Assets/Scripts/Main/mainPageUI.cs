@@ -52,15 +52,42 @@ public class mainPageUI : MonoBehaviour
         {
             centerPanel[0].SetActive(false);
             centerPanel[1].SetActive(true);
+            
+            HttpManager.Instance.GetUserInfoByToken((b =>
+            {
+                if (b)
+                {
+                    for (int i = 0; i < UserName.Length; i++)
+                    {
+                        UserName[i].text = PublicAttribute.UserInfo.NickName;
+                    }
+
+                    for (int i = 0; i < photonTxt.Length; i++)
+                    {
+                        photonTxt[i].text = PublicAttribute.UserInfo.PhoneNo;
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < UserName.Length; i++)
+                    {
+                        UserName[i].text = PublicAttribute.UserInfo.NickName;
+                    }
+
+                    for (int i = 0; i < photonTxt.Length; i++)
+                    {
+                        photonTxt[i].text = PublicAttribute.UserInfo.PhoneNo;
+                    }
+                }
+            }));
         }
-        scale = (((float) Screen.height / (float)Screen.width) * 1440)/2560f;
+        scale = (((float) Screen.height / (float)Screen.width) * 1080f)/1920f;
         for (int i = 0; i < ChildPanel.Length; i++)
         {
-            ChildPanel[i].sizeDelta=new Vector2(1440,2560 * scale);
+            ChildPanel[i].sizeDelta=new Vector2(1080,1920 * scale);
         }
 
 
-        Screen.orientation = ScreenOrientation.Portrait;
         for (int i = 0; i < HeadImg.Length; i++)
         {
             HeadImg[i].sprite = HeadSpr[HeadId];
@@ -197,6 +224,28 @@ public class mainPageUI : MonoBehaviour
             }
 
         }
+        
+        
+        //获取主页商家缩略图
+        if (!firstDown[6])
+        {
+            HttpManager.Instance.GetHotelsInfo((b =>
+            {
+                if (b)
+                {
+                    firstDown[6] = true;
+                    ///如果获取信息成功，开始下载缩略图
+                    foreach (var info in JsonClass.Instance.HotelInfoS)
+                    {
+                        HttpManager.Instance.Download(info.thumbnail, (() => { }));
+                    }
+                }
+            }));
+        }
+        else
+        {
+            
+        }
 
         BindingPage_BindingBtn.onClick.AddListener((() =>
         {
@@ -271,16 +320,6 @@ public class mainPageUI : MonoBehaviour
         //        Debug.Log(PublicAttribute.UserInfo.NickName + "       " + PublicAttribute.UserInfo.PhoneNo);
 	    //    }
 	    //}));
-
-	    for (int i = 0; i < UserName.Length; i++)
-	    {
-	        UserName[i].text = PublicAttribute.UserInfo.NickName;
-	    }
-
-	    for (int i = 0; i < photonTxt.Length; i++)
-	    {
-	        photonTxt[i].text = PublicAttribute.UserInfo.PhoneNo;
-	    }
     }
 
     public void CheckProgress()
@@ -313,11 +352,25 @@ public class mainPageUI : MonoBehaviour
             {
                 LoadScene(lastSceneName);
             }
+
+            if (ischangePanel)
+            {
+                dotPanel.DOPlayForward();
+            }
         }
 
         if (Input.GetMouseButtonDown(1))
         {
             HttpManager.Instance.DynamicCheekUpdateByArea(SceneID.id);
+        }
+
+        if (BindingPage_PhoneNoInputField.text.Length > 0 && BindingPage_SmsCodeInputField.text.Length > 0)
+        {
+            BindingPage_BindingBtn.interactable = true;
+        }
+        else
+        {
+            BindingPage_BindingBtn.interactable = false;
         }
     }
 
@@ -345,25 +398,16 @@ public class mainPageUI : MonoBehaviour
     {
         dot.DOPlayForward();
     }
-    public void HideDotweenPanel(DOTweenAnimation dot)
-    {
-        dot.DOPlayBackwards();
-    }
 
-    public void ShowGameObjectPanel(GameObject obj)
+    private bool ischangePanel;
+    private DOTweenAnimation dotPanel;
+    public void ShowChangePanel(DOTweenAnimation dot)
     {
-        obj.SetActive(!obj.activeSelf);
-    }
-    //跳转场景，判断资源是否完整
-    private string lastSceneName;
-    private bool isChangeScene;
-    public void LoadScene(string scenename)
-    {
-        isChangeScene = true;
-           lastSceneName = scenename;
+        ischangePanel = true;
+        dotPanel = dot;
         if (fillamount >= 1)
         {
-            SceneManager.LoadScene(scenename);
+            dot.DOPlayForward();
         }
         else
         {
@@ -372,11 +416,41 @@ public class mainPageUI : MonoBehaviour
             {
                 ischecking = true;
                 HttpManager.Instance.DynamicCheekUpdateByArea(SceneID.id);
+            }
+        }
+    }
+    public void HideDotweenPanel(DOTweenAnimation dot)
+    {
+        dot.DOPlayBackwards();
+    }
 
-                //CoroutineWrapper.EXES(60f, () =>
-                //{
-                //    CheckProgress();
-                //});
+    public void ShowGameObjectPanel(GameObject obj)
+    {
+        if (obj.name == "Panel_down" && obj.activeSelf)
+        {
+            ischangePanel = false;
+            isChangeScene = false;
+        }
+        obj.SetActive(!obj.activeSelf);
+    }
+    //跳转场景，判断资源是否完整
+    private string lastSceneName;
+    private bool isChangeScene;
+    public void LoadScene(string scenename)
+    {
+        isChangeScene = true;
+        lastSceneName = scenename;
+        if (fillamount >= 1)
+        {
+            UnityHelper.LoadNextScene(scenename);
+        }
+        else
+        {
+            DownPanel.SetActive(true);
+            if (!ischecking)
+            {
+                ischecking = true;
+                HttpManager.Instance.DynamicCheekUpdateByArea(SceneID.id);
             }
         }
     }
@@ -421,26 +495,39 @@ public class mainPageUI : MonoBehaviour
     //修改名字
     public void SetUserName(Text name)
     {
-        HttpManager.Instance.ModifiUserNickName(name.text, (b =>
+        if (name.text.Length<=0)
         {
-            if (b)
-            {
-                for (int i = 0; i < UserName.Length; i++)
-                {
-                    UserName[i].text = name.text;
-                }
-                Debug.Log(b);
-            }
-            else
-            {
-                for (int i = 0; i < UserName.Length; i++)
-                {
-                    UserName[i].text = name.text;
-                }
-            }
+            PopupInfo("null");
+        }
+        else
+        {
 
-            PublicAttribute.UserInfo.NickName = name.text;
-        }));
+            HttpManager.Instance.ModifiUserNickName(name.text, (b =>
+            {
+                if (b)
+                {
+                    for (int i = 0; i < UserName.Length; i++)
+                    {
+                        UserName[i].text = name.text;
+                    }
+                    Debug.Log(b);
+                }
+                else
+                {
+                    for (int i = 0; i < UserName.Length; i++)
+                    {
+                        UserName[i].text = name.text;
+                    }
+                }
+    
+                PublicAttribute.UserInfo = new UserInfo()
+                {
+                    PhoneNo = PublicAttribute.UserInfo.PhoneNo,
+                    NickName = name.text,
+                    UserIcon = null,
+                };
+            }));
+        }            
     }
     /// <summary>
     /// 验证手机号是否符合格式
@@ -472,7 +559,7 @@ public class mainPageUI : MonoBehaviour
         }
         return true;
     }
-    private void FreezeButton(Button btn, float time = 15)
+    private void FreezeButton(Button btn, float time = 60)
     {
         Text text = btn.gameObject.GetComponentInChildren<Text>();
         string oldText = text.text;
@@ -485,7 +572,7 @@ public class mainPageUI : MonoBehaviour
         btn.interactable = false;
         while (time > 0)
         {
-            text.text = time + "";
+            text.text = time + "s";
             //暂停一秒
             yield return new WaitForSeconds(1);
             time--;
@@ -510,6 +597,10 @@ public class mainPageUI : MonoBehaviour
         }));
     }
 
+    public void ReText(InputField txt)
+    {
+        txt.text = "";
+    }
     /// <summary>
     /// 根据状态码执行
     /// </summary>
@@ -520,15 +611,34 @@ public class mainPageUI : MonoBehaviour
         switch (status)
         {
             case "200":
-                PP.ShowPopup("请求成功", "请求成功");
+                PP.ShowPopup("提交成功", "提交成功");
+                PublicAttribute.UserInfo.PhoneNo = BindingPage_PhoneNoInputField.text;
+                for (int i = 0; i < photonTxt.Length; i++)
+                {
+                    photonTxt[i].text = PublicAttribute.UserInfo.PhoneNo;
+                }
+                BindingPage_PhoneNoInputField.transform.parent.parent.gameObject.SetActive(false);
                 break;
             case "300":
-                PP.ShowPopup("意见提交成功", "意见提交成功，我们会尽快查看！");
+                PP.ShowPopup("提交成功", "意见提交成功，我们会尽快查看！");
+                break;
+            case "500":
+                PP.ShowPopup("请求失败", "请求失败，请稍后再试！");
                 break;
             case "Error":
                 PP.ShowPopup("请求失败", "请稍候重试");
                 break;
+            case "null":
+                PP.ShowPopup("格式错误", "昵称不可为空");
+                break;
+            case "1002":
+                PP.ShowPopup("号码出错", "号码已存在，请更换手机号再试");
+                break;
+            case "check":
+                PP.ShowPopup("", "当前已是最新版本");
+                break;
             default:
+                PP.ShowPopup("请求失败", "请稍候重试");
                 break;
         }
     }

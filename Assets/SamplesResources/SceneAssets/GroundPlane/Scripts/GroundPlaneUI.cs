@@ -124,7 +124,7 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
         Vuforia.DeviceTrackerARController.Instance.RegisterDevicePoseStatusChangedCallback(OnDevicePoseStatusChanged);
         inputSureButton.GetComponent<Button>().onClick.AddListener(InputSureButton);
         backButton.GetComponent<Button>().onClick.AddListener(BackBtnClick);
-        zujiButton.GetComponent<Button>().onClick.AddListener(ZujiBtnClick);
+     //   zujiButton.GetComponent<Button>().onClick.AddListener(ZujiBtnClick);
         helpButton.GetComponent<Button>().onClick.AddListener(HelpBtnClick);
         cancelButton.GetComponent<Button>().onClick.AddListener(CancelBtnClick);
 
@@ -288,7 +288,8 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
         WriteManager.Instance.ShowInputPanel(false);
         PlaneManager.Instance.ResetScene();
         SetReticleVisiblity(true);
-        SetIntroductionText("请将镜头朝向地面并选择模型");
+    
+        SetIntroductionText("请将镜头朝向地面并选择合影道具");
 
         YiyouStaticDataManager.Instance.HandleClear();
     }
@@ -325,11 +326,13 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
     }
     IEnumerator LoadNext(string  nextSceneName)
     {
-        AssetBundleMgr.GetInstance().DisposeAllAssets("scene_yiyou");
+        YiyouStaticDataManager.Instance.DisposeAB();
+
         TrackDataManager.Instance.SaveStringToFile();
         GlobalParameter.isNeedRestore = false;
-        yield return new WaitForSeconds(2f);
-        SceneManager.LoadScene(nextSceneName);
+        yield return new WaitForSeconds(0.1f);
+        UnityHelper.LoadNextScene(nextSceneName);
+
     }
     public void InputSureButton()
     {
@@ -343,21 +346,10 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
         ShowEffectPanel();
         SetIntroductionText("", false);
         ShowButtonPanel();
-#if UNITY_IOS || UNITY_IPHONE
-        GroundPlaneUI.Instance.ShouZujiBtn(true);
 
-#elif UNITY_ANDROID
+       ShouZujiBtn(true);
 
-        if (SceneManager.GetActiveScene().name == "yiyou")
-        {
-            GroundPlaneUI.Instance.ShouZujiBtn(true);
 
-        }
-        else
-        {
-            WikiSLAMUIController.Instance.ShouZujiBtn(true);
-        }
-#endif
     }
 
 
@@ -367,6 +359,7 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
     {
         m_Instructions.text = ssss;
         m_Instructions.gameObject.SetActive(flag);
+   //     ButtonPanelGo.gameObject.SetActive(!flag);
     }
     public void SetReticleVisiblity( bool flag )
     {
@@ -429,7 +422,7 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
         SelectModelPanel.gameObject.SetActive(true);
 
         EffectPanelGo.gameObject.SetActive(false);
-        ButtonPanelGo.gameObject.SetActive(false);
+     //   ButtonPanelGo.gameObject.SetActive(false);
         sliderPanel.gameObject.SetActive(false);
         helpImage.gameObject.SetActive(false);
 
@@ -494,7 +487,7 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
 
     public void ShouZujiBtn(bool  flag)
     {
-        zujiButton.gameObject.SetActive(flag);
+   //     zujiButton.gameObject.SetActive(flag);
         helpButton.gameObject.SetActive(!flag);
     }
 }

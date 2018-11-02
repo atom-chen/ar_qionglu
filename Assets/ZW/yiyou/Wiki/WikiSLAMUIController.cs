@@ -140,7 +140,7 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
         SelectModelPanel.gameObject.SetActive(true);
 
         EffectPanelGo.gameObject.SetActive(false);
-        zujiButton.GetComponent<Button>().onClick.AddListener(ZujiBtnClick);
+        //zujiButton.GetComponent<Button>().onClick.AddListener(ZujiBtnClick);
         helpButton.GetComponent<Button>().onClick.AddListener(HelpBtnClick);
         cancelButton.GetComponent<Button>().onClick.AddListener(CancelBtnClick);
 
@@ -278,7 +278,7 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
         SelectModelPanel.gameObject.SetActive(true);
 
         EffectPanelGo.gameObject.SetActive(false);
-        ButtonPanel.gameObject.SetActive(false);
+    //    ButtonPanel.gameObject.SetActive(false);
         sliderPanel.gameObject.SetActive(false);
         helpImage.gameObject.SetActive(false);
     }
@@ -300,12 +300,12 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
 
     IEnumerator LoadNext(string nextSceneName)
     {
-     
-        AssetBundleMgr.GetInstance().DisposeAllAssets("scene_yiyou");
+
+        YiyouStaticDataManager.Instance.DisposeAB();
         TrackDataManager.Instance.SaveStringToFile();
         GlobalParameter.isNeedRestore = false;
-        yield return new WaitForSeconds(1f);
-        SceneManager.LoadScene(nextSceneName);
+        yield return new WaitForSeconds(0.1f);
+        UnityHelper.LoadNextScene(nextSceneName);
     }
 
 
@@ -321,10 +321,11 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
             {
                 ButtonPanelGo.transform.Find("ShowShotImage").gameObject.SetActive(false);
                 ButtonPanelUI.Instance.Init();
+                Debug.Log("111");
             }
             else
             {
-                Debug.Log("111");
+                Debug.Log("222");
                 EffectPanelUI.Instance.HideToggle();
 
                 ButtonPanel.gameObject.SetActive(false);
@@ -332,7 +333,7 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
                 SelectModelPanel.gameObject.SetActive(true);
                 WriteManager.Instance.ShowInputPanel(false);
                 WikiSLAMController.Instance.ResetScene();
-                SetIntroductionText("请将镜头朝向地面并选择模型");
+                SetIntroductionText("请将镜头朝向地面并选择合影道具");
                 YiyouStaticDataManager.Instance.HandleClear();
                 sliderPanel.gameObject.SetActive(false);
             }
@@ -348,7 +349,7 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
             SelectModelPanel.gameObject.SetActive(true);
             WriteManager.Instance.ShowInputPanel(false);
             WikiSLAMController.Instance.ResetScene();
-            SetIntroductionText("请将镜头朝向地面并选择模型");
+            SetIntroductionText("请将镜头朝向地面并选择合影道具");
             YiyouStaticDataManager.Instance.HandleClear();
             ShouZujiBtn(false);
             sliderPanel.gameObject.SetActive(false);
@@ -356,7 +357,7 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
         else
         {
 
-            YiyouStaticDataManager.Instance.DisposeAB();
+        
             StartCoroutine("LoadNext", "main");
         }
 
@@ -399,7 +400,7 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
         m_Instructions.gameObject.SetActive(flag);
         if (flag)
             m_Instructions.text = ssss;
-
+    //    ButtonPanelGo.gameObject.SetActive(!flag);
     }
     internal void ShowEffectPanel(bool v)
     {
@@ -416,7 +417,7 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
     }
     public void ShouZujiBtn(bool flag)
     {
-        zujiButton.gameObject.SetActive(flag);
+      //  zujiButton.gameObject.SetActive(flag);
         helpButton.gameObject.SetActive(!flag);
     }
 }

@@ -62,7 +62,7 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
         {
             return;
         }
-        Debug.Log(pointDataParams.data.Count);
+      //  Debug.Log(pointDataParams.data.Count);
         for (int i = 0; i < pointDataParams.data.Count; i++)
         {
             string id = pointDataParams.data[i].id;
@@ -121,7 +121,7 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
                     imagecount++;
                 }
                 pathChild.Add(path[j].time, imagePathList);
-                Debug.Log(path[j].time);
+             //   Debug.Log(path[j].time);
                 //ptClass.paths.Add(path[j].time, pathChild);
             }
             ptClass.count = imagecount.ToString();
@@ -150,14 +150,14 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
         float y = float.Parse(zb["latitude"].ToString());
 
 
-        string jingdu = x.ToString("F5");
-        string weidu = y.ToString("F5");
+        string jingdu = x.ToString("F4");
+        string weidu = y.ToString("F4");
 
         String date = System.DateTime.Now.ToString("yyyy/MM/dd");
         date = date.Replace("/", "");
  
         AddPoint(jingdu, weidu, imagepath, "1", (maxIndex+1).ToString());
-        AddPointToPointClass(maxIndex+1, jingdu, weidu, imagepath, date);
+        AddPointToPointClass( jingdu, weidu, imagepath, date);
         maxIndex++;
     }
     /// <summary>
@@ -168,7 +168,7 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
     /// <param name="weidu"></param>
     /// <param name="imagepath"></param>
     /// <param name="date"></param>
-    public void AddPointToPointClass(int index, string jingdu, string weidu, string imagepath, string date)
+    public void AddPointToPointClass(string jingdu, string weidu, string imagepath, string date)
     {
 
         if (pointData == null)
@@ -184,7 +184,7 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
                 string pointjingdu = pointData.data[i].jingdu;
                 string pointweidu = pointData.data[i].weidu;
                 //如果有当前ID
-                if (id == index && pointweidu == weidu && pointjingdu == jingdu)
+                if ( pointweidu == weidu && pointjingdu == jingdu)
                 {
                     List<Paths> path = pointData.data[i].paths;
                     List<Timepaths> timepathses = new List<Timepaths>();
@@ -194,9 +194,12 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
                         Timepaths tt;
                         if (path[j].time == date)
                         {
+                            pointData.data[i].count =( ++count).ToString();
                             timepathses = path[j].timepaths;
                             var pathsCount = timepathses.Count;
-                            tt = new Timepaths(pathsCount.ToString(), imagepath);
+                            Debug.Log(pathsCount);
+                            tt = new Timepaths((++pathsCount).ToString(), imagepath);
+                            Debug.Log(pathsCount);
                             timepathses.Add(tt);
                             break;
                         }
@@ -224,7 +227,8 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
                     Paths paths = new Paths(date, items);
                     List<Paths> ppp = new List<Paths>();
                     ppp.Add(paths);
-                    Data data = new Data((index).ToString(), jingdu, weidu, "1", ppp);
+                    int num = pointData.data.Count;
+                    Data data = new Data((++num).ToString(), jingdu, weidu, "1", ppp);
                     pointData.data.Add(data);
                     break;
                 }
@@ -239,7 +243,8 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
             Paths paths = new Paths(date, items);
             List<Paths> ppp = new List<Paths>();
             ppp.Add(paths);
-            Data data = new Data((index).ToString(), jingdu, weidu, "1", ppp);
+            int num = pointData.data.Count;
+            Data data = new Data((++num).ToString(), jingdu, weidu, "1", ppp);
             pointData.data.Add(data);
         }
         UpdateImageShowClass(pointData);

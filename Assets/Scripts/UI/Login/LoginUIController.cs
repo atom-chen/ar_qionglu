@@ -113,11 +113,12 @@ public class LoginUIController : SingletonMono<LoginUIController>
                 tipPanel.ShowPopup("验证码错误", "请输入正确的验证码");
                 break;
             case "1005":
+
                 tipPanel.ShowPopup("手机号格式错误", "请输入正确的手机号码");
                 break;
             case "1006":
                 //注册成功
-                tipPanel.ShowPopupAndDoSomeThing("注册成功", "您已成功使用该手机号注册，当前自动登录该账号", 1.5f, LoadMainScene);
+                tipPanel.ShowPopupAndDoSomeThing(GlobalParameter.RegisterSuccessTitle, GlobalParameter.RegisterSuccessMsgs, 1.5f, LoadMainScene);
                 //tipPanel.ShowPopup("操作成功", "请妥善保管账号和密码");
                 break;
             case "1007":
@@ -125,7 +126,8 @@ public class LoginUIController : SingletonMono<LoginUIController>
                 tipPanel.ShowPopupAndDoSomeThing("密码修改成功", "请妥善保管账号和密码", 1.5f, InitState);
                 break;
             case "1010":
-                LoadMainScene();
+                tipPanel.ShowPopupAndDoSomeThing("", "登录成功", 1.5f, LoadMainScene);
+   
                 break;
             case "1011":
                 tipPanel.ShowPopup("未设置密码", "密码未设置，请尽快完善密码");
@@ -136,11 +138,14 @@ public class LoginUIController : SingletonMono<LoginUIController>
             case "1013":
                 tipPanel.ShowPopup("未绑定手机号", "请绑定手机号");
                 break;
+            case "1014":
+                tipPanel.ShowPopup("", "该手机号并未注册");
+                break;
             case "Error":
                 tipPanel.ShowPopup("请求失败", "请稍候重试");
                 break;
             case "Third":
-                tipPanel.ShowPopupAndDoSomeThing("登录成功", "登录成功", 1.5f, LoadMainScene);
+                tipPanel.ShowPopupAndDoSomeThing("", "登录成功", 1.5f, LoadMainScene);
                 break;
             default:
                 break;
@@ -153,9 +158,23 @@ public class LoginUIController : SingletonMono<LoginUIController>
 
     private static void LoadMainScene()
     {
-        ScenesManager.Instance.LoadMainScene();
-    }
+        UnityHelper.LoadNextScene("main");
 
+        PublicAttribute.UserInfo = new UserInfo()
+        {
+            PhoneNo = GlobalParameter.nickName,
+            NickName = GlobalParameter.phone,
+            UserIcon = null,
+        };
+
+    }
+    /// <summary>
+    /// 弹框提示信息，分两类
+    /// ----第一类：两行内容的=== title：标题， content：内容----
+    /// 第二类：一行内容的=== title为空，     content：内容----
+    /// </summary>
+    /// <param name="title"></param>
+    /// <param name="content"></param>
     public void ShowPopup(string title, string content)
     {
         tipPanel.ShowPopup(title, content);

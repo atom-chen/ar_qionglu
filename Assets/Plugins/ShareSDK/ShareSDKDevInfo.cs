@@ -7,9 +7,13 @@ namespace cn.sharesdk.unity3d
     [Serializable]
     public class DevInfoSet
 	{
+        [HideInInspector]
 	public	 SinaWeiboDevInfo sinaweibo;
+        [HideInInspector]
         public QQ qq;
+        [HideInInspector]
         public WeChat wechat;
+        [HideInInspector]
         public WeChatMoments wechatMoments;
 
     }

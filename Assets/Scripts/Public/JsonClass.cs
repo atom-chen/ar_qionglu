@@ -70,6 +70,10 @@ public class JsonClass : Singleton<JsonClass>
     /// 主页展示的商家信息列表
     /// </summary>
     public List<ScenicSpotItem> ShopInfoS { get; set; } 
+    
+    /// 主页展示的酒店信息列表
+    /// </summary>
+    public List<ScenicSpotItem> HotelInfoS { get; set; } 
     /// <summary>
     /// 主页显示的特产信息列表
     /// </summary>
@@ -84,6 +88,7 @@ public class JsonClass : Singleton<JsonClass>
         NavigationInfoS = new List<DynamicItem>();
         TraitScenicSpotInfoS= new List<ScenicSpotItem>();
         ShopInfoS = new List<ScenicSpotItem>();
+        HotelInfoS = new List<ScenicSpotItem>();
         LocalSpecialtyS = new List<ScenicSpotItem>();
         AreaInfoS = new List<AreaInfo>();
 

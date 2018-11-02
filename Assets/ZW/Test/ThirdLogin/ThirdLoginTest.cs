@@ -34,7 +34,7 @@ public class ThirdLoginTest : MonoBehaviour
         //Listeners
         wechatLoginBtn.onClick.AddListener(() =>
         {
-          
+            ssdk.DisableSSO(false);
             ssdk.GetUserInfo(PlatformType.WeChat);
         });
 
@@ -81,16 +81,16 @@ public class ThirdLoginTest : MonoBehaviour
             {
                 switch (i)
                 {
-                    case 1:
+                    case 1010:
                         Debug.Log("未绑定手机号");
                         //BinDingPhonePage.SetActive(true);
                         //LUIS.ThirdOpenID = UserID;
                         //LUIS.UserName = UserName;
                         //LUIS.UserIcon = UserIcon;
                         break;
-                    case 2:
+                    case 1013:
                         Debug.Log("登录成功");
-                        ScenesManager.Instance.LoadMainScene();
+                      //  ScenesManager.Instance.LoadMainScene();
                         break;
                     default:
                         Debug.Log("登录异常");

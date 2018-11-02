@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ScrollPageMark : MonoBehaviour
@@ -10,13 +11,19 @@ public class ScrollPageMark : MonoBehaviour
     public Toggle togglePrefab;
 
     public List<Toggle> toggleList = new List<Toggle>();
-	
+    private Scene sc;
     void Awake()
     {
         instance = this;
+       
     }
-	
-	public void OnScrollPageChanged(int pageCount, int currentPageIndex)
+
+    private void Start()
+    {
+        sc = SceneManager.GetActiveScene();
+    }
+
+    public void OnScrollPageChanged(int pageCount, int currentPageIndex)
     {
         if(pageCount!=toggleList.Count)
         {
@@ -43,21 +50,30 @@ public class ScrollPageMark : MonoBehaviour
         {
             toggleList[currentPageIndex].isOn = true;
         }
+        if(currentPageIndex==0)
+        {
+            toggleList[toggleList.Count-1].isOn = false;
+        }
 
-        if (currentPageIndex==pageCount-1)
+        if (sc.name == "ARScan")
         {
-            for(int i=0; i< toggleList.Count; i++)
+            if (currentPageIndex==pageCount-1)
             {
-                toggleList[i].gameObject.SetActive(false);
+                for(int i=0; i< toggleList.Count; i++)
+                {              
+                    toggleList[i].isOn = false;
+                    toggleList[i].gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                for(int i=0; i< toggleList.Count; i++)
+                {
+                    toggleList[i].gameObject.SetActive(true);
+                }
             }
         }
-        else
-        {
-            for(int i=0; i< toggleList.Count; i++)
-            {
-                toggleList[i].gameObject.SetActive(true);
-            }
-        }
+       
     }
 
     Toggle CreateToggle()

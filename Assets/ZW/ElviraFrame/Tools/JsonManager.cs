@@ -11,62 +11,37 @@ using  UnityEngine;
 namespace ElviraFrame { 
 public  class JsonManager
 {
-    public static PointClass ReadJsonFromFile()
-    {
 
-        if (!File.Exists(Application.dataPath+ "/ZW/TestJson.json"))
-        {
-            return null;
-        }
-        StreamReader  sr=new StreamReader(Application.dataPath+ "/ZW/TestJson.json");
-
-        if (sr==null)
-        {
-            return null;
-        }
-
-        string json = sr.ReadToEnd();
-        if (json.Length>0)
-        {
-            return JsonUtility.FromJson<PointClass>(json);
-        }
-
-        return null;
-    }
     public static string ReadJsonFromFilePath(string  filePath,string fileName)
     {
 
-            //1.找到资源保存的文件夹
-       //     string assetDirectory = UnityHelper.LocalFilePath + "/Web/"+ fileName;
             string assetDirectory = filePath  + fileName;
-            StreamReader sr = new StreamReader(@assetDirectory);
-
-            if (sr == null)
-        {
-            return null;
-        }
-
-        string json = sr.ReadToEnd();
+            if (!File.Exists(assetDirectory))
+                return null;
+            string json  = File.ReadAllText(assetDirectory);   
         if (json.Length > 0)
             {
-                sr.Close();
-                sr.Dispose();
+                Debug.Log(json);
                 return json;
-        }
-            sr.Close();
-            sr.Dispose();
+        }     
             return null;
     }
     public static void SaveJsonToFile(PointClass status)
-    {
-          string json=   JsonUtility.ToJson(status,true);
-            string savePath = PublicAttribute.LocalFilePath + "/Web/PointMap.json";
-            FileStream aFile = new FileStream(@savePath, FileMode.OpenOrCreate);
-            StreamWriter sw = new StreamWriter(aFile);
-        sw.Write(json);
-        sw.Close();
-        sw.Dispose();
+        {
 
+
+            string savePath = UnityHelper.LocalFilePath + "Web/PointMap.json";
+            if (!Directory.Exists(UnityHelper.LocalFilePath + "Web"))
+            {
+                Directory.CreateDirectory(UnityHelper.LocalFilePath + "Web");
+            }
+
+            string json=   JsonUtility.ToJson(status,true);
+ 
+
+                Debug.Log("savePath======" + savePath);
+            Debug.Log("json======" + json);
+      File.WriteAllText(savePath, json);
 
     }
         }

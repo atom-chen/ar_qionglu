@@ -22,34 +22,33 @@ public class BinDingPhonePanel : UIWindowsBase {
         });
         getsmssBtn.onClick.AddListener((() =>
         {
+            if (string.IsNullOrEmpty(phoneInput.text) || phoneInput.text.Length != 11)
+            {
+                LoginUIController.Instance.ShowPopup("", GlobalParameter.InputPhoneNumber);
+                return;
+            }
             if (LoginUIController.Instance.VerifyPhoneNo(phoneInput.text))
             {
                 LoginUIController.Instance.FreezeButton(getsmssBtn);
-                HttpManager.Instance.GetSMSS(smssInpPut.text, (b =>
+                HttpManager.Instance.GetSMSS(phoneInput.text, (b =>
                 {
                     Debug.Log("获取短信验证码 " + b);
                 }));
             }
-            else
-            {
-                LoginUIController.Instance.ShowPopup("格式不正确", "请输入正确的手机号");
-            }
+        
         }));
         SetPhoneBtn.onClick.AddListener((() =>
         {
             if (LoginUIController.Instance.VerifyPhoneNo(phoneInput.text) && LoginUIController.Instance.VerifySMSCode(smssInpPut.text))
             {
-                HttpManager.Instance.DownloadTexture(loginPanelUI.UserIcon, "UserIcon.png", PublicAttribute.LocalFilePath + "APP/", (bytes
+                HttpManager.Instance.DownloadTexture(GlobalParameter.UserIcon, "UserIcon.png", PublicAttribute.LocalFilePath + "APP/", (bytes
                         =>
                 {
                     Debug.Log("头像下载成功");
-                    HttpManager.Instance.BindingPhoneNo(phoneInput.text, smssInpPut.text, loginPanelUI.ThirdOpenID, bytes, loginPanelUI.UserName, (LoginUIController.Instance.PopupInfo));
+                    HttpManager.Instance.BindingPhoneNo(phoneInput.text, smssInpPut.text, GlobalParameter.ThirduserID, bytes, GlobalParameter.UserName, (LoginUIController.Instance.PopupInfo));
                 }));
             }
-            else
-            {
-                LoginUIController.Instance.ShowPopup("格式不正确", "请输入正确的手机号");
-            }
+      
         }));
 
         this.gameObject.SetActive(false);

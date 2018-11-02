@@ -191,11 +191,16 @@ public class YiyouStaticDataManager : SingletonMono<YiyouStaticDataManager>
     }
     private string sceneName = "scene_yiyou";
     private string ABSelfname = "scene_yiyou/prefabs.ab";
-    private void Start()
-    {
-        //将ab包加入内存
-        StartCoroutine(AssetBundleMgr.GetInstance().LoadAssetBundlePack(sceneName, ABSelfname, LoadABComplete));
-    }
+
+
+    /// <summary>
+    ///加载AB包进入内存 
+    /// </summary>
+    public void StartLoadABAssets()
+{
+	StartCoroutine(AssetBundleMgr.GetInstance().LoadAssetBundlePack(sceneName, ABSelfname, LoadABComplete));
+}
+
     /// <summary>
     /// 整体AB包加载完毕之后将图片设置为可点击状态
     /// </summary>

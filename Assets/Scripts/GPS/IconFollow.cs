@@ -39,12 +39,12 @@ public class IconFollow : MonoBehaviour
         recTransform = state.GetComponent<RectTransform>();
         recTransform.SetParent(iconRoot);
 
-        web = GameObject.Find("UniWebView").GetComponent<webrequest>();
+        web = GameObject.Find(GlobalInfo.websiterequest).GetComponent<webrequest>();
 
         webbtn = state.transform.Find("infobg").GetComponent<Button>();
         webbtn.onClick.AddListener(delegate ()
         {
-            web.LoadWeb(item.address);
+            web.LoadWebSetTitle(item.address,item.name);
         });
 
         raw = state.transform.Find("infobg/pic").GetComponent<RawImage>();
@@ -81,10 +81,17 @@ public class IconFollow : MonoBehaviour
             infobg.gameObject.SetActive(false);
             switch (type)
             {
-                case "vsz-facilities":
+                    //市政建筑
+                case "vsz-building":
+                    //饭店
+                case "vsz-restaurant":
+                    //洗手间
                 case "vsz-washroom":
+                    //酒店
                 case "vsz-hotel":
+                    //售票处
                 case "vsz-sell-ticket":
+                    //租赁点
                 case  "vsz-lease":
                     iconbg.gameObject.SetActive(true);
                     break;
@@ -93,6 +100,10 @@ public class IconFollow : MonoBehaviour
                     break;
                 case "vsz-scenery-dot":
                     namebg1.gameObject.SetActive(true);
+                    break;
+                
+                default:
+                    iconbg.gameObject.SetActive(true);
                     break;
             }
         }
@@ -151,7 +162,7 @@ public class IconFollow : MonoBehaviour
             //市政建筑
             case "vsz-building":
                 iconraw = state.transform.Find("iconbg/icon").GetComponent<RawImage>();
-                iconraw.texture = Resources.Load<Texture>("GPS/酒店");
+                iconraw.texture = Resources.Load<Texture>("GPS/市政建筑");
 
                 disText = state.transform.Find("iconbg/distance").GetComponent<Text>();
                 btn = iconraw.transform.GetComponent<Button>();
@@ -168,6 +179,24 @@ public class IconFollow : MonoBehaviour
                 break;
             //酒店
             case "vsz-hotel":
+                iconraw = state.transform.Find("iconbg/icon").GetComponent<RawImage>();
+                iconraw.texture = Resources.Load<Texture>("GPS/酒店");
+
+                disText = state.transform.Find("iconbg/distance").GetComponent<Text>();
+                btn = iconraw.transform.GetComponent<Button>();
+                btn.onClick.AddListener(delegate ()
+                {
+                    GpsConvert.instance.ShowDirectSpot(item.id);
+                });
+
+                infobg.gameObject.SetActive(false);
+                iconbg.gameObject.SetActive(true);
+                namebg1.gameObject.SetActive(false);
+                namebg2.gameObject.SetActive(false);
+
+                break;
+            //饭店
+            case "vsz-restaurant":
                 iconraw = state.transform.Find("iconbg/icon").GetComponent<RawImage>();
                 iconraw.texture = Resources.Load<Texture>("GPS/餐饮");
 
@@ -187,7 +216,7 @@ public class IconFollow : MonoBehaviour
             //售票处
             case "vsz-sell-ticket":
                 iconraw = state.transform.Find("iconbg/icon").GetComponent<RawImage>();
-                iconraw.texture = Resources.Load<Texture>("GPS/酒店");
+                iconraw.texture = Resources.Load<Texture>("GPS/售票处");
 
 
                 disText = state.transform.Find("iconbg/distance").GetComponent<Text>();
@@ -252,6 +281,22 @@ public class IconFollow : MonoBehaviour
                 namebg2.gameObject.SetActive(true);
 
                 break;
+            default:
+                iconraw = state.transform.Find("iconbg/icon").GetComponent<RawImage>();
+                iconraw.texture = Resources.Load<Texture>("GPS/市政建筑");
+
+                disText = state.transform.Find("iconbg/distance").GetComponent<Text>();
+                btn = iconraw.transform.GetComponent<Button>();
+                btn.onClick.AddListener(delegate ()
+                {
+                    GpsConvert.instance.ShowDirectSpot(item.id);
+                });
+
+                infobg.gameObject.SetActive(false);
+                iconbg.gameObject.SetActive(true);
+                namebg1.gameObject.SetActive(false);
+                namebg2.gameObject.SetActive(false);
+                break;
         }
     }
     static public bool IsAPointInACamera(Camera cam, Vector3 worldPos)
@@ -281,6 +326,8 @@ public class IconFollow : MonoBehaviour
             recTransform.position = player2DPosition;
             //recTransform.position = Vector2.Lerp(recTransform.position, player2DPosition, Time.deltaTime * 1f);
             float distance = Vector3.Distance(Camera.main.transform.position, transform.position);
+            // float distance = Vector2.Distance(new Vector2(Camera.main.transform.position.x,Camera.main.transform.position.y), 
+            //     new Vector2(transform.position.x,transform.position.y));
             //物体不在屏幕中就不显示  
             if (showDistance < 300)
                 showDistance = 999999999;
@@ -291,7 +338,7 @@ public class IconFollow : MonoBehaviour
                 if (distance < 1000)
                 {
                     if (disText != null)
-                    {
+                    { 
                         disText.text = (int)distance + "m";
                         infodisText.text = (int)distance + "m";
                     }

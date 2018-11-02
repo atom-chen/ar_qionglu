@@ -26,14 +26,17 @@ public class GalleryImageManager : SingletonMono<GalleryImageManager>
     }
 
 
-    private void Update()
-    {
-        //if (Input.GetMouseButtonDown(1))
-        //{
-        //    SpawnImage("1");
-        //}
+    //private void Update()
+    //{
+    //    if (Input.GetMouseButtonDown(1))
+    //    {
+    //        SpawnImage("1");
+    //        TrackUIManager.Instance.SetTitleText("相册", 1);
+    //        List<string> value = new List<string>() { "yiyou06362802112018.png", "yiyou06363202112018.png", "yiyou06363602112018.png", "yiyou06364202112018.png" };
+    //        content.GetComponent<ScrollContent>().AddContentChildPanel("20181102", value);
+    //    }
 
-    }
+    //}
     /// <summary>
     /// 地图上点位点击之后的加载图片
     /// </summary>
@@ -43,7 +46,7 @@ public class GalleryImageManager : SingletonMono<GalleryImageManager>
         ImageScrollView = Instantiate(Resources.Load<GameObject>("Model/ImageScrollView"), Vector3.zero, Quaternion.identity, canvas.transform);
         ImageScrollView.name = "ImageScrollView";
         ImageScrollView.GetComponent<RectTransform>().offsetMin =new Vector2(0,0);
-        ImageScrollView.GetComponent<RectTransform>().offsetMax = new Vector2(0, -90);
+        ImageScrollView.GetComponent<RectTransform>().offsetMax = new Vector2(0, -130);
         content = ImageScrollView.GetComponent<ScrollRect>().content.gameObject;
         items = TrackDataManager.Instance.items;
         int index = GetItemPaths(id);
@@ -75,5 +78,5 @@ public class GalleryImageManager : SingletonMono<GalleryImageManager>
         }
         return -1;
     }
-
+  
 }

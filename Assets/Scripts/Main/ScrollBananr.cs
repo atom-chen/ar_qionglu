@@ -24,11 +24,11 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         //引导页调用
         DownloadProp.Instance.UpdatePreview();
     }
-    static bool isdown;
+    public static bool isdown;
     // Use this for initialization
     void Start()
     {
-        pageItemPrefab.GetComponent<RectTransform>().sizeDelta = new Vector2(1440, 800);
+        pageItemPrefab.GetComponent<RectTransform>().sizeDelta = new Vector2(1080, 550);
         //GetImageList();
         if (!isdown)
         {
@@ -79,7 +79,7 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         OnPageChanged += ScrollPageMark.instance.OnScrollPageChanged;
     }
     private float autoChangeTime = 10;
-    private float waiteTime = 5;
+    private float waiteTime = 3;
     private bool islast;
     void Update()
     {
@@ -93,7 +93,7 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
         }
         autoChangeTime -= Time.deltaTime;
-        if (autoChangeTime <= 0 && !islast)
+        if (autoChangeTime <= 0 )
         {
             autoChangeTime = waiteTime;
 
@@ -102,8 +102,8 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
             if (index >= pageCount)
             {
                 islast = true;
-                index--;
-                return;
+                index = 0;
+     
             }
 
             lastpage = index;
@@ -308,8 +308,8 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {
         //Content.offsetMax = new Vector2(0,0);
         //Content.offsetMin = new Vector2(1440*(pageCount-1), 0);
-        Content.sizeDelta = new Vector2(1440 * Count, 800 * mainPageUI.scale);
-        Content.anchoredPosition = new Vector2(-720, 400 * mainPageUI.scale);
+        Content.sizeDelta = new Vector2(1080 * Count, 550 * mainPageUI.scale);
+        Content.anchoredPosition = new Vector2(-540, 275 * mainPageUI.scale);
     }
 
     public void EnterMain()

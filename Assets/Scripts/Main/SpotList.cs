@@ -206,16 +206,16 @@ public class SpotList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {
         if (Count % 3 == 0)
         {
-            if (Count * 150 > 2360)
-                Content.sizeDelta = new Vector2(1440, Count/3 * 560+350);
+            if (Count * 153 > 1770)
+                Content.sizeDelta = new Vector2(1080, Count/3 * 460 + 100);
         }
         else
         {
-            if (Count * 150 + 450 > 2360)
-                Content.sizeDelta = new Vector2(1440, (Count/3+1) * 560+350);
+            if (Count * 153 + 450 > 1770)
+                Content.sizeDelta = new Vector2(1080, (Count/3+1) * 460 + 100);
         }
 
-        Content.anchoredPosition = new Vector2(-720, 0);
+        Content.anchoredPosition = new Vector2(-540, 0);
     }
     public void EnterMain()
     {

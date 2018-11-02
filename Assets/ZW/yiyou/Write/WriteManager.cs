@@ -255,6 +255,7 @@ public     GoodsWriteEnum goodsEnum = GoodsWriteEnum.None;
         Debug.Log(writeText);
         inputText.text = null;
         Inputpanel.transform.parent.parent.gameObject.SetActive(flag);
+        
         if (flag)
         {
             Init();

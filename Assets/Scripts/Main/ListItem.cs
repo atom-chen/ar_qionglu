@@ -41,7 +41,7 @@ public class ListItem : MonoBehaviour {
     webrequest web;
     private void Start()
     {
-        web = GameObject.Find("UniWebView").GetComponent<webrequest>();
+        web = GameObject.Find(GlobalInfo.websiterequest).GetComponent<webrequest>();
         //Debug.Log(thumbnail.localPath);
 
         //HttpManager.Instance.Download(thumbnail, (() =>

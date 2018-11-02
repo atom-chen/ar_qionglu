@@ -55,7 +55,7 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
             name = mTrackableBehaviour.TrackableName;
             transform.name = name;
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
-            if (!isLoading && !isloaded)
+            if (!isLoading && !isloaded && !ARScanManager.instance.isGuide)
             {
                 loadingImg.transform.localScale = Vector3.one *0.03f;
                 LoadAssetbundle();
@@ -65,17 +65,22 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
             {
                 ShowInfo();
             }
+            ARScanManager.instance.ShowShotBtn();
         }
         else if (previousStatus == TrackableBehaviour.Status.TRACKED &&
-                 newStatus == TrackableBehaviour.Status.NO_POSE||
-            newStatus == TrackableBehaviour.Status.EXTENDED_TRACKED)
-        {        
+                 newStatus == TrackableBehaviour.Status.NO_POSE ||
+                 newStatus == TrackableBehaviour.Status.EXTENDED_TRACKED)
+        {
             OnTrackingLost();
-            Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
             istracking = false;
             if (child != null)
-                if(child.GetComponent<Targets>()!=null)
+                if (child.GetComponent<Targets>() != null)
+                {          
+                    Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
                     HideInfo();
+                }
+            
+            ARScanManager.instance.HideShotBtn();
         }
         else
         {
@@ -84,6 +89,8 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
             if (child != null)
                 if(child.GetComponent<Targets>()!=null)
                     HideInfo();
+            
+            ARScanManager.instance.HideShotBtn();
         }
     }
 
@@ -96,15 +103,6 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
     }
     private IEnumerator LoadAssets()
     {
-        string LocalPath = "";
-        foreach (var ChangeInfo in mainPageUI.curScenicInfo.ResourcesInfos)
-        {
-            if (ChangeInfo.ResourcesKey == "scan_ticket")
-            {
-                LocalPath = ChangeInfo.LocalPath;
-                Debug.Log(LocalPath);
-            }
-        }
         string path = PublicAttribute.LocalFilePath + "scan_Ticket/1/Target" + name + ".vsz";
         switch (transform.name)
         {
@@ -154,8 +152,11 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
         }
         WWW bundle = WWW.LoadFromCacheOrDownload("file:///" + path,0);
         yield return bundle;
+        Debug.Log(bundle.bytesDownloaded);
         Debug.Log("Target" + name);
-        Object obj = bundle.assetBundle.LoadAsset("Target"+ name);
+        var data = bundle.assetBundle;
+        yield return new WaitForEndOfFrame();
+        Object obj = data.LoadAsset("Target"+ name);
         child = GameObject.Instantiate(obj) as GameObject;
         child.transform.SetParent(transform);
         child.transform.localEulerAngles = Vector3.zero;
@@ -164,17 +165,31 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
         loadingImg.transform.localScale = Vector3.zero;
         isLoading = false;
         isloaded = true;
+        if (transform.name=="zhaohuan")
+        {
+            transform.GetComponent<VirtualButtonEventHandler>().bbb = child.GetComponent<bird3>();
+        }
         yield return new WaitForEndOfFrame();
         if (istracking)
             ShowInfo();
     }
     public void ShowInfo()
     {
-        child.GetComponent<Targets>().ShowInfo();
+        if (child != null)
+        {  
+            if (child.GetComponent<Targets>() != null)
+                child.GetComponent<Targets>().ShowInfo();
+        } 
     }
     public void HideInfo()
     {
-        child.GetComponent<Targets>().HideInfo();
+        istracking = false;
+        if (child != null)
+        {  
+            if (child.GetComponent<Targets>() != null)
+                child.GetComponent<Targets>().HideInfo();
+        }
+       
     }
     protected virtual void OnTrackingFound()
     {

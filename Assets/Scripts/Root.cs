@@ -29,12 +29,17 @@ public class Root : MonoBehaviour
     public void Notify(string jsonData)
     {
         Debug.Log("点击了通知!!!,传回的消息是    " +jsonData);
-        NotifyCallBack nt =  JsonMapper.ToObject<NotifyCallBack>(jsonData);
+
+        JsonData data = JsonMapper.ToObject(jsonData);
+
+        float id = float.Parse(data["dbid"].ToString());
+        string type = data["type"].ToString();
 
 
+        Debug.Log("id===" + id + "------type==" + type);
         //TODO
         //跳转到gpsConvert
-        GpsConvert.instance.ShowdirectPoint(nt.type,float.Parse(nt.dbid));
+        webrequest.instance.ShowdirectPoint(type,id);
 
 
     }

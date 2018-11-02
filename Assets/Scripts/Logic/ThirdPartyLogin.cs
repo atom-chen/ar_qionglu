@@ -23,7 +23,7 @@ public class ThirdPartyLogin : MonoBehaviour
     private string UserID;
     private string ExpiresTime;
     private string UserName;
-    private string Token;
+    private string thirdToken;
     private string UserIcon;
     private string UserGender;
 
@@ -44,31 +44,72 @@ public class ThirdPartyLogin : MonoBehaviour
         //Listeners
         wechatLoginBtn.onClick.AddListener(() =>
         {
-            if (!LoginUIController.Instance.VerifyAgreeToggle())
+            if (LoginUIController.Instance.VerifyAgreeToggle() == false)
             {
+                LoginUIController.Instance.ShowPopup("", GlobalParameter.AgrrToggle);
                 return;
             }
-            //ssdk.DisableSSO(false);
+            if (ssdk.IsClientValid(PlatformType.WeChat)==false)
+            {
+                LoginUIController.Instance.ShowPopup("", GlobalParameter.NeedWechatClient);
+                return;
+            }
+            if (ssdk.IsAuthorized(PlatformType.WeChat))
+            {
+                ssdk.CancelAuthorize(PlatformType.WeChat);
+
+            }
+            ssdk.authHandler = OnAuthResultHandler;
+            ssdk.showUserHandler = OnGetUserInfoResultHandler;
+            //是否设置客户端授权，false：使用      
+            ssdk.DisableSSO(false);
             ssdk.GetUserInfo(PlatformType.WeChat);
         });
 
         qqLoginBtn.onClick.AddListener(() =>
         {
-            if (!LoginUIController.Instance.VerifyAgreeToggle())
+            if (LoginUIController.Instance.VerifyAgreeToggle() == false)
             {
+                LoginUIController.Instance.ShowPopup("", GlobalParameter.AgrrToggle);
                 return;
             }
-            //ssdk.DisableSSO(false);
+            if (ssdk.IsClientValid(PlatformType.QQ) == false)
+            {
+                LoginUIController.Instance.ShowPopup("", GlobalParameter.NeedQQClient);
+                return;
+            }
+            if (ssdk.IsAuthorized(PlatformType.QQ))
+            {
+                ssdk.CancelAuthorize(PlatformType.QQ);
+
+            }
+            ssdk.authHandler = OnAuthResultHandler;
+            ssdk.showUserHandler = OnGetUserInfoResultHandler;
+            ssdk.DisableSSO(false);
             ssdk.GetUserInfo(PlatformType.QQ);
         });
 
         weiboLoginBtn.onClick.AddListener(() =>
         {
-            if (!LoginUIController.Instance.VerifyAgreeToggle())
+        
+            if (LoginUIController.Instance.VerifyAgreeToggle() == false)
             {
+                LoginUIController.Instance.ShowPopup("", GlobalParameter.AgrrToggle);
                 return;
             }
-            //ssdk.DisableSSO(false);
+            if (ssdk.IsClientValid(PlatformType.SinaWeibo) == false)
+            {
+                LoginUIController.Instance.ShowPopup("", GlobalParameter.NeedSinaWeiboClient);
+                return;
+            }
+            if (ssdk.IsAuthorized(PlatformType.SinaWeibo))
+            {
+                ssdk.CancelAuthorize(PlatformType.SinaWeibo);
+
+            }
+            ssdk.authHandler = OnAuthResultHandler;
+            ssdk.showUserHandler = OnGetUserInfoResultHandler;
+            ssdk.DisableSSO(false);
             ssdk.GetUserInfo(PlatformType.SinaWeibo);
         });
     }
@@ -89,26 +130,31 @@ public class ThirdPartyLogin : MonoBehaviour
             var item = JsonMapper.ToObject(temp);
 
             UserID = item["userID"].ToString();
-            //ExpiresTime = item["expiresTime"].ToString();
+        
             UserName = item["userName"].ToString();
-            Token = item["token"].ToString();
+        
             UserIcon = item["userIcon"].ToString();
-            //UserGender = item["userGender"].ToString();
-            Debug.Log("UserID  " + UserID + "   昵称   " + UserName + "  头像 " + UserIcon + " 性别" + UserGender+"    Token    "+Token);
+        
+            Debug.Log("UserID  " + UserID + "   昵称   " + UserName + "  头像 " + UserIcon + " 性别" + UserGender + " Token" +   thirdToken);
 
-            HttpManager.Instance.ThirdPartyLogin(Token,(i =>
+            HttpManager.Instance.ThirdPartyLogin(UserID, (i =>
             {
                 switch (i)
                 {
-                    case 1:
+                    case 1013:
                       Debug.Log("未绑定手机号");
-                        loginPanelUI.ThirdOpenID = UserID;
-                        loginPanelUI.UserName = UserName;
-                        loginPanelUI.UserIcon = UserIcon;
-                        LoginUIController.Instance.SetNextUIState(LoginUIState.BinDingPhonePage);
+                        GlobalParameter.ThirduserID = UserID;
+                        Debug.Log("GlobalParameter.ThirduserID===" + GlobalParameter.ThirduserID);
+                        GlobalParameter.UserName = UserName;
+                        Debug.Log("GlobalParameter.UserName===" + GlobalParameter.UserName);
+                        GlobalParameter.UserIcon = UserIcon;
+                        Debug.Log("GlobalParameter.UserIcon===" + GlobalParameter.UserIcon);
 
+
+                        LoginUIController.Instance.SetNextUIState(LoginUIState.BinDingPhonePanel);
+                        Debug.Log("BinDingPhonePanel");
                         break;
-                    case 2:
+                    case 1010:
                         Debug.Log("登录成功");
                         LoginUIController.Instance.PopupInfo("Third");
                      
@@ -162,6 +208,68 @@ public class ThirdPartyLogin : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
 
+            #region   QQ
+            UserID = "DFBA3FA99B5F58ADFCF99CF9309CDABD";
+
+            UserName = "Elvira_Z";
+
+            UserIcon = "http://thirdqq.qlogo.cn/qqapp/1107697201/DFBA3FA99B5F58ADFCF99CF9309CDABD/100";
+            //        Token = item["Token"].ToString();
+            #endregion
+
+
+            #region WECHAT
+            //UserID = "DFBA3FA99B5F58ADFCF99CF9309CDABD";
+
+            //UserName = "Elvira_Z";
+
+            //UserIcon = "http://thirdqq.qlogo.cn/qqapp/1107697201/DFBA3FA99B5F58ADFCF99CF9309CDABD/100";
+            //     Token = item["Token"].ToString();
+            #endregion
+
+
+            #region   SINA
+            //UserID = "3173707453";
+
+            //UserName = "暮里灯迟";
+
+            //UserIcon = "http://tvax2.sinaimg.cn/default/images/default_avatar_male_180.gif";
+         //   Token = item["Token"].ToString();
+            #endregion
+
+
+            HttpManager.Instance.ThirdPartyLogin(UserID, (i =>
+            {
+                switch (i)
+                {
+                    case 1013:
+                        Debug.Log("未绑定手机号");
+                        GlobalParameter.ThirduserID = UserID;
+                        Debug.Log("GlobalParameter.ThirduserID===" + GlobalParameter.ThirduserID);
+                        GlobalParameter.UserName = UserName;
+                        Debug.Log("GlobalParameter.UserName===" + GlobalParameter.UserName);
+                        GlobalParameter.UserIcon = UserIcon;
+                        Debug.Log("GlobalParameter.UserIcon===" + GlobalParameter.UserIcon);
+                        LoginUIController.Instance.SetNextUIState(LoginUIState.BinDingPhonePanel);
+                        Debug.Log("BinDingPhonePanel");
+                        break;
+                    case 1010:
+                        Debug.Log("登录成功");
+                        LoginUIController.Instance.PopupInfo("Third");
+
+                        break;
+                    default:
+                        Debug.Log("登录异常");
+                        LoginUIController.Instance.PopupInfo("Error");
+                        break;
+                }
+            }));
+        }
+    }
 }
 

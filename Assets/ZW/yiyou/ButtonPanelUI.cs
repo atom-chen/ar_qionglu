@@ -269,7 +269,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     IEnumerator ShotBtnClick()
     {
         ShowShotImage.texture = null;
-        EffectPanelUI.Instance.EffectPanelGo.gameObject.SetActive(false);
+       // EffectPanelUI.Instance.EffectPanelGo.gameObject.SetActive(false);
         uiCanvas.alpha = 0;
         RecordManager.Instance.ShowCanvas(false);;
         FingerTouchEL.Instance.targetGameObject = null;

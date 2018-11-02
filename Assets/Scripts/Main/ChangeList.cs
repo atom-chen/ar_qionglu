@@ -4,10 +4,17 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using System;
+using System.Runtime.InteropServices;
+using LitJson;
 
 public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 {
     public static ChangeList instance;
+    
+    [DllImport("__Internal")]
+    private static extern string GetLocation();//测试接收字符串
+    
     /// <summary>
     /// 用于返回一个页码，-1说明page的数据为0
     /// </summary>
@@ -18,6 +25,7 @@ public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     float startime = 0f;
     float delay = 0.1f;
 
+    public Vector2 gps;
     void Awake()
     {
         instance = this;
@@ -31,6 +39,8 @@ public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     void Start()
     {
         startime = Time.time;
+        Vector3 point = getLocation();
+        gps=new Vector2(point.x,point.y);
     }
 
     void Update()
@@ -45,7 +55,39 @@ public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
         }
     }
+    public Vector3 getLocation()
+    {
+#if  UNITY_ANDROID
 
+        AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+        String location = jo.Call<String>("getLocation");
+
+        Debug.Log("GPS::::::::::" + location);
+
+
+        JsonData zb = JsonMapper.ToObject(location);
+        float x = float.Parse(zb["longitude"].ToString());
+        float y = float.Parse(zb["latitude"].ToString());
+        float z = float.Parse(zb["altitude"].ToString());
+        return new Vector3(x,y,z);
+#elif UNITY_IOS || UNITY_IPHONE
+      string IosGet = GetLocation();
+      Debug.Log(IosGet);
+    if (IosGet.Length < 5)
+    {
+         return new Vector3(0f, 0f, 0f);
+    }
+    else
+    {
+        JsonData zb = JsonMapper.ToObject(IosGet);
+        float x = float.Parse(zb["longitude"].ToString());
+        float y = float.Parse(zb["latitude"].ToString());
+        float z = float.Parse(zb["altitude"].ToString());
+        return new Vector3(x,y,z);
+    }
+#endif
+    }
     #region 滑动
     private float page;
     ScrollRect rect;
@@ -171,7 +213,7 @@ public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                                 item.transform.localScale = Vector3.one;
                                 item.transform.localPosition = Vector3.zero;
 
-                                item.id = fileitem.baseEntity.id;
+                                item.id = fileitem.id.ToString();
                                 item.name = fileitem.baseEntity.name;
                                 item.thumbnail = fileitem.PageThumbnail;
                                 item.locationX = fileitem.baseEntity.locationX;
@@ -181,7 +223,8 @@ public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                                 item.address = fileitem.baseEntity.address;
                                 item.content = fileitem.description;
                                 item.VersionFilesItems = fileitem.VersionFilesItems;
-
+                                item.GPS = gps;
+                                
                                 itemObj.Add(item.gameObject);
                                 item.gameObject.SetActive(true);
                             }));
@@ -197,9 +240,9 @@ public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     //offsetMax 是vector2(right, top)
     void SetContent(int Count)
     {
-        if (Count * 1000 > 2360)
-            Content.sizeDelta = new Vector2(1440, Count * 1050);
-        Content.anchoredPosition = new Vector2(-720, 0);
+        if (Count * 750 > 1800)
+            Content.sizeDelta = new Vector2(1080, Count * 750);
+        Content.anchoredPosition = new Vector2(-540, 0);
     }
     public void EnterMain()
     {
@@ -211,7 +254,7 @@ public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         change_panel.DOPlayForward();
         foreach (var item in itemObj)
         {
-            if (item.GetComponent<ChangeItem>().id==id)
+            if (item.GetComponent<ChangeItem>().id.ToString()==id)
             {
                 item.GetComponent<ChangeItem>().BtnOnClick(disWarn);
                 break;

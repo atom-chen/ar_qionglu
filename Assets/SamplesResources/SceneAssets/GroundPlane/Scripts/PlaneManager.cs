@@ -238,7 +238,11 @@ public    Light mainLight;
             }
             else
             {
-                GroundPlaneUI.Instance.SetIntroductionText("请先选择模型");
+                if (showGameObject==null)
+                {
+                    GroundPlaneUI.Instance.SetIntroductionText("请先选择合影道具");
+
+                }
             }
 
         }
@@ -404,7 +408,7 @@ public    Light mainLight;
         GroundPlaneUI.Instance.SelectModelPanel.gameObject.SetActive(false);
       
         RecordManager.Instance.ShowCanvas(false);
-        GroundPlaneUI.Instance.SetIntroductionText("请将镜头朝向地面");
+        GroundPlaneUI.Instance.SetIntroductionText("请将镜头朝向地面并选择合影道具");
     }
     protected virtual void SetMterials(GoodsWriteEnum goodsWriteEnum)
     {
@@ -540,10 +544,11 @@ public    Light mainLight;
                 m_PositionalDeviceTracker.Start();
             if (m_PositionalDeviceTracker.IsActive && !m_SmartTerrain.IsActive)
                 m_SmartTerrain.Start();
+            YiyouStaticDataManager.Instance.StartLoadABAssets();
         }
         else
         {
-            YiyouStaticDataManager.Instance.DisposeAB();
+
 
                 SceneManager.LoadScene("wikiSLAM");
 

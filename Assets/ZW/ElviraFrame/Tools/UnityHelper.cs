@@ -6,6 +6,8 @@ using UnityEngine.UI;
 using Random = UnityEngine.Random;
 using System.IO;
 using Object = UnityEngine.Object;
+using UnityEngine.SceneManagement;
+using System.Runtime.InteropServices;
 /// <summary>
 /// 集成大量的通用算法
 /// </summary>
@@ -201,47 +203,6 @@ public static   class UnityHelper
 
     }
 
-    public static T[] LoadAssets<T>(string path, string pattern) where T : Object
-    {
-        //string objPath = Application.dataPath + path;
-        //string[] directoryEntries;
-        //List<T> objList = new List<T>();
-        //try
-        //{
-        //    directoryEntries = System.IO.Directory.GetFileSystemEntries(objPath);
-
-        //    for (int i = 0; i < directoryEntries.Length; i++)
-        //    {
-        //        string p = directoryEntries[i];
-        //        string[] tempPaths = StringExtention.SplitWithString(p, "/Assets/");
-        //        if (tempPaths[1].EndsWith("." + pattern))
-        //        {
-        //            T tempTex = AssetDatabase.LoadAssetAtPath("Assets/" + tempPaths[1], typeof(T)) as T;
-        //            if (tempTex != null)
-        //                objList.Add(tempTex);
-        //        }
-
-        //    }
-        //}
-        //catch (System.IO.DirectoryNotFoundException)
-        //{
-        //    Debug.Log("The path encapsulated in the " + objPath + "Directory object does not exist.");
-        //}
-        //if (objList.Count > 0)
-        //    return objList.ToArray();
-        return null;
-
-
-    }
-
-
-    public static  IEnumerator CopyStreamingAssetsToLocalStorage()
-    {
-        WWW www = new WWW("");
-
-        yield return  www;
-
-    }
     /// <summary>
     /// 将物体旋转面对wiki摄像机
     /// </summary>
@@ -258,6 +219,32 @@ public static   class UnityHelper
         }
     }
 
+
+    public static void LoadNextScene(string  nextSceneName)
+    {
+        GlobalParameter.nextSceneName = nextSceneName;
+        SceneManager.LoadScene("Loading");
+    }
+
+    [DllImport("__Internal")]
+    private static extern string GetLocation();//接收字符串
+    /// <summary>
+    /// 获取GPS经纬度信息
+    /// 返回值
+    /// {"altitude":460.1,"available":true,"latitude":30.597598,"longitude":104.066928}
+    /// </summary>
+    /// <returns></returns>
+    public  static string GetBDGPSLocation()
+    {
+#if UNITY_ANDROID
+        AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+        String location = jo.Call<String>("getLocation");
+        return location;
+#endif
+        return GetLocation();
+
+    }
 
 }
 

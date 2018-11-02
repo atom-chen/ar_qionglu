@@ -95,7 +95,8 @@ public class LinkList
         {
             //找到
             resultNode.path=imagepath;
-            resultNode.count = count;
+            int num = int.Parse(resultNode.count)+1;
+            resultNode.count = num.ToString();
             return false;
         }
 

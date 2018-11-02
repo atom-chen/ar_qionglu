@@ -20,8 +20,8 @@ public class ImagePrefabs : MonoBehaviour {
 
     private void BtnClick()
     {
-        Debug.Log(this.gameObject.name);
-    TrackUIManager.Instance.ShowBigImage(sprite);
+      
+    TrackUIManager.Instance.ShowBigImage();
     }
 
 
@@ -51,7 +51,7 @@ public class ImagePrefabs : MonoBehaviour {
 
             sprite = sp;
             icon.sprite = sp;
-
+            TrackUIManager.Instance.AddChildSprite(iconPath);
         }
     }
 }

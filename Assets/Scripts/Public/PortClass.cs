@@ -260,13 +260,28 @@ public class PortClass : Singleton<PortClass>
         {
             if (string.IsNullOrEmpty(shopInfo))
             {
-                shopInfo = PublicAttribute.URL + "vsz-business/listByArea?areaId=" + 1;
+                shopInfo = PublicAttribute.URL + "vsz-restaurant/listByArea?areaId=" + 1;
             }
             return shopInfo;
         }
         set { shopInfo = value; }
     }
-
+    private string  HotelInfo;
+    /// <summary>
+    /// 主页中的商家信息
+    /// </summary>
+    public string  HotelsInfo
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(HotelInfo))
+            {
+                HotelInfo = PublicAttribute.URL + "vsz-hotel/listByArea?areaId=" + 1;
+            }
+            return HotelInfo;
+        }
+        set { HotelInfo = value; }
+    }
     #endregion
 
     #region 主页中的土特产信息
@@ -474,7 +489,7 @@ public class PortClass : Singleton<PortClass>
     }
     #endregion
 
-    #region 第三方登录 绑定手机号
+    #region 第三方注册 绑定手机号
 
     private string binDingPhoneNo;
     /// <summary>

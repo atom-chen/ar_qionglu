@@ -6,9 +6,12 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
+using LitJson;
 
 public class ChangeItem : MonoBehaviour {
-
+    [DllImport("__Internal")]
+    private static extern string GetLocation();//测试接收字符串
     public RawImage png;
 
     public Text title,info;
@@ -30,11 +33,11 @@ public class ChangeItem : MonoBehaviour {
     /// </summary>
     public Thumbnail thumbnail;
     /// <summary>
-    /// 全景点经度
+    /// 全景点经度lon
     /// </summary>
     public string locationX;
     /// <summary>
-    /// 全景点纬度
+    /// 全景点纬度lat
     /// </summary>
     public string locationY;
     /// <summary>
@@ -58,9 +61,12 @@ public class ChangeItem : MonoBehaviour {
     webrequest web;
 
     private string VideoURL;
+
+
+    public GameObject loadingImg;
     public void Start()
     {
-        web = GameObject.Find("UniWebView").GetComponent<webrequest>();
+        web = GameObject.Find(GlobalInfo.websiterequest).GetComponent<webrequest>();
         info.text = content;
         title.text = name;
         LocalAddress = thumbnail.localPath;
@@ -108,15 +114,12 @@ public class ChangeItem : MonoBehaviour {
 
     public void BtnOnClick(GameObject obj)
     {
-        Debug.Log("当前距离：：："+ Vector2.Distance(GPS, new Vector2(float.Parse(locationX), float.Parse(locationY))));
-        if (Vector2.Distance(GPS, new Vector2(float.Parse(locationX), float.Parse(locationY))) < 30)
+        Vector3 point = getLocation();
+        GPS = new Vector2(point.x,point.y);
+        
+        Debug.Log("当前距离：：："+ GlobalInfo.Distance(GPS.y,GPS.x, float.Parse(locationY), float.Parse(locationX))*1000);
+        if (GlobalInfo.Distance(GPS.y,GPS.x, float.Parse(locationY), float.Parse(locationX)) * 1000 < 40)
         {
-            foreach (var item in VersionFilesItems.Where(item => item.extName == "vsz"))
-            {
-                Debug.Log(item.localPath);
-                StartCoroutine(LoadAssets(item.localPath));
-            }
-
             foreach (var item in VersionFilesItems.Where(item => item.extName == "mp4"))
             {
                 Debug.Log(item.filename);
@@ -127,8 +130,15 @@ public class ChangeItem : MonoBehaviour {
                 else
                 {
                     VideoURL  = PublicAttribute.LocalFilePath + "/Panorama/1/"+item.filename;
+                    Debug.Log(VideoURL);
                 }
               
+            }
+            
+            foreach (var item in VersionFilesItems.Where(item => item.extName == "vsz"))
+            {
+                Debug.Log(item.localPath);
+                StartCoroutine(LoadAssets(item.localPath));
             }
         }
         else
@@ -143,6 +153,7 @@ public class ChangeItem : MonoBehaviour {
     }
     private IEnumerator LoadAssets(string path)
     {
+        loadingImg.SetActive(true);
         if (VideoURL != null)
         {
             GlobalInfo.VideoURL360 = VideoURL;
@@ -162,9 +173,15 @@ public class ChangeItem : MonoBehaviour {
         Debug.Log(File.Exists(path));
         WWW bundle = new WWW("file:///" + path);
         yield return bundle;
-        Debug.Log(bundle.size);
-        var data = bundle.assetBundle;
-        SceneManager.LoadScene(suffix);
+        if (bundle.error!=null  || bundle.size <= 0)
+        {
+            loadingImg.SetActive(false);
+        }
+        else
+        {
+            var data = bundle.assetBundle;
+            SceneManager.LoadScene(suffix);               
+        }
     }
     private IEnumerator LoadAssets2()
     {
@@ -173,8 +190,42 @@ public class ChangeItem : MonoBehaviour {
         Debug.Log(File.Exists(path));
         WWW bundle =new WWW("file:///" + path);
         yield return bundle;
-        Debug.Log(bundle.size);
+        Debug.Log(bundle.bytesDownloaded);
         var data = bundle.assetBundle;
         SceneManager.LoadScene("qionghai");
+    }
+    
+    public Vector3 getLocation()
+    {
+#if UNITY_ANDROID
+
+        AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+        String location = jo.Call<String>("getLocation");
+
+        Debug.Log("GPS::::::::::" + location);
+
+
+        JsonData zb = JsonMapper.ToObject(location);
+        float x = float.Parse(zb["longitude"].ToString());
+        float y = float.Parse(zb["latitude"].ToString());
+        float z = float.Parse(zb["altitude"].ToString());
+        return new Vector3(x,y,z);
+#elif UNITY_IOS || UNITY_IPHONE
+      string IosGet = GetLocation();
+      Debug.Log(IosGet);
+    if (IosGet.Length < 5)
+    {
+         return new Vector3(0f, 0f, 0f);
+    }
+    else
+    {
+        JsonData zb = JsonMapper.ToObject(IosGet);
+        float x = float.Parse(zb["longitude"].ToString());
+        float y = float.Parse(zb["latitude"].ToString());
+        float z = float.Parse(zb["altitude"].ToString());
+        return new Vector3(x,y,z);
+    }
+#endif
     }
 }

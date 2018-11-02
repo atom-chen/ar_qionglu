@@ -80,7 +80,7 @@ public class ContentChildPanel : MonoBehaviour
         Debug.Log(key + "    "+paths.Count);
         
         //titleText.text =  keyArray[0] + "年" + keyArray[1] + "月" + keyArray[2] + "日";
-        titleText.text = key;
+        titleText.text = key.Substring(0,4)+"."+key.Substring(4,2)+"."+key.Substring(6,2);
         for (int i = 0; i < paths.Count; i++)
         {
             GameObject go = Instantiate<GameObject>(Resources.Load<GameObject>("Model/ImagePrefabs"), imagePanel);
