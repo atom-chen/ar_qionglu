@@ -30,7 +30,7 @@ public class JsonClass : Singleton<JsonClass>
     /// <summary>
     /// 主页Banner
     /// </summary>
-    public List<Ads> BannerPages; 
+    public List<Ads> BannerPages;
 
 
     /// <summary>
@@ -1097,3 +1097,5 @@ public class Ads
 }
 
 #endregion
+
+

@@ -27,8 +27,13 @@ public class WebView : SingletonMono<WebView>
     public void CreateWebView()
     {
         webView = UniWebViewHelper.CreateWebView();
-      //1.找到资源保存的文件夹
+        //1.找到资源保存的文件夹
+#if UNITY_ANDROID
+      //  var assetUrl = "/sdcard/DCIM/AR游/CustomOverlay.html";
         var assetUrl = UniWebViewHelper.PersistentDataURLForPath("DownloadFile/Web/CustomOverlay.html");
+#elif  UNITY_IOS||UNITY_IPHONE
+             var assetUrl = UniWebViewHelper.PersistentDataURLForPath("DownloadFile/Web/CustomOverlay.html");
+#endif
 
         Debug.Log("web view url =====" + assetUrl);
         webView.ReferenceRectTransform = WebUI;
@@ -147,7 +152,7 @@ public class WebView : SingletonMono<WebView>
     public void SpawnPointToMap()
     {
 
-        LinkList pointLinkList = TrackDataManager.Instance.pointLinkList;
+        LinkList pointLinkList = LoadTrackData.Instance.pointLinkList;
         ListNode node = new ListNode();
         int length = pointLinkList.Length();
         for (int i = 1; i <= length; i++)
@@ -181,33 +186,38 @@ public class WebView : SingletonMono<WebView>
             //  messageText.text += obj.resultCode + "\n";
         }
     }
- 
-  
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.Alpha1))
-    //    {
-    //       TrackDataManager.Instance. AddPointToPointClass("333", "444", "asda.pngg", "20180619");
-           
-    //    }
-    //    if (Input.GetKeyDown(KeyCode.Alpha2))
-    //    {
 
-    //        TrackDataManager.Instance.AddPointToPointClass("333", "444", "zw.png", "20181019");
-    //    }
-    //    if (Input.GetKeyDown(KeyCode.S))
-    //    {
-    //        TrackDataManager.Instance.SaveStringToFile();
-    //    }
 
-    //    if (Input.GetKeyDown(KeyCode.A))
-    //    {
-    //        ClearWebView();
-    //        GalleryImageManager.Instance.SpawnImage("1");
-    //        TrackUIManager.Instance.SetTitleText("相册", 1);
-    //    }
-    //}
- 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            TrackDataManager.Instance.AddPointToPointClass("333", "444", "asda.pngg", "20180619");
+
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+
+            TrackDataManager.Instance.AddPointToPointClass("333", "444", "zw.png", "20181019");
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+
+            TrackDataManager.Instance.AddPointToPointClass("333", "444", "sssss.png", "20181019");
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            TrackDataManager.Instance.SaveStringToFile();
+        }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            ClearWebView();
+            GalleryImageManager.Instance.SpawnImage("1");
+            TrackUIManager.Instance.SetTitleText("相册", 1);
+        }
+    }
+
 
 
 

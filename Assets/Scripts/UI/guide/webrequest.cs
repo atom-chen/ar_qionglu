@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using mainpage;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class webrequest : MonoBehaviour {
-    private UniWebView web;
+    public UniWebView web;
     public static webrequest instance;
     public GameObject webobj;
     public Text title;
+    public static bool isLoadedWeb;
+    private static string lastUri, lastTitle;
     void Awake()
     {
         instance = this;
@@ -19,27 +22,30 @@ public class webrequest : MonoBehaviour {
 	void Start () { 
 
     }
-    public void LoadWeb(string url)
+
+    private void Update()
     {
-        Debug.Log("web::::::" + url);
-        if (GameObject.Find("webpage") != null)
-        {
-            Destroy(GameObject.Find("webpage"));
-            web.Stop();
-            web = null;
-        }
-        GameObject obj=  GameObject.Instantiate(webobj);
-        obj.transform.name = "webpage";
-        obj.SetActive(true);
-        web = obj.GetComponent<UniWebView>();
-        web.OnMessageReceived += _view_OnMessageReceived;
-        web.SetHeaderField("Authorization", PublicAttribute.Token);
-        web.Load(url);
-        web.Show();
+        // if (Input.GetKeyDown(KeyCode.Escape))
+        // {
+        //     if (isLoadedWeb)
+        //     {
+        //         isLoadedWeb = false;
+        //         if (GameObject.Find("webpage") != null)
+        //         {                
+        //             web.Stop();
+        //             web = null;
+        //             Destroy(GameObject.Find("webpage"));
+        //         }
+        //     }
+        // } 
     }
 
     public void LoadWebSetTitle(string url,string name)
     {
+        if (name.Length<=1)
+        {
+            name = "网页详情";
+        }
         title.text = name;
         Debug.Log("web::::::" + url);
         if (GameObject.Find("webpage") != null)
@@ -53,9 +59,29 @@ public class webrequest : MonoBehaviour {
         obj.SetActive(true);
         web = obj.GetComponent<UniWebView>();
         web.OnMessageReceived += _view_OnMessageReceived;
+        web.SetBackButtonEnabled(false);
+        web.OnKeyCodeReceived += OnKeyCodeReceived;
         web.SetHeaderField("Authorization", PublicAttribute.Token);
         web.Load(url);
         web.Show();
+        lastUri = url;
+        lastTitle = name;
+        
+        isLoadedWeb = true;
+    }
+    private void OnKeyCodeReceived(UniWebView webView, int keyCode)
+    {
+        Debug.Log("OnKeyCodeReceived keycode:" + keyCode);
+        if (keyCode == 4)
+        {
+            if (GameObject.Find("webpage") != null)
+            {
+                isLoadedWeb = false;
+                Destroy(GameObject.Find("webpage"));
+                web.Stop();
+                web = null;
+            }
+        }
     }
     private void _view_OnMessageReceived(UniWebView webView, UniWebViewMessage message)
     {
@@ -77,14 +103,18 @@ public class webrequest : MonoBehaviour {
             web.Stop();
             web = null;
         }
-
+        sc = SceneManager.GetActiveScene();
         if (action=="ARScan")
-        {           
-            UnityHelper.LoadNextScene("ARScan");
+        {
+            if (sc.name == "main")
+            {
+                GameObject.Find("UIMainpage").GetComponent<mainUISet>().LoadScene("ARScan");
+            }
+            else
+                UnityHelper.LoadNextScene("ARScan");
         }
         else if (action == "Panorama")
         {
-            sc = SceneManager.GetActiveScene();
             if (sc.name=="main")
             {
                 ChangeList.instance.ShowCurPanorama(id);
@@ -98,12 +128,21 @@ public class webrequest : MonoBehaviour {
         else if (action == "Navigation")
         {
             ShowdirectPoint("",float.Parse(id));
-            
-            UnityHelper.LoadNextScene("gpsConvert");
+            if (sc.name == "main")
+            {
+                GameObject.Find("UIMainpage").GetComponent<mainUISet>().LoadScene("gpsConvert");
+            }
+            else
+                UnityHelper.LoadNextScene("gpsConvert");
         }
         else if (action == "Visit")
-        {
-            UnityHelper.LoadNextScene("yiyou");
+        {  
+            if (sc.name == "main")
+            {
+                GameObject.Find("UIMainpage").GetComponent<mainUISet>().LoadScene("yiyou");
+            }
+            else
+                UnityHelper.LoadNextScene("yiyou");
         }
     }
 
@@ -121,7 +160,14 @@ public class webrequest : MonoBehaviour {
             initScene.instance.isLookingAds = false;
             initScene.instance.EnterMain();
         }
+
+        isLoadedWeb = false;
         obj.GetComponent<UniWebView>().Stop();
         Destroy(obj);
+    }
+
+    public void LoadLastWeb()
+    {
+        LoadWebSetTitle(lastUri,lastTitle);
     }
 }

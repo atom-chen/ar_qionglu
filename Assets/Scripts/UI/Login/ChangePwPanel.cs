@@ -1,13 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using mainpage;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ChangePwPanel : UIWindowsBase
-
-
 {
-
+    private mainUISet mainui;
     public Button backBtn;
 
     public Button getSmssBtn;
@@ -19,7 +18,7 @@ public class ChangePwPanel : UIWindowsBase
     public override void Awake()
     {
         base.Awake();
-
+        mainui = GameObject.Find("UIMainpage").GetComponent<mainUISet>();
         getSmssBtn.onClick.AddListener((() =>
         {
            
@@ -35,21 +34,20 @@ public class ChangePwPanel : UIWindowsBase
             LoginUIController.Instance.SetNextUIState(LoginUIState.LoginPanel);
         });
         sureBtn.onClick.AddListener(() =>
-        {
-
-            if (string.IsNullOrEmpty(newpwInput.text)|| newpwInput.text.Length!=6)
+        {         
+            if (newpwRepeatInput.text!= newpwInput.text)
+            {
+                PP.ShowPopup("", GlobalParameter.InputRepeatWrong);
+                return;
+            }
+            if (string.IsNullOrEmpty(newpwInput.text) || newpwInput.text.Length<6)
             {
                 PP.ShowPopup("",GlobalParameter.InputPassword);
                 return;
             }
-            if (string.IsNullOrEmpty(newpwRepeatInput.text) || newpwRepeatInput.text.Length != 6)
+            if (string.IsNullOrEmpty(newpwRepeatInput.text) || newpwRepeatInput.text.Length < 6)
             {
                 PP.ShowPopup("", GlobalParameter.InputRepeatPassword);
-                return;
-            }
-            if (newpwRepeatInput.text!= newpwInput.text)
-            {
-                PP.ShowPopup("", GlobalParameter.InputRepeatWrong);
                 return;
             }
             if (string.IsNullOrEmpty(smssInput.text) || smssInput.text.Length != 6)
@@ -58,12 +56,17 @@ public class ChangePwPanel : UIWindowsBase
                 return;
             }
 
-
+            Debug.Log("b");   
 
 
             if (VerifyPwd(newpwInput.text) && VerifyPwd(newpwRepeatInput.text)&&newpwInput.text==newpwRepeatInput.text&&VerifySMSCode(smssInput.text))
             {
-                HttpManager.Instance.ResetPwd(PublicAttribute.UserInfo.PhoneNo, newpwRepeatInput.text, smssInput.text, (PopupInfo));
+                if (!isHit)
+                {
+                    isHit = true;
+                    HttpManager.Instance.ResetPwd(PublicAttribute.UserInfo.PhoneNo, newpwRepeatInput.text, smssInput.text, (PopupInfo));
+                }
+              
             }
     
         });
@@ -72,6 +75,8 @@ public class ChangePwPanel : UIWindowsBase
 
         this.gameObject.SetActive(false);
     }
+
+    private bool isHit;
     // 登陆界面弹出提示框
     public LoginUIPopupPage PP;
     /// <summary>
@@ -80,12 +85,19 @@ public class ChangePwPanel : UIWindowsBase
     /// <param name="status"></param>
     public void PopupInfo(string status)
     {
+        isHit = false;
         Debug.Log(status);
         switch (status)
         {
             case "200":
-                PP.ShowPopup("请求成功", "密码修改成功");
+                PP.ShowPopup("请求成功", "密码修改成功,请重新登录");
                 gameObject.SetActive(false);
+                CoroutineWrapper.EXES(1f, () =>
+                {					
+                    mainUISet.lastpagename = mainUISet.UIname.main;
+                    mainUISet.lastpageid = 0;
+                   mainui.LogOut();
+                });
                 break;
             case "300":
                 PP.ShowPopup("意见提交成功", "意见提交成功，我们会尽快查看！");
@@ -107,7 +119,14 @@ public class ChangePwPanel : UIWindowsBase
                 PP.ShowPopup("验证码错误", "请输入正确的验证码");
                 break;
             case "1007":
-                PP.ShowPopup("", "密码修改成功");
+                PP.ShowPopup("", "密码修改成功,请重新登录");
+                gameObject.SetActive(false);
+                CoroutineWrapper.EXES(1f, () =>
+                {		
+                    mainUISet.lastpagename = mainUISet.UIname.main;
+                    mainUISet.lastpageid = 0;
+                    mainui.LogOut();
+                });
                 break;
             default:
                 PP.ShowPopup("请求失败", "请稍候重试");

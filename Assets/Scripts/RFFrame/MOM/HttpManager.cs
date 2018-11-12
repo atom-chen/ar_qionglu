@@ -140,7 +140,9 @@ public class HttpManager : Singleton<HttpManager>
                 DebugManager.Instance.LogError("请求失败！");
                 return;
             }
-            Debug.Log(response.DataAsText.Trim());
+         //   Debug.Log(response.DataAsText.Trim());
+            Debug.Log(PortClass.Instance.TraitScenicSpot);
+          
             JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
             if (content["status"].ToString() != "200")
             {
@@ -212,11 +214,12 @@ public class HttpManager : Singleton<HttpManager>
     /// 获取主页的餐厅信息
     /// </summary>
     public void GetShopSInfo(Action<bool> callback = null)
-    {
+    {   
         HttpBase.GET(PortClass.Instance.ShopsInfo, ((request, response) =>
-        {
+        { 
             if (response == null || !response.IsSuccess)
-            {
+            { 
+                Debug.Log("获取饭店信息失败:::"+request.Uri );
                 if (callback != null)
                 {
                     callback(false);
@@ -224,7 +227,7 @@ public class HttpManager : Singleton<HttpManager>
                 DebugManager.Instance.LogError("请求失败！");
                 return;
             }
-            Debug.Log(response.DataAsText.Trim());
+            Debug.Log("获取饭店信息:::" + response.DataAsText.Trim());
             JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
             if (content["status"].ToString() != "200")
             {
@@ -1136,7 +1139,75 @@ public class HttpManager : Singleton<HttpManager>
         GetAdsItem("4", JsonClass.Instance.BannerPages, callback);
     }
 
-
+    /// <summary>
+    /// 获取PushContent
+    /// </summary>
+    /// <param name="callback"></param>
+    public void GetPushContent(Action<bool,string> callback = null)
+    {
+        GetPushItem(callback);
+    }
+    private void GetPushItem(Action<bool, string> callback = null)
+    {
+        Debug.Log("Pushsssssssssssssssssssssss==="+PortClass.Instance.PushContent );
+ 
+        HttpBase.GET(PortClass.Instance.PushContent , ((request, response) =>
+        {
+            if (response == null || !response.IsSuccess)
+            {
+                if (callback != null)
+                {
+                    callback(false,null);
+                }
+                Debug.LogError("请求失败！");
+                return;
+            }
+            Debug.Log(response.DataAsText.Trim());
+            JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
+            if (content["status"].ToString() != "200")
+            {
+                if (callback != null)
+                {
+                    callback(false,null);
+                }
+                return;
+            }
+            if (content["data"] == null)
+            {
+                if (callback != null)
+                {
+                    callback(false, null);
+                }
+                return;
+            }
+            JsonData date = content["data"];
+            if (date != null && date.Count > 0)
+            {
+                for (int i = 0; i < date.Count; i++)
+                {
+                    var item = date[i];
+                    if (PublicAttribute.AreaId== item["id"].ToString())
+                    {
+                        if (callback != null)
+                        {
+                            callback(true, item["pushMd5"].ToString());
+                        }
+                    }
+                 
+                }
+      
+            }
+            else
+            {
+                if (callback != null)
+                {
+                    callback(false, null);
+                }
+            }
+            response.Dispose();
+        })
+        ,PublicAttribute.Token);
+    }
     #endregion 获取动态资源
 
     #region 与登陆相关的所有接口调用
@@ -1363,6 +1434,9 @@ public class HttpManager : Singleton<HttpManager>
             new KeyValuePair<string, string>("openId", openID)
         }, (request, response) =>
         {
+            Debug.Log("TTTTTTTTTTTTT=" + PortClass.Instance.ThirdPartyLogin);
+            Debug.Log("TTTTTTTTTTTTT=" + openID);
+            Debug.Log("TTTTTTTTTTTTT=" + response.DataAsText.Trim());
             if (response == null)
             {
                 if (callback != null)
@@ -1504,6 +1578,14 @@ public class HttpManager : Singleton<HttpManager>
     {
         HttpBase.GET(PortClass.Instance.UserInfoByToken, ((request, response) =>
         {
+            if (response==null || !response.IsSuccess)
+            {
+                if (callback != null)
+                {
+                    callback(false);
+                }
+                return;
+            }
             if (response.IsSuccess)
             {
                 if (callback != null)
@@ -1535,7 +1617,7 @@ public class HttpManager : Singleton<HttpManager>
                     
                   
                     
-           if (rolename == "SUGGEST")
+                    if (rolename == "SUGGEST")
                     {
                         GlobalParameter.isVisitor = true;
                         callback(true);
@@ -1608,6 +1690,15 @@ public class HttpManager : Singleton<HttpManager>
             new KeyValuePair<string, string>("token", PublicAttribute.Token),
         }, ((request, response) =>
         {
+            if (response==null || !response.IsSuccess)
+            {
+                if (callback != null)
+                {
+                    callback(false);
+                }
+                return;
+            }
+            
             if (response.IsSuccess)
             {
                 if (callback != null)
@@ -1636,6 +1727,15 @@ public class HttpManager : Singleton<HttpManager>
             new KeyValuePair<string, string>("content", message),
         }, ((request, response) =>
         {
+            if (response==null || !response.IsSuccess)
+            {
+                if (callback != null)
+                {
+                    callback(false);
+                }
+                return;
+            }
+            
             if (response.IsSuccess)
             {
                 if (callback != null)
@@ -1654,7 +1754,33 @@ public class HttpManager : Singleton<HttpManager>
             response.Dispose();
         }), PublicAttribute.Token);
     }
-
+    /// <summary>
+    /// 检查版本号
+    /// </summary>
+    /// <param name="phoneNo"></param>
+    /// <param name="smsCode"></param>
+    /// <param name="callback"></param>
+    public void UpdateApp(Action<string> callback)
+    {
+        HttpBase.GET(PortClass.Instance.updateid, ((request, response) =>
+        {
+            if (response.IsSuccess)
+            {
+                if (callback != null)
+                {
+                    callback(response.DataAsText);
+                }
+            }
+            else
+            {
+                if (callback != null)
+                {
+                    callback(response.DataAsText);
+                }
+            }
+            response.Dispose();
+        }));
+    }
     /// <summary>
     /// 修改用户的昵称
     /// </summary>
@@ -1667,6 +1793,7 @@ public class HttpManager : Singleton<HttpManager>
         {
             if (response.IsSuccess)
             {
+                Debug.Log("修改用户名"+response.StatusCode);
                 if (callback != null)
                 {
                     callback(response.DataAsText.Trim().Contains("200"));
@@ -1773,7 +1900,8 @@ public class HttpManager : Singleton<HttpManager>
          {
              if (response.IsSuccess)
              {
-                 Debug.Log("获取到到此一游的分类");
+                 Debug.Log("获取到到此一游的分类"+ response.DataAsText.Trim());
+       
                  JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
                  if (content["status"].ToString() != "200")
                  {

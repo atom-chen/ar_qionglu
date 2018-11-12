@@ -18,7 +18,7 @@ public class ThirdPartyLogin : MonoBehaviour
     public GameObject BinDingPhonePage;
 
 
-    private LoginPanelUI loginPanelUI;
+   
 
     private string UserID;
     private string ExpiresTime;
@@ -29,9 +29,9 @@ public class ThirdPartyLogin : MonoBehaviour
 
     private ShareSDK ssdk=null;
 
-    private void Awake()
+    private void Start()
     {
-        loginPanelUI = transform.parent.parent.GetComponent<LoginPanelUI>();
+
         ssdk = GameObject.FindObjectOfType<ShareSDK>();
         if (ssdk==null)
         {
@@ -40,6 +40,36 @@ public class ThirdPartyLogin : MonoBehaviour
 
         ssdk.authHandler = OnAuthResultHandler;
         ssdk.showUserHandler = OnGetUserInfoResultHandler;
+
+
+        #region 
+
+
+
+        if (ssdk.IsClientValid(PlatformType.WeChat) == false)
+        {
+            wechatLoginBtn.gameObject.SetActive(false);
+       
+        }
+        if (ssdk.IsClientValid(PlatformType.QQ) == false)
+        {
+            qqLoginBtn.gameObject.SetActive(false);
+
+        }
+
+        #endregion
+
+
+
+
+
+
+
+
+
+
+
+
 
         //Listeners
         wechatLoginBtn.onClick.AddListener(() =>
@@ -51,7 +81,8 @@ public class ThirdPartyLogin : MonoBehaviour
             }
             if (ssdk.IsClientValid(PlatformType.WeChat)==false)
             {
-                LoginUIController.Instance.ShowPopup("", GlobalParameter.NeedWechatClient);
+                //   LoginUIController.Instance.ShowPopup("", GlobalParameter.NeedWechatClient);
+                LoginUIController.Instance.ShowPopup("登录失败", "请使用其他方式登录");
                 return;
             }
             if (ssdk.IsAuthorized(PlatformType.WeChat))
@@ -75,7 +106,8 @@ public class ThirdPartyLogin : MonoBehaviour
             }
             if (ssdk.IsClientValid(PlatformType.QQ) == false)
             {
-                LoginUIController.Instance.ShowPopup("", GlobalParameter.NeedQQClient);
+                // LoginUIController.Instance.ShowPopup("", GlobalParameter.NeedQQClient);
+                LoginUIController.Instance.ShowPopup("登录失败", "请使用其他方式登录");
                 return;
             }
             if (ssdk.IsAuthorized(PlatformType.QQ))
@@ -97,11 +129,13 @@ public class ThirdPartyLogin : MonoBehaviour
                 LoginUIController.Instance.ShowPopup("", GlobalParameter.AgrrToggle);
                 return;
             }
-            if (ssdk.IsClientValid(PlatformType.SinaWeibo) == false)
-            {
-                LoginUIController.Instance.ShowPopup("", GlobalParameter.NeedSinaWeiboClient);
-                return;
-            }
+            //if (ssdk.IsClientValid(PlatformType.SinaWeibo) == false)
+            //{
+            //   // LoginUIController.Instance.ShowPopup("", GlobalParameter.NeedSinaWeiboClient);
+
+            //    LoginUIController.Instance.ShowPopup("登录失败","请使用其他方式登录");
+            //    return;
+            //}
             if (ssdk.IsAuthorized(PlatformType.SinaWeibo))
             {
                 ssdk.CancelAuthorize(PlatformType.SinaWeibo);
@@ -109,7 +143,7 @@ public class ThirdPartyLogin : MonoBehaviour
             }
             ssdk.authHandler = OnAuthResultHandler;
             ssdk.showUserHandler = OnGetUserInfoResultHandler;
-            ssdk.DisableSSO(false);
+            //ssdk.DisableSSO(false);
             ssdk.GetUserInfo(PlatformType.SinaWeibo);
         });
     }

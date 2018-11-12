@@ -142,7 +142,7 @@ public class LoginUIController : SingletonMono<LoginUIController>
                 tipPanel.ShowPopup("", "该手机号并未注册");
                 break;
             case "Error":
-                tipPanel.ShowPopup("请求失败", "请稍候重试");
+                tipPanel.ShowPopup("登录失败", "请稍候重试");
                 break;
             case "Third":
                 tipPanel.ShowPopupAndDoSomeThing("", "登录成功", 1.5f, LoadMainScene);

@@ -17,6 +17,6 @@ public class RecordCallBack : MonoBehaviour {
     /// <param name="msg"></param>
     public void onCaptureRecodeFailed(string msg)
     {
-        ButtonPanelUI.Instance.onCaptureRecodeFailed("");
+        ButtonPanelUI.Instance.onCaptureRecodeFailed(msg);
     }
 }

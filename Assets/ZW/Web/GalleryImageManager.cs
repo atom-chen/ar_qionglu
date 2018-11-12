@@ -43,12 +43,13 @@ public class GalleryImageManager : SingletonMono<GalleryImageManager>
     /// <param name="pathList"></param>
     public void SpawnImage(string id)
     {
+        Debug.Log("id==============" + id);
         ImageScrollView = Instantiate(Resources.Load<GameObject>("Model/ImageScrollView"), Vector3.zero, Quaternion.identity, canvas.transform);
         ImageScrollView.name = "ImageScrollView";
         ImageScrollView.GetComponent<RectTransform>().offsetMin =new Vector2(0,0);
         ImageScrollView.GetComponent<RectTransform>().offsetMax = new Vector2(0, -130);
         content = ImageScrollView.GetComponent<ScrollRect>().content.gameObject;
-        items = TrackDataManager.Instance.items;
+        items = LoadTrackData.Instance.items;
         int index = GetItemPaths(id);
         if (index == -1)
             return;
@@ -78,5 +79,28 @@ public class GalleryImageManager : SingletonMono<GalleryImageManager>
         }
         return -1;
     }
-  
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        { string key = "20181010";
+            List<string> Value = new List<string>() {"1.png", "1.png", "1.png", "1.png", "1.png"};
+            SpawnImageTest(key,Value);
+        }
+    }
+
+    public void SpawnImageTest(string  key,List<string >Value)
+    {
+        ImageScrollView = Instantiate(Resources.Load<GameObject>("Model/ImageScrollView"), Vector3.zero, Quaternion.identity, canvas.transform);
+        ImageScrollView.name = "ImageScrollView";
+        ImageScrollView.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);
+        ImageScrollView.GetComponent<RectTransform>().offsetMax = new Vector2(0, -130);
+        content = ImageScrollView.GetComponent<ScrollRect>().content.gameObject;
+
+     
+            
+                content.GetComponent<ScrollContent>().AddContentChildPanel(key, Value);
+           
+        
+    }
 }

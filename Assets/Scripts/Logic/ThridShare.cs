@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class ThridShare : MonoBehaviour
 {
-    private ShareSDK ssdk;
+    private static ShareSDK ssdk;
 
     private void Start()
     {
         ssdk = GameObject.Find("Root").GetComponent<ShareSDK>();
     }
 
-    public void ShowShareMenu()
+    public static void ShowShareMenu()
     {
         ShareContent content = new ShareContent();
         content.SetText("视觉美景+智能呈现  只留精彩，不留遗憾");

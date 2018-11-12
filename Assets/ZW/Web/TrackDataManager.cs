@@ -30,26 +30,19 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
 
 
     }
-
-
-
-    IEnumerator Start()
+    void Start()
     {
-        //CopyFile();
-
-        yield return new WaitForSeconds(1f);
         string reader = JsonManager.ReadJsonFromFilePath(UnityHelper.LocalFilePath + "Web/", "PointMap.json");
-        if (reader != null)
+        if (!string.IsNullOrEmpty(reader))
         {
-
-            //Debug.Log("reader不为空=====" + reader);
+          Debug.Log("reader不为空=====" + reader);
             pointData = JsonMapper.ToObject<PointClass>(reader);
             AddToLinkList(pointData);
 
         }
         else
         {
-         //   Debug.Log("reader为空=====" + reader);
+         Debug.Log("reader为空=====" + reader);
 
         }
 
@@ -100,29 +93,22 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
             string weidu = pointDataParams.data[i].weidu;
          
             List<Paths> path = pointDataParams.data[i].paths;
-
             PointScrollShowClass ptClass = new PointScrollShowClass();
             ptClass.id = id;
             ptClass.jingdu = jingdu;
             ptClass.weidu = weidu;
- 
             ptClass.paths = new Dictionary<string, Dictionary<string, List<string>>>();
             int imagecount = 0;
             Dictionary<string, List<string>> pathChild = new Dictionary<string, List<string>>();
             for (int j = 0; j < path.Count; j++)
             {
                 List<string> imagePathList = new List<string>();
-
-
-              //  imagecount++;
                 for (int k = 0; k < path[j].timepaths.Count; k++)
                 {
                     imagePathList.Add(path[j].timepaths[k].imagepath);
                     imagecount++;
                 }
                 pathChild.Add(path[j].time, imagePathList);
-             //   Debug.Log(path[j].time);
-                //ptClass.paths.Add(path[j].time, pathChild);
             }
             ptClass.count = imagecount.ToString();
             ptClass.paths.Add(id, pathChild);
@@ -150,13 +136,13 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
         float y = float.Parse(zb["latitude"].ToString());
 
 
-        string jingdu = x.ToString("F4");
-        string weidu = y.ToString("F4");
+        string jingdu = x.ToString("F3");
+        string weidu = y.ToString("F3");
 
         String date = System.DateTime.Now.ToString("yyyy/MM/dd");
         date = date.Replace("/", "");
  
-        AddPoint(jingdu, weidu, imagepath, "1", (maxIndex+1).ToString());
+     
         AddPointToPointClass( jingdu, weidu, imagepath, date);
         maxIndex++;
     }
@@ -171,6 +157,7 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
     public void AddPointToPointClass(string jingdu, string weidu, string imagepath, string date)
     {
 
+        int tempid = -1;
         if (pointData == null)
         {
             return;
@@ -183,9 +170,10 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
                 int count = int.Parse(pointData.data[i].count);
                 string pointjingdu = pointData.data[i].jingdu;
                 string pointweidu = pointData.data[i].weidu;
-                //如果有当前ID
+                //如果有当前经纬度
                 if ( pointweidu == weidu && pointjingdu == jingdu)
                 {
+                    tempid = id;
                     List<Paths> path = pointData.data[i].paths;
                     List<Timepaths> timepathses = new List<Timepaths>();
                     for (int j = 0; j < path.Count; j++)
@@ -206,6 +194,7 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
                         //如果没有当前的日期
                         else if (j == path.Count - 1)
                         {
+                            pointData.data[i].count = (++count).ToString();
                             tt = new Timepaths("1", imagepath);
                             timepathses.Add(tt);
                             j++;
@@ -228,7 +217,8 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
                     List<Paths> ppp = new List<Paths>();
                     ppp.Add(paths);
                     int num = pointData.data.Count;
-                    Data data = new Data((++num).ToString(), jingdu, weidu, "1", ppp);
+                    tempid = ++num;
+                    Data data = new Data(tempid.ToString(), jingdu, weidu, "1", ppp);
                     pointData.data.Add(data);
                     break;
                 }
@@ -244,10 +234,12 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
             List<Paths> ppp = new List<Paths>();
             ppp.Add(paths);
             int num = pointData.data.Count;
-            Data data = new Data((++num).ToString(), jingdu, weidu, "1", ppp);
+            tempid = ++num;
+            Data data = new Data(tempid.ToString(), jingdu, weidu, "1", ppp);
             pointData.data.Add(data);
         }
         UpdateImageShowClass(pointData);
+        AddPoint(jingdu, weidu, imagepath, "1", tempid.ToString());
     }
 
     /// <summary>
@@ -258,7 +250,7 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
     /// <param name="imagepath"></param>
     private void AddPoint(string jingdu, string weidu, string imagepath, string count = "1", string id = "1")
     {
-        pointLinkList.InsertAtLast(jingdu, weidu, imagepath, count, maxIndex.ToString());
+      //  pointLinkList.InsertAtLast(jingdu, weidu, imagepath, maxIndex.ToString());
     }
 
     public void SaveStringToFile()

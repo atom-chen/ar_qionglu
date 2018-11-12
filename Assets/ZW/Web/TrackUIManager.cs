@@ -39,7 +39,7 @@ public class TrackUIManager : SingletonMono<TrackUIManager>
         set { backBtn = value; }
     }
 
-    private void BackBtnClick()
+    public void BackBtnClick()
     {
         if (bigImage != null)
         {
@@ -155,6 +155,13 @@ public class TrackUIManager : SingletonMono<TrackUIManager>
             loadTipImage.transform.Rotate(-Vector3.forward * 100f * Time.deltaTime, Space.Self);
         }
 
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+
+            childSps.Add("1.png"); childSps.Add("1.png"); childSps.Add("1.png"); childSps.Add("1.png"); childSps.Add("1.png");
+ 
+        }
     }
 
 

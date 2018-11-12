@@ -31,7 +31,7 @@ namespace ElviraFrame.ScrollView
 
         float startime = 0f;
         float delay = 0.1f;
-
+   
         // Use this for initialization
         void Start()
         {
@@ -62,9 +62,9 @@ namespace ElviraFrame.ScrollView
         public void OnEndDrag(PointerEventData eventData)
         {
             isDrag = false;
-
-            float posX = rect.horizontalNormalizedPosition;
             int index = 0;
+            float posX = rect.horizontalNormalizedPosition;
+  
             //假设离第一位最近
             float offset = Mathf.Abs(pages[index] - posX);
             for (int i = 1; i < pages.Count; i++)
@@ -125,6 +125,17 @@ namespace ElviraFrame.ScrollView
                 }
                 OnEndDrag(null);
             }
+        }
+
+        /// <summary>
+        /// 初始化，解决重复显示时候永远显示第一张
+        /// </summary>
+        public void Init()
+        {
+
+         rect.horizontalNormalizedPosition = 0;
+            currentPageIndex = -1;
+            OnEndDrag(null);
         }
     }
 }

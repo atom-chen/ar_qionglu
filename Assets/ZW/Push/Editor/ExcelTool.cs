@@ -32,7 +32,7 @@ namespace ElviraFrame.Excel
                 PushItem item = new PushItem();
                 //解析每列的数据
                 item.id = collect[i][0].ToString();
-                item.name= collect[i][1].ToString();
+               // item.name= collect[i][1].ToString();
                 item.locationX = collect[i][2].ToString();
                 item.locationY = collect[i][3].ToString();
 

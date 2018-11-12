@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Linq;
 using DG.Tweening;
+using mainpage;
 using UnityEngine.SceneManagement;
 
 public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
@@ -321,21 +322,21 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {
         if (Count <= 6)
         {
-            Content.sizeDelta = new Vector2(1080, 1400 / mainPageUI.scale);
+            Content.sizeDelta = new Vector2(1080, 1400 / mainUISet.scale);
         }
         else if (Count > 6 && Count <= 9)
         {
-            Content.sizeDelta = new Vector2(1080, 1400 / mainPageUI.scale);
+            Content.sizeDelta = new Vector2(1080, 1400 / mainUISet.scale);
         }
         else if (Count > 9)
         {
             if ((Count - 9) % 3 != 0)
             {
-                Content.sizeDelta = new Vector2(1080, 1400/ mainPageUI.scale + 365 * (int)((Count - 9) / 3 + 1));
+                Content.sizeDelta = new Vector2(1080, 1400/ mainUISet.scale + 365 * (int)((Count - 9) / 3 + 1));
             }
             else
             {
-                Content.sizeDelta = new Vector2(1080, 1400 / mainPageUI.scale + 365 * (int)((Count - 9) / 3));
+                Content.sizeDelta = new Vector2(1080, 1400 / mainUISet.scale + 365 * (int)((Count - 9) / 3));
             }
         }
         Content.anchoredPosition = new Vector2(-540, 0);

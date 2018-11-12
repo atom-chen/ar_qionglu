@@ -7,11 +7,11 @@ using UnityEngine.Video;
 
 public class ReturnToMain : MonoBehaviour
 {
-
     private Button Btn;
     public GameObject toastObj;
     public VideoPlayer vp;
     public VideoPlayer vp2;
+    public AudioSource aud;
     void Awake()
     {
         Btn = GetComponent<Button>();
@@ -46,6 +46,14 @@ public class ReturnToMain : MonoBehaviour
             }
         }
     }
+    private void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            UnityHelper.LoadNextScene("main");
+        }
+    }
+
     private bool isShooting;
     public void ShotPic()
     {
@@ -53,6 +61,10 @@ public class ReturnToMain : MonoBehaviour
         {
             isShooting = true;
             ScreenshotManager.SaveScreenshot("Scan");
+            if (aud!=null)
+            {
+                aud.Play();
+            }
             toastObj.SetActive(true);
             CoroutineWrapper.EXES(1.5f, () =>
             {

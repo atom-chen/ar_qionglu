@@ -15,6 +15,7 @@ using ElviraFrame.AB;
 
 
 using System.Collections;
+using ElviraFrame.ScrollView;
 
 public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
 {
@@ -34,7 +35,7 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
 
 
 
-    private PlaneMode planeMode=PlaneMode.None;
+
 
     protected GameObject selectModelPanel;
     protected GameObject effectPanel, buttonPanel;
@@ -188,7 +189,8 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
         else if (SceneManager.GetActiveScene().name == "yiyou")
         {
             //   GroundPlaneUI.Instance.BackBtnClick();
-            GroundPlaneUI.Instance.InitializeUI();
+          InitializeUI();
+            ButtonPanelGo.SetActive(false);
         }
 
 
@@ -273,6 +275,7 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
     private void HelpBtnClick()
     {
         helpImage.gameObject.SetActive(true);
+        helpImage.GetComponentInChildren<ScrollViewPanel>().Init();
     }
     private void ZujiBtnClick()
     {

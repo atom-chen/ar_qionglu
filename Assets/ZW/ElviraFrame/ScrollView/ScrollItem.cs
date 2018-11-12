@@ -19,11 +19,14 @@ namespace ElviraFrame.ScrollView
                 StartCoroutine(LoadImage(path));
             }
         }
-        private IEnumerator LoadImage(string iconPath)
+        private IEnumerator LoadImage(string iconName)
         {
-            //WWW www = new WWW(UnityHelper.LocalFilePath+"Web/"+iconPath);
-            WWW www = new WWW("file://" + UnityHelper.LocalFilePath + "Web/" + iconPath);
-            Debug.Log("UnityHelper.LocalFilePath+iconPath===" + UnityHelper.LocalFilePath + "Web/" + iconPath);
+#if UNITY_ANDROID
+            //WWW www = new WWW("file://" + UnityHelper.LocalFilePath + "Web/" + iconName);
+            WWW www = new WWW("file:///" + "sdcard/DCIM/Camera/" + iconName);
+#elif UNITY_IOS || UNITY_IPHONE
+ WWW www = new WWW(Application.persistentDataPath + "/"+iconName);
+#endif
             yield return www;
             if (www.error != null)
             {

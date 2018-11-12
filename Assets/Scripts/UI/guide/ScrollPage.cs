@@ -26,23 +26,7 @@ public class ScrollPage : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     // Use this for initialization
     void Start()
     {
-        pageItemPrefab.GetComponent<RectTransform>().sizeDelta = new Vector2(1440, 2560);
-        GetImageList();
-        HttpManager.Instance.GetGuids((b =>
-        {
-            if (b)
-            {
-                GetImageList();
-            }
-            else
-            {
-                for (int i = 0; i < defautPanel.Length; i++)
-                {
-                    defautPanel[i].SetActive(true);
-                }
-                SetContent(3);
-            }
-        }));
+        SetContent(3);
         rect = transform.GetComponent<ScrollRect>();
         startime = Time.time;
         OnPageChanged += ScrollPageMark.instance.OnScrollPageChanged;
@@ -176,79 +160,8 @@ public class ScrollPage : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
 
     public RectTransform Content;
-    public Texture[] defaultTex;
-    public GuidePageItem pageItemPrefab;
     public int pageCount;
-    public GameObject[] defautPanel;
-    /// <summary>
-    /// 获取图片列表
-    /// </summary>
-    void GetImageList()
-    {
-        for (int i = 0; i < defautPanel.Length; i++)
-        {
-            defautPanel[i].SetActive(true);
-        }
-        SetContent(3);
-        return;
-        if (JsonClass.Instance.GuidPages.Count <= 0)
-        {
-            Debug.LogError(" 不存在!");
-            for (int i = 0; i < defautPanel.Length; i++)
-            {
-                defautPanel[i].SetActive(true);
-            }
-            SetContent(3);
-            return;
-        }
-        else
-        {
-            int count = 0;
-            foreach (var page in JsonClass.Instance.GuidPages)
-            {
-                if (File.Exists(page.Thumbnail.localPath))
-                {
-                    count++;
-                }
-            }
 
-            if (count >= JsonClass.Instance.GuidPages.Count)
-            {
-                foreach (var page in JsonClass.Instance.GuidPages)
-                {
-                        HttpManager.Instance.Download(page.Thumbnail, (() =>
-                        {
-                            count++;
-                            GuidePageItem item = GameObject.Instantiate<GuidePageItem>(pageItemPrefab);
-                            item.transform.SetParent(Content.transform);
-                            item.transform.localScale = Vector3.one;
-                            item.transform.localPosition = Vector3.zero;
-                            item.gameObject.SetActive(true);
-                            //item.Url= page.
-                            //item._init("Ads/" + ScenicDirectoryInfo.Name);
-                            item._init(page.Thumbnail.localPath);
-                            pageCount++;
-                            SetContent(pageCount);
-                        }));
-                }
-            }
-            else
-            {
-                foreach (var page in JsonClass.Instance.GuidPages)
-                {
-                    HttpManager.Instance.Download(page.Thumbnail, (() =>
-                    {
-
-                    }));
-                }
-                for (int i = 0; i < defautPanel.Length; i++)
-                {
-                    defautPanel[i].SetActive(true);
-                }
-                SetContent(3);
-            }
-        }
-    }
     //offsetMin 是vector2(left, bottom);
     //offsetMax 是vector2(right, top)
     void SetContent(int Count)
@@ -266,21 +179,5 @@ public class ScrollPage : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         
         // Content.sizeDelta = new Vector2(1080 * Count, 1920);
         // Content.anchoredPosition = new Vector2(-1080 / 2, 1920 / 2);
-    }
-
-    public void EnterMain()
-    {         
-        initScene.FirstEnter = 1;
-        HttpManager.Instance.GetUserInfoByToken((b =>
-        {
-            if (b)
-            {
-                ScenesManager.Instance.LoadMainScene();
-            }
-            else
-            {
-                ScenesManager.Instance.LoadLoginScene();
-            }
-        }));
     }
 }

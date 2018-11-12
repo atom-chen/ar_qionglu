@@ -61,7 +61,7 @@ public class LinkList
     /// <summary>
     /// 插入，1、表中有就更新节点，2、表中没有就生成节点并添加到末尾  ,已经有了返回false，新建插入返回true
     /// </summary>
-    public bool InsertAtLast(string longitude, string latitude, string imagepath,string  count,string  id)
+    public bool InsertAtLast(string longitude, string latitude, string imagepath,string  id,string count)
     {
         ListNode resultNode = Find(longitude, latitude);
         if (resultNode == null)
@@ -79,6 +79,7 @@ public class LinkList
             if (node==null)
             {
                 first = insertNode;
+       
             }
             else
             {
@@ -88,6 +89,8 @@ public class LinkList
                 }
                 //在Node之后插入  
                 node.next = insertNode;
+               
+                return true;
             }
 
         }
@@ -95,12 +98,13 @@ public class LinkList
         {
             //找到
             resultNode.path=imagepath;
-            int num = int.Parse(resultNode.count)+1;
-            resultNode.count = num.ToString();
-            return false;
+
+            resultNode.count = count;
+         
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     public int Length()

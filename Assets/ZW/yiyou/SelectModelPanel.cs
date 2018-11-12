@@ -50,6 +50,36 @@ public class SelectModelPanel : SingletonMono<SelectModelPanel>
     private void HideClick()
     {
         this.gameObject.SetActive(false);
+
+#if UNITY_IOS || UNITY_IPHONE
+       if (PlaneManager.Instance.showGameObject!=null)
+        {
+        GroundPlaneUI.Instance.ShowButtonPanel();
+        }
+        
+
+#elif UNITY_ANDROID
+  
+        if (SceneManager.GetActiveScene().name == "wikiSLAM")
+        {
+             if (WikiSLAMController.Instance.showGameObject != null)
+        {
+                WikiSLAMUIController.Instance.ShowButtonPanel();
+
+            }
+        }
+
+        else if (SceneManager.GetActiveScene().name == "yiyou")
+        {      if (PlaneManager.Instance.showGameObject!=null)
+        {
+            GroundPlaneUI.Instance.ShowButtonPanel();
+
+        }
+           
+        }
+  
+
+#endif
     }
 
     private void ShowSelectSceneModelUI(bool flag, string toggleSceneName)

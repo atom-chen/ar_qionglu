@@ -110,7 +110,6 @@ public class Targets : MonoBehaviour
     }
     public void HideInfo()
     {
-        ARScanManager.instance.isScan = false;
         switch (id)
         {
             case 1:
@@ -445,12 +444,14 @@ public class Targets : MonoBehaviour
         women.Play("start");
         audFX.Play();
         yield return new WaitForSeconds(2);
-        women.Play("speak");
         if (vp!=null)
         { 
             vp.url = ARScanManager.scan_more_Path + "/shuixiang1.mp4";
             vp.Play();
         }
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(0.4f);
+        women.Play("speak");
         yield return new WaitForSeconds(videoTime);
         women.Play("Idle");
 
@@ -509,12 +510,14 @@ public class Targets : MonoBehaviour
         women.Play("start");
         audFX.Play();
         yield return new WaitForSeconds(1);
-        women.Play("speak");
         if (vp!=null)
         { 
             vp.url = ARScanManager.scan_more_Path + "/youchuan.mp4";
             vp.Play();
         }
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(0.4f);
+        women.Play("speak");
         yield return new WaitForSeconds(videoTime);
         women.Play("Idle");
 
@@ -547,12 +550,14 @@ public class Targets : MonoBehaviour
         women.Play("start");
         audFX.Play();
         yield return new WaitForSeconds(1);
-        women.Play("speak");
         if (vp!=null)
         { 
             vp.url = ARScanManager.scan_more_Path + "/matou.mp4";
             vp.Play();
         }
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(0.4f);
+        women.Play("speak");
         yield return new WaitForSeconds(videoTime);
         women.Play("Idle");
 

@@ -561,7 +561,7 @@ public class Downloader
             FileStream fs = null;
             if (response == null)
             {
-                Debug.Log("请求为空");
+                Debug.Log("请求为空"+response.StatusCode);
                 //Debug.Log("请求为空" +downUnit.downUrl);
                 if (fs != null)
                 {

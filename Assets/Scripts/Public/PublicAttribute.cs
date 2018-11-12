@@ -161,11 +161,11 @@ public class PublicAttribute
     {
         get
         {
-            if (Application.platform == RuntimePlatform.Android)
+            if (Application.platform == RuntimePlatform.WindowsEditor)
             {
                 platform = "android";
             }
-            else if (Application.platform == RuntimePlatform.WindowsEditor)
+            else if (Application.platform == RuntimePlatform.Android)
             {
                 platform = "android";
             }
@@ -189,11 +189,11 @@ public class PublicAttribute
         {
             switch (Application.platform)
             {
-                case RuntimePlatform.Android:
+                case RuntimePlatform.WindowsEditor:
                     platformInt = "1";
                     break;
-
-                case RuntimePlatform.WindowsEditor:
+                
+                case RuntimePlatform.Android:
                     platformInt = "1";
                     break;
 
@@ -210,6 +210,9 @@ public class PublicAttribute
     /// 公共访问URL   ;  "http://192.168.30.49:7070/"；"http://192.168.20.2:9090/";http://115.28.222.129:7070/   "http://ar.vszapp.com:7070/";
     /// </summary>
     public static string URL = "http://ar.vszapp.com:7070/";
+    
+    
+    public static string URL2 = "http://ar.vszapp.com:7070/";
 
     /// <summary>
     /// 经度

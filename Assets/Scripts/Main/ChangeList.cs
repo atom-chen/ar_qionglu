@@ -7,6 +7,7 @@ using DG.Tweening;
 using System;
 using System.Runtime.InteropServices;
 using LitJson;
+using mainpage;
 
 public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 {
@@ -20,12 +21,13 @@ public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     /// </summary>
     public System.Action<int, int> OnPageChanged;
 
-    public DOTweenAnimation change_panel;
     public GameObject disWarn;
     float startime = 0f;
     float delay = 0.1f;
 
     public Vector2 gps;
+
+
     void Awake()
     {
         instance = this;
@@ -57,7 +59,9 @@ public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     }
     public Vector3 getLocation()
     {
-#if  UNITY_ANDROID
+#if UNITY_EDITOR
+        return new Vector3(104.07f,30.67f,500);
+#elif UNITY_ANDROID
 
         AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
@@ -190,7 +194,7 @@ public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     /// </summary>
     public void GetImageList()
     {
-        foreach (var ChangeInfo in mainPageUI.curScenicInfo.ResourcesInfos)
+        foreach (var ChangeInfo in mainUISet.curScenicInfo.ResourcesInfos)
         {
             if (ChangeInfo.ResourcesKey == "vsz-more-change")
             {
@@ -213,7 +217,7 @@ public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                                 item.transform.localScale = Vector3.one;
                                 item.transform.localPosition = Vector3.zero;
 
-                                item.id = fileitem.id.ToString();
+                                item.id = fileitem.baseEntity.id;
                                 item.name = fileitem.baseEntity.name;
                                 item.thumbnail = fileitem.PageThumbnail;
                                 item.locationX = fileitem.baseEntity.locationX;
@@ -228,9 +232,7 @@ public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                                 itemObj.Add(item.gameObject);
                                 item.gameObject.SetActive(true);
                             }));
-                        }));
-
-                       
+                        })); 
                     }
                 }
             }
@@ -251,12 +253,12 @@ public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     
     public void ShowCurPanorama(string id)
     {
-        change_panel.DOPlayForward();
+        mainUISet._inst.ShowUI(mainUISet.UIname.change,0);
         foreach (var item in itemObj)
         {
-            if (item.GetComponent<ChangeItem>().id.ToString()==id)
+            if (item.GetComponent<ChangeItem>().id == id)
             {
-                item.GetComponent<ChangeItem>().BtnOnClick(disWarn);
+                item.GetComponent<ChangeItem>().BtnOnClick();
                 break;
             }
         }

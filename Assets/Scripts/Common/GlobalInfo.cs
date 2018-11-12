@@ -23,6 +23,8 @@ public class GlobalInfo {
         get { return PlayerPrefs.GetString("LastAdsImgPath");}
     }
 
+    public static string APPversion = "1.02";
+    public static string AppDownloadPage = "http://download.vszapp.com/";
     #region  GPS距离计算
     
     public static double HaverSin(double theta)

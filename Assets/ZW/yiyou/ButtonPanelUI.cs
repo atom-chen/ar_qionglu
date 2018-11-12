@@ -19,7 +19,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
 
     GameObject buttonPanelUIGo;
 
-
+    string movieSavePath = string.Empty;
 
     Button shotBtn;
     Button saveBtn;
@@ -34,7 +34,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     string imageSavePath = string.Empty;
     string imageSaveName = string.Empty;
 
-
+    bool isShareVideo = false;
 
     KongmingLatern deng;
     Sandcastle castale;
@@ -241,11 +241,15 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     /// </summary>
     private void ShareBtnClick()
     {
-        Debug.Log("ASDAS");
-     
-        ShareScriptsBase.Instance.Share(ScreenshotManager.Instance.savedPath);
+        if (isShareVideo==true)
+        {
+            ShareScriptsBase.Instance.ShareVideo(movieSavePath);
+        }
+        else
+        {
+            ShareScriptsBase.Instance.Share(ScreenshotManager.Instance.savedPath);
 
-       
+        }
     }
 
 
@@ -268,6 +272,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     /// </summary>
     IEnumerator ShotBtnClick()
     {
+        isShareVideo = false;
         ShowShotImage.texture = null;
        // EffectPanelUI.Instance.EffectPanelGo.gameObject.SetActive(false);
         uiCanvas.alpha = 0;
@@ -284,7 +289,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     {
         if (isRec==false)
         {
-            StartCoroutine(requestRecoding());
+            StartCoroutine(StartRecoding());
         }
         else
         {
@@ -296,25 +301,23 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     float timer = 10f;
     float time = 0;
 
-
-
-
-
-
-    IEnumerator requestRecoding()
+    IEnumerator StartRecoding()
     {
+        isShareVideo = true;
         uiCanvas.alpha = 0;
         RecordManager.Instance.ShowCanvas(true);
         isRec = true;
+
         yield return new WaitForSeconds(0.01f);
 #if UNITY_ANDROID
 
         AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
         string date = System.DateTime.Now.ToString("hh-mm-ss_dd_MM_yyyy");
+         movieSavePath = "/sdcard/DCIM/AR游/" + date + ".mp4";
         date = date.Replace("-", "");
         date = date.Replace("_", "");
-        jo.Call("requestCaptureRecode", Application.persistentDataPath + "/" + date+".mp4");
+        jo.Call("startCaptureRecode", movieSavePath);
 
 
 #elif UNITY_IOS || UNITY_IPHONE
@@ -325,7 +328,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
 
 #endif
 
-        RecordManager.Instance.StartProcess();
+
     }
 
     public void stopRecoding()
@@ -357,6 +360,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     public void onCaptureRecodeStart()
     {
         isRec = true;
+        RecordManager.Instance.StartProcess();
         Debug.Log("Rec::::::::::::::Start");
     }
     /// <summary>

@@ -4,14 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace ElviraFrame.Excel
-{
     [Serializable]
     [SerializeField]
     public class PushItem  {
 
         public string id;
-        public string name;
+     //   public string name;
         public string locationX;
         public string locationY;
         public string height;
@@ -25,4 +23,4 @@ namespace ElviraFrame.Excel
 
 
 
-}
+

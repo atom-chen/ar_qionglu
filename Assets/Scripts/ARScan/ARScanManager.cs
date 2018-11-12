@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using DG.Tweening;
+using mainpage;
 using UnityEngine;
 using UnityEngine.UI;
 using Vuforia;
@@ -33,7 +34,7 @@ public class ARScanManager : MonoBehaviour
     {
         instance = this;
 
-        foreach (var ChangeInfo in mainPageUI.curScenicInfo.ResourcesInfos)
+        foreach (var ChangeInfo in mainUISet.curScenicInfo.ResourcesInfos)
         {
             if (ChangeInfo.ResourcesKey == "vsz-scan-more")
             {
@@ -73,6 +74,29 @@ public class ARScanManager : MonoBehaviour
         Invoke("GetImageList", 1);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            UnityHelper.LoadNextScene("main");
+        }
+
+        ShowBtn();
+    }
+
+    void ShowBtn()
+    {
+        int count = 0;
+        for (int i = 0; i < trackerList.Count; i++)
+        {
+            if (trackerList[i].istracking)
+            {
+                count++;
+            }
+        }
+
+        ShotBtn.SetActive(count > 0);
+    }
     public void scanImgTweenOver()
     {
         StartCoroutine(ImgTweenOver());
@@ -137,7 +161,7 @@ public class ARScanManager : MonoBehaviour
 
     public void GetImageList()
     {
-        foreach (var ChangeInfo in mainPageUI.curScenicInfo.ResourcesInfos)
+        foreach (var ChangeInfo in mainUISet.curScenicInfo.ResourcesInfos)
         {
             if (ChangeInfo.ResourcesKey == "vsz-scan-ticket" || ChangeInfo.ResourcesKey == "vsz-scan-native-product" || ChangeInfo.ResourcesKey == "vsz-scan-more" || ChangeInfo.ResourcesKey == "vsz-scan-conjure")
             {
@@ -235,7 +259,7 @@ public class ARScanManager : MonoBehaviour
         if (!isShooting)
         {
             isShooting = true;
-            btnPanel.SetActive(false);
+            btnPanel.SetActive(false); 
             shotclip.Play();
             ScreenshotManager.SaveScreenshot("Scan");
             CoroutineWrapper.EXES(1.5f, () =>

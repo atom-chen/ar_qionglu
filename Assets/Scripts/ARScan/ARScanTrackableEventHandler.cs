@@ -38,7 +38,7 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
     #endregion // UNITY_MONOBEHAVIOUR_METHODS
 
     #region PUBLIC_METHODS
-    bool istracking,isloaded;
+    public  bool istracking,isloaded;
     /// <summary>
     ///     Implementation of the ITrackableEventHandler function called when the
     ///     tracking state changes.
@@ -63,9 +63,10 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
             }
             else if (isloaded)
             {
+                ARScanManager.instance.isScan = true;
                 ShowInfo();
             }
-            ARScanManager.instance.ShowShotBtn();
+            // ARScanManager.instance.ShowShotBtn();
         }
         else if (previousStatus == TrackableBehaviour.Status.TRACKED &&
                  newStatus == TrackableBehaviour.Status.NO_POSE ||
@@ -77,20 +78,24 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
                 if (child.GetComponent<Targets>() != null)
                 {          
                     Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
+                    ARScanManager.instance.isScan = false;
                     HideInfo();
                 }
             
-            ARScanManager.instance.HideShotBtn();
+            // ARScanManager.instance.HideShotBtn();
         }
         else
         {
             istracking = false;
             OnTrackingLost();
             if (child != null)
-                if(child.GetComponent<Targets>()!=null)
+                if (child.GetComponent<Targets>() != null)
+                {
+                    ARScanManager.instance.isScan = false;
                     HideInfo();
-            
-            ARScanManager.instance.HideShotBtn();
+                }
+
+            // ARScanManager.instance.HideShotBtn();
         }
     }
 

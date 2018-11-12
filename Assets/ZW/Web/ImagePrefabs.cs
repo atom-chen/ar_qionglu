@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.ZW.ElviraFrame.TextureUtility;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,11 +34,17 @@ public class ImagePrefabs : MonoBehaviour {
             StartCoroutine(LoadImage(path));
         }
     }
-    private IEnumerator LoadImage(string iconPath)
+    private IEnumerator LoadImage(string iconName)
     {
         //WWW www = new WWW(UnityHelper.LocalFilePath+"Web/"+iconPath);
-        WWW www = new WWW("file://"+ UnityHelper.LocalFilePath + "Web/" + iconPath);
-        Debug.Log("UnityHelper.LocalFilePath+iconPath==="+ UnityHelper.LocalFilePath + "Web/" + iconPath);
+
+#if UNITY_ANDROID
+//WWW www = new WWW("file://"+ UnityHelper.LocalFilePath + "Web/" + iconName);
+        WWW www = new WWW("file:///" + "sdcard/DCIM/Camera/" + iconName);
+#elif  UNITY_IOS||UNITY_IPHONE
+ WWW www = new WWW(Application.persistentDataPath + "/"+iconName);
+#endif
+
         yield return www;
         if (www.error != null)
         {
@@ -45,13 +52,12 @@ public class ImagePrefabs : MonoBehaviour {
         }
         else
         {
-             txt2D = www.texture;
-
-            Sprite sp = Sprite.Create(txt2D, new Rect(0, 0, txt2D.width, txt2D.height), new Vector2(0.5f, 0.5f));
-
+            txt2D = TextureUtility.ScalePoint(www.texture, 290, 250);
+           Sprite sp = Sprite.Create(txt2D, new Rect(0, 0, txt2D.width, txt2D.height), new Vector2(0.5f, 0.5f));
+           // Sprite sp = Sprite.Create(txt2D, new Rect(0, 0, 250f, 250f), new Vector2(0.5f, 0.5f));
             sprite = sp;
             icon.sprite = sp;
-            TrackUIManager.Instance.AddChildSprite(iconPath);
+            TrackUIManager.Instance.AddChildSprite(iconName);
         }
     }
 }

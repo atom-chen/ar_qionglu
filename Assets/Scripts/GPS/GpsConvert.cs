@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using LitJson;
 using System.Runtime.InteropServices;
+using mainpage;
 using UnityEngine.EventSystems;
 
 public class GpsPoint
@@ -244,7 +245,10 @@ public class GpsConvert : MonoBehaviour
         {
             SetCamGpsPoint(102.292392, 27.814844, 460, "cam");
         }
-
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            UnityHelper.LoadNextScene("main");
+        }
 
         if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
         {
@@ -551,7 +555,7 @@ public class GpsConvert : MonoBehaviour
     private string VideoURL;
     public void TurnChangeScene(string id)
     {
-        foreach (var ChangeInfo in mainPageUI.curScenicInfo.ResourcesInfos)
+        foreach (var ChangeInfo in mainUISet.curScenicInfo.ResourcesInfos)
         {
             if (ChangeInfo.ResourcesKey == "vsz-more-change")
                 foreach (var gpsitem in ChangeInfo.DIS)

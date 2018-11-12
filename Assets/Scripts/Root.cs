@@ -3,6 +3,7 @@ using System.IO;
 using LitJson;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 
 public class Root : MonoBehaviour
 {
@@ -16,6 +17,17 @@ public class Root : MonoBehaviour
     private void Start()
     {
         Loom.Initialize();
+        RequestCaptureRcode();
+    }
+
+    private void RequestCaptureRcode()
+    {
+#if UNITY_ANDROID
+        AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+        jo.Call("requestCaptureRecode");
+
+#endif
     }
 
     #region 全局的场景还原监听函数

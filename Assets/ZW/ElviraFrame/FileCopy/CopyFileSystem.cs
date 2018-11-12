@@ -9,75 +9,117 @@ using UnityEngine.UI;
 using ElviraFrame;
 using UnityEngine.SceneManagement;
 
+
 public class CopyFileSystem : SingletonMono<CopyFileSystem>
 {
+
+
     public override void Awake()
     {
         base.Awake();
-        //    CopyFile();
-#if   !UNITY_EDITOR
-     
-#endif
-   StartCoroutine(Loadzip("Web/webzip.zip", "visizen028"));
+
+    CreateFileDirectory(PublicAttribute.LocalFilePath + "Push/"+PublicAttribute.AreaId+"/a.txt");
+        CreateFileDirectory(PublicAttribute.LocalFilePath + "Web/PointMap.json");
+        CreateFileDirectory("/sdcard/DCIM/AR游/a.txt");
+        CopyFile();
+        GetPushResources();
     }
 
+    public void GetPushResources()
+    {
+        string contentName = "content.json";
+        string filePath = PublicAttribute.LocalFilePath + "Push/" + PublicAttribute.AreaId + "/";
+        if (!File.Exists(filePath+ contentName))
+        {
+            HttpManager.Instance.GetPushContent((b,name)=>
+        {
+            if (b)
+            {
+                StartCoroutine(DownLoadContent(name));
+            
+            }
+        });
+        }
+        else
+        {
+            CreateFileDirectory(filePath + "a.txt");
+            HttpManager.Instance.GetPushContent((b, name) =>
+            {
+                if (b)
+                {
+                    StartCoroutine(DownLoadContent(name));
 
+                }
+            });
+        }
+    }
+
+ IEnumerator DownLoadContent(string  name)
+    {
+
+        Debug.Log("dfgsdgdfsgfdytrutyikgfhdf");
+        WWW wW = new WWW("http://vsz-scenery-area.vszapp.com/" + name + ".json");
+
+        yield return wW;
+        if (wW.isDone&&wW.error==null)
+        {
+            File.WriteAllText(PublicAttribute.LocalFilePath+ "Push/" + PublicAttribute.AreaId + "/content.json", wW.text);
+        }
+    PushManager.Instance.LoadPushJson();
+    }
+
+    void CreateFileDirectory(string filePath)
+    {
+        if (!File.Exists(filePath))
+        {
+            if (!Directory.Exists(Path.GetDirectoryName(filePath)))
+            {
+                Debug.Log("CreateDirectary");
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+            }
+            FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate);
+            StreamWriter sw = new StreamWriter(fs);
+
+            sw.Close();
+            sw.Dispose();
+            fs.Close();
+        }
+
+    }
 
     private void CopyFile()
     {
-        string htmlPath = UnityHelper.LocalFilePath + "Web/a.txt";
-        string pushcontentPath = UnityHelper.LocalFilePath + "Push/a.txt";
-
-
-        string htmltargetFile = UnityHelper.LocalFilePath + "Web/" + "CustomOverlay.html";
-        string pointmapFile = UnityHelper.LocalFilePath + "Web/" + "PointMap.json";
-
-
-        if (!File.Exists(htmlPath))
-        {
-            if (!Directory.Exists(Path.GetDirectoryName(htmlPath)))
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(htmlPath));
-            }
-
-            FileStream fs = new FileStream(htmlPath, FileMode.OpenOrCreate);
-            StreamWriter sw = new StreamWriter(fs);
-            sw.Close();
-
-        }
-
-
-        string pushjsontargetFile = UnityHelper.LocalFilePath + "Push/" + "content.json";
-        if (!File.Exists(pushcontentPath))
-        {
-            if (!Directory.Exists(Path.GetDirectoryName(pushcontentPath)))
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(pushcontentPath));
-            }
-
-            FileStream fs = new FileStream(pushcontentPath, FileMode.OpenOrCreate);
-            StreamWriter sw = new StreamWriter(fs);
-            sw.Close();
-
-        }
-
-
+        string htmlDirectoryPath = UnityHelper.LocalFilePath + "Web/";
+        string pushDirectoryPath = UnityHelper.LocalFilePath + "Push/";
 
 #if UNITY_ANDROID
-        StartCoroutine(Load(htmltargetFile, "CustomOverlay.html", "Web"));
-        StartCoroutine(Load(pointmapFile, "PointMap.json", "Web"));
-        //StartCoroutine(Load(pushjsontargetFile, "content.json","Push"));
-#else
+        StartCoroutine(Load(htmlDirectoryPath + "CustomOverlay.html", "CustomOverlay.html", "Web"));
+        StartCoroutine(Load(htmlDirectoryPath + "jquery-1.12.2.min.js", "jquery-1.12.2.min.txt", "Web"));
+  //      StartCoroutine(Load(htmlDirectoryPath + "PointMap.json", "PointMap.json", "Web"));
+
+
+        //       WebView.Instance.CreateWebView();
         string htmlsourceFile = Application.streamingAssetsPath + "/Web/CustomOverlay.html";
-             //string pushjsonsourceFile = Application.streamingAssetsPath + "/Push/content.json";
+        //   File.Copy(htmlDirectoryPath + "CustomOverlay.html", htmlDirectoryPath + "CustomOverlay.html", true);
+#else
+ 
    
-        File.Copy(htmlsourceFile,htmltargetFile,true);
+        File.Copy(Application.streamingAssetsPath + "/Web/CustomOverlay.html",PublicAttribute.LocalFilePath + "Web/CustomOverlay.html",true);
+        File.Copy(Application.streamingAssetsPath + "/Web/jquery-1.12.2.min.txt", PublicAttribute.LocalFilePath + "Web/jquery-1.12.2.min.js", true);
+        File.Copy(Application.streamingAssetsPath + "/Web/PointMap.json", PublicAttribute.LocalFilePath + "Web/PointMap.json", true);
              //File.Copy(pushjsonsourceFile,pushjsontargetFile,true);
 #endif
 
+
     }
 
-
+    /// <summary>
+    /// 加载streamingAssets目录下的内容并且写到本地文件夹中去
+    /// </summary>
+    /// <param name="targetFile">   完整的文件路径名字</param>
+    /// <param name="fileName">文件自身的名字</param>
+    /// <param name="fileparentName">文件父亲的名字</param>
+    /// <returns></returns>
     IEnumerator Load(string targetFile, string fileName, string fileparentName)
     {
 
@@ -91,54 +133,7 @@ public class CopyFileSystem : SingletonMono<CopyFileSystem>
             File.WriteAllText(targetFile, load.text, System.Text.Encoding.UTF8);
         }
     }
-    /// <summary>
-    /// 返回对应平台下的路径，最后有"/"
-    /// </summary>
-    /// <returns></returns>
-    public string GetFilePath()
-    {
-        string path = string.Empty;
-        switch (Application.platform)
-        {
-            case RuntimePlatform.WindowsPlayer:
-            case RuntimePlatform.WindowsEditor:
-                path = Application.streamingAssetsPath + "/";
-                break;
-            case RuntimePlatform.IPhonePlayer:
-                path = Application.dataPath + "/Raw/";
-                break;
-            case RuntimePlatform.Android:
-                path = "jar:file://" + Application.dataPath + "!/assets/";
-                break;
-            default:
-                break;
-        }
-        return path;
-    }
-    IEnumerator Loadzip(string fileName, string password)
-    {
 
 
-        string sourcePath = GetFilePath() + fileName;
-        string targetPath = UnityHelper.LocalFilePath + "Web/";
-        if (!Directory.Exists(UnityHelper.LocalFilePath + "Web"))
-        {
-            Directory.CreateDirectory(UnityHelper.LocalFilePath + "Web");
-        }
-        //yield break;
-        if (!File.Exists(targetPath + "PointMap.json"))
-        {
-            WWW www = new WWW(sourcePath);
-            yield return www;
 
-            if (www.isDone && www.error == null)
-            {
-                yield return new WaitForEndOfFrame();
-                ZipUtility.UnzipFile(www.bytes, targetPath, password);
-                Debug.Log("解压了");
-            }
-
-        }
-
-    }
 }

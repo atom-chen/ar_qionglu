@@ -2,6 +2,17 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
+[InitializeOnLoad]
+public class GlobalConfig
+{
+    static GlobalConfig()
+    {
+        PlayerSettings.Android.keystorePass = "visizen028";
+        PlayerSettings.Android.keyaliasName = "artravel";
+        PlayerSettings.Android.keyaliasPass = "visizen028";
+    }
+}
+
 public class CreateAssetBundles : EditorWindow
 {
 

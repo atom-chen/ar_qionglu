@@ -25,7 +25,6 @@ public class ARScanGuideItem : MonoBehaviour {
             {
                 if (response == null || !response.IsSuccess)
                 {
-                    DebugManager.Instance.LogError("请求失败！");
                     return;
                 }
                 tex.LoadImage(response.Data);
@@ -37,7 +36,7 @@ public class ARScanGuideItem : MonoBehaviour {
         }
     }
     /// <summary>
-    /// 检查文件是否存在
+    /// 
     /// </summary>
     /// <param name="imgURl"></param>
     /// <returns></returns>

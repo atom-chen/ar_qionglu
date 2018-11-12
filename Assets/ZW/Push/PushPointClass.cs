@@ -12,8 +12,9 @@ using UnityEngine;
 [Serializable]
 public class PushPointClass
 {
-    public string radius;
     public string name;
+    public string radius;
+
     public List<PushMsg> msgs;
 
     public PushPointClass()
@@ -37,13 +38,13 @@ public class PushMsg
     public string url;
     public string title;
     public string msg;
-    public Vector2 pos;
-    public int distance;
+    public string type;
+    public string dbid;
     public PushMsg()
     {
 
     }
-    public PushMsg(string id, string jingdu, string weidu, string height, string time, string url, string title, string msg)
+    public PushMsg(string id, string jingdu, string weidu, string height, string time, string url, string title, string msg,string type,string  dbid)
     {
 
         this.id = id;
@@ -54,6 +55,8 @@ public class PushMsg
         this.url = url;
         this.title = title;
         this.msg = msg;
+        this.type = type;
+        this.dbid = dbid;
     }
 }
 

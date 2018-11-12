@@ -67,6 +67,7 @@ public class GlobalParameter
     public static string UserName = string.Empty;
     public static string UserIcon = string.Empty;
     internal static string thirdToken = string.Empty;
+    internal static string isHasSaw= "本宝宝看过了";
 
 
 

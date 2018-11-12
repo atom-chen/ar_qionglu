@@ -8,6 +8,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using System.Runtime.InteropServices;
 using ElviraFrame.Excel;
+
 #if UNITY_IOS || UNITY_IPHONE
 using com.mob.mobpush;
 #endif
@@ -16,7 +17,7 @@ using com.mob.mobpush;
 
 
 
-public class PushManager : MonoBehaviour
+public class PushManager : SingletonMono<PushManager>
 {
 
 
@@ -29,30 +30,33 @@ public class PushManager : MonoBehaviour
     /// 推送范围内的景点List
     /// </summary>
     List<PushItem> nearIndexList = new List<PushItem>();
+    private PushPointClass pushPointClass=null;
+    private int radiusDistance = 0;
 
-   
-    IEnumerator Start()
+    public void LoadPushJson()
+    {
+
+
+        string reader = JsonManager.ReadJsonFromFilePath(UnityHelper.LocalFilePath + "Push/"+PublicAttribute.AreaId+"/", "content.json");
+        if (reader != null)
+        {
+            Debug.Log("reader不为空=====" + reader);
+            pushPointClass = JsonMapper.ToObject<PushPointClass>(reader);
+            AddToList(pushPointClass);
+        }
+        else
+        {
+            Debug.Log("reader为空=====" + reader);
+        }
+    }
+
+    void Start()
     {
         MobPushInit();
-        AddPoint();
-        yield return new WaitForSeconds(1f);
-        //string reader = JsonManager.ReadJsonFromFilePath(UnityHelper.LocalFilePath + "Push/", "content.json");
-        //if (reader != null)
-        //{
-        //    Debug.Log("reader不为空=====" + reader);
-        //    pushPointClass = JsonMapper.ToObject<PushPointClass>(reader);
-        //    AddToList(pushPointClass);
-        //}
-        //else
-        //{
-        //    Debug.Log("reader为空=====" + reader);
-        //}
+       InvokeRepeating("GetCurerntLocation", 60f, 60f);
 
-
-          InvokeRepeating("GetCurerntLocation", 60f, 60f);
-
-       //GetCurerntLocation();
     }
+
 
     private void MobPushInit()
     {
@@ -70,62 +74,40 @@ public class PushManager : MonoBehaviour
 #endif
     }
 
-    //private void AddToList(PushPointClass pointDataParams)
-    //{
-    //    Debug.Log("AddToLinkList");
-    //    if (pointDataParams == null)
-    //    {
-    //        return;
-    //    }
-    //    Debug.Log(pointDataParams.msgs.Count);
-    //    for (int i = 0; i < pointDataParams.msgs.Count; i++)
-    //    {
-    //        PushMsg pushMsg = new PushMsg();
-    //        pushMsg.id = pointDataParams.msgs[i].id;
-    //        string x = pointDataParams.msgs[i].locationX;
-    //        pushMsg.locationX = x;
-
-    //        string y = pointDataParams.msgs[i].locationY;
-    //        pushMsg.locationY = y;
-    //        pushMsg.pos = new Vector2(float.Parse(x), float.Parse(y));
-
-    //        pushMsg.height = pointDataParams.msgs[i].height;
-    //        pushMsg.time = pointDataParams.msgs[i].time;
-    //        pushMsg.url = pointDataParams.msgs[i].url;
-    //        pushMsg.title = pointDataParams.msgs[i].title;
-    //        pushMsg.msg = pointDataParams.msgs[i].msg;
-    //        //pushMsg.distance = 10000f;
-    //        pushPointIndexV2Dic.Add(int.Parse(pushMsg.id), pushMsg);
-
-    //    }
-    //    Debug.Log(pushPointIndexV2Dic.Count);
-    //}
-    public void AddPoint()
+ 
+    public void AddToList(PushPointClass pointDataParams)
     {
-        PushItemManager pointdata = Resources.Load<PushItemManager>("DataAssets/PushItem");
-    //    Debug.Log("pointdata====" + pointdata.dataArray.Length);
-        foreach (PushItem item in pointdata.dataArray)
+        if (pointDataParams.msgs.Count!=0)
+        {
+
+
+
+            radiusDistance =int.Parse( pointDataParams.radius);
+   foreach (PushMsg item in pointDataParams.msgs)
         {
             PushItem pushItemMsg = new PushItem();
             pushItemMsg.id = item.id;
-            pushItemMsg.name = item.name;
-            pushItemMsg.locationX = item.locationX;
 
 
+                float XX = float.Parse(item.locationX);
+                float yy = float.Parse(item.locationY);
+           
+                pushItemMsg.locationX = item.locationX;
             pushItemMsg.locationY = item.locationY;
-            pushItemMsg.pos = item.pos;
-
             pushItemMsg.height = item.height;
-
             pushItemMsg.title = item.title;
             pushItemMsg.msg = item.msg;
-            pushItemMsg.distance =item.distance;
-
-            pushItemMsg.dbid = item.dbid;
+            pushItemMsg.distance =10000;
+                pushItemMsg.pos = new Vector2(XX,yy);
+          
+                pushItemMsg.dbid = item.dbid;
             pushItemMsg.type = item.type;
             //      Debug.Log("pointdata====" + pushItemMsg.title+"--"+ pushItemMsg.msg + "--" + pushItemMsg.pos);
             pushPointIndexV2Dic.Add(int.Parse(pushItemMsg.id), pushItemMsg);
         }
+        }
+
+     
     }
 
 
@@ -167,8 +149,8 @@ public class PushManager : MonoBehaviour
             {
               kt.Value.distance = UnityHelper.GetDistance(currentGps, kt.Value.pos);
 
-       //         Debug.Log(" kt.Value.distance ====" + (int)kt.Value.distance + "------");
-                if ((int)kt.Value.distance <= 300)
+         //Debug.Log(" kt.Value.distance ====" + (int)kt.Value.distance + "------"+kt.Value.title+"----pos===="+ kt.Value.pos);
+                if ((int)kt.Value.distance <= radiusDistance)
                 {
                     nearIndexList.Add(kt.Value);
                 }
@@ -202,6 +184,7 @@ public class PushManager : MonoBehaviour
                     dbid = newPushMsg.dbid,
                     type = newPushMsg.type
                 };
+           
 #if UNITY_ANDROID
                 AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
                 AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");

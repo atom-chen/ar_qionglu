@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System;
 using System.IO;
+using mainpage;
 using UnityEngine.SceneManagement;
 
 public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
@@ -43,7 +44,7 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                         SetContent(pageCount);
                         BananrItem item = GameObject.Instantiate<BananrItem>(pageItemPrefab);
                         item.transform.SetParent(Content.transform);
-                        item.transform.localScale = new Vector3(1, 1 * mainPageUI.scale, 1);
+                        item.transform.localScale = new Vector3(1, 1 * mainUISet.scale, 1);
                         item.transform.localPosition = Vector3.zero;
                         item.gameObject.SetActive(true);
                         HttpManager.Instance.Download(page.Thumbnail, (() =>
@@ -63,7 +64,7 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                 SetContent(pageCount);
                 BananrItem item = GameObject.Instantiate<BananrItem>(pageItemPrefab);
                 item.transform.SetParent(Content.transform);
-                item.transform.localScale = new Vector3(1, 1 * mainPageUI.scale, 1);
+                item.transform.localScale = new Vector3(1, 1 * mainUISet.scale, 1);
                 item.transform.localPosition = Vector3.zero;
                 item.gameObject.SetActive(true);
                 HttpManager.Instance.Download(page.Thumbnail, (() =>
@@ -308,8 +309,8 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {
         //Content.offsetMax = new Vector2(0,0);
         //Content.offsetMin = new Vector2(1440*(pageCount-1), 0);
-        Content.sizeDelta = new Vector2(1080 * Count, 550 * mainPageUI.scale);
-        Content.anchoredPosition = new Vector2(-540, 275 * mainPageUI.scale);
+        Content.sizeDelta = new Vector2(1080 * Count, 550 * mainUISet.scale);
+        Content.anchoredPosition = new Vector2(-540, 275 * mainUISet.scale);
     }
 
     public void EnterMain()

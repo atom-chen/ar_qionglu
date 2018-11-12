@@ -40,16 +40,18 @@ public class initScene : MonoBehaviour
 
     public GameObject root;
     public webrequest web;
-    public static int FirstEnter
+
+    public RectTransform[] pages;
+    public static string FirstEnter
     {
-        set {PlayerPrefs.SetInt("FirstEnter", value);}
-        get { return PlayerPrefs.GetInt("FirstEnter");}
+        set {PlayerPrefs.SetString("FirstEnter", value);}
+        get { return PlayerPrefs.GetString("FirstEnter");}
     }
     void Awake()
     {
         instance = this;
         
-        if (FirstEnter == 0)
+        if (FirstEnter != GlobalInfo.APPversion)
         {
             ads.SetActive(false);
         }
@@ -61,7 +63,19 @@ public class initScene : MonoBehaviour
         //屏幕常亮
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
-        if (GlobalInfo.LastAdsUrl.Length > 5 && GlobalInfo.LastAdsImgPath.Length > 5)
+        DownloadProp.Instance.UpdateCategoryInfo();
+        DownloadProp.Instance.UpdateComponentInfo();
+        
+        for (int i = 0; i < pages.Length; i++)
+        {
+#if UNITY_ANDROID || UNITY_EDITOR
+            pages[i].sizeDelta=new Vector2(Screen.width,Screen.height);
+            pages[i].anchoredPosition=new Vector2(0,1920-Screen.height);
+#elif UNITY_IOS || UNITY_IPHONE
+
+#endif
+        }
+        if (GlobalInfo.LastAdsUrl.Length > 5 && GlobalInfo.LastAdsImgPath.Length > 5 && File.Exists(GlobalInfo.LastAdsImgPath))
         {
             ads.GetComponent<Button>().onClick.AddListener(delegate
             {
@@ -120,9 +134,9 @@ public class initScene : MonoBehaviour
         // splash.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(3);
-        if (FirstEnter==0)
+        if (FirstEnter != GlobalInfo.APPversion)
         {
-            FirstEnter = 1;
+            FirstEnter = GlobalInfo.APPversion;
         }
         else if (!isLookingAds)
         {
@@ -132,7 +146,7 @@ public class initScene : MonoBehaviour
     }
     public void EnterMain()
     {
-        FirstEnter = 1;
+        FirstEnter = GlobalInfo.APPversion;
         HttpManager.Instance.GetUserInfoByToken((b =>
         {
             if (b)

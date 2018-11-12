@@ -194,7 +194,7 @@ public static   class UnityHelper
 
 
         var cal = 2 * Math.Asin(Math.Sqrt(Math.Pow(Math.Sin(a / 2), 2) + Math.Cos(firstRadLat) * Math.Cos(secondRadLat) * Math.Pow(Math.Sin(b / 2), 2))) * R;
-        int distance = (int)Math.Round(cal * 10000) / 10000;
+        int distance =Mathf.Abs ((int)Math.Round(cal * 10000) / 10000);
         return distance;
 
 

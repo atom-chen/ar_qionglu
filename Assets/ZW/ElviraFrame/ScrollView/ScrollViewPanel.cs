@@ -26,5 +26,13 @@ namespace ElviraFrame.ScrollView {
 
             }
         }
+
+
+
+
+        public void Init()
+        {
+            GetComponentInChildren<ScrollView.ScrollPage>().Init();
+        }
     }
 }

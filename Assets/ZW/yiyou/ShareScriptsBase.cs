@@ -121,9 +121,9 @@ public class ShareScriptsBase : SingletonMono<ShareScriptsBase>
     ///  
     /// 
     /// </summary>
-    private  void ShareLink(string imagURL)
+    private  bool ShareLink(string imagURL)
     {
-        if (imagURL == null) return;
+        if (imagURL == null) return false; ;
 
 
 
@@ -148,18 +148,24 @@ public class ShareScriptsBase : SingletonMono<ShareScriptsBase>
             }
 
         });
+        return true;
     }
 
 
 
     /// <summary>
-    /// 分享图片或者视频
+    /// 分享图片
     /// </summary>
     /// <param name="path"></param>
-    private void ShareImage(string path)
+    private bool ShareImage(string path)
     {
-        if (path == null) return;
-        Debug.Log("path===" + path);
+        if (path == null) return  false;
+        PlatformType[] plats = new PlatformType[4];
+        plats[0] = PlatformType.WeChat;
+        plats[1] = PlatformType.WeChatMoments;
+        plats[2] = PlatformType.QQ;
+        plats[3] = PlatformType.SinaWeibo;
+        ssdk.DisableSSO(false);
         ShareContent content = new ShareContent();
         content.SetText("视觉美景+智能呈现  只留精彩，不留遗憾");//智能交互宣传
         content.SetImagePath(path);
@@ -168,33 +174,128 @@ public class ShareScriptsBase : SingletonMono<ShareScriptsBase>
         content.SetTitleUrl("http://download.vszapp.com");
         content.SetUrl("http://download.vszapp.com");
 
+        ShareContent qqParams = new ShareContent();
+        qqParams.SetImagePath(path);
+        qqParams.SetShareType(ContentType.Image);
+        qqParams.SetShareContentCustomize(PlatformType.QQ, qqParams);
 
+        ShareContent wechatParams = new ShareContent();
+        wechatParams.SetImagePath(path);
+        wechatParams.SetTitle("AR游");//AR游
+        wechatParams.SetShareType(ContentType.Image);
+        wechatParams.SetShareContentCustomize(PlatformType.WeChat, wechatParams);
 
-
+        ShareContent wechatMomentParams = new ShareContent();
+        wechatMomentParams.SetImagePath(path);
+        wechatMomentParams.SetTitle("AR游");//AR游
+        wechatMomentParams.SetShareType(ContentType.Image);
+        wechatMomentParams.SetShareContentCustomize(PlatformType.WeChatMoments, wechatParams);
 
         ShareContent SinaShareParams = new ShareContent();
         SinaShareParams.SetText("视觉美景+智能呈现  只留精彩，不留遗憾");
         SinaShareParams.SetImagePath(path);
-        SinaShareParams.SetTitle("AR游");//AR游
         SinaShareParams.SetShareType(ContentType.Image);
-        SinaShareParams.SetObjectID("SinaID");
-        SinaShareParams.SetTitleUrl("http://download.vszapp.com");
-        SinaShareParams.SetUrl("http://download.vszapp.com");
         SinaShareParams.SetShareContentCustomize(PlatformType.SinaWeibo, SinaShareParams);
+
         //通过分享菜单分享
-        ssdk.ShowPlatformList(null, content, 100, 100);
+        ssdk.ShowPlatformList(plats, content, 100, 100);
+        return true;
     }
 
-    internal void Share(string savedPath)
+    internal bool Share(string savedPath  )
     {
-        if (GlobalParameter.isNeedRestore)
-        {
-            ShareLink(savedPath);
+       
+   
+            if (GlobalParameter.isNeedRestore)
+            {
+                return ShareLink(savedPath);
 
-        }
-        else
-        {
-            ShareImage(savedPath);
-        }
+            }
+            else
+            {
+                return ShareImage(savedPath);
+            }
+        
     }
+
+
+
+    /// <summary>
+    /// 分享视频
+    /// </summary>
+    /// <param name="path"></param>
+    public bool ShareVideo(string path)
+    {
+        if (path == null) return  false;
+        Debug.Log("path===" + path);
+
+
+        PlatformType[] plats = new PlatformType[1];
+        //plats[0] = PlatformType.WeChat;
+        //plats[1] = PlatformType.WeChatMoments;
+
+        plats[0] = PlatformType.SinaWeibo;
+        ShareContent content = new ShareContent();
+
+        ssdk.DisableSSO(false);
+        if (ssdk.IsClientValid(PlatformType.SinaWeibo)==false)
+        {
+            return false;
+        }
+        content.SetText("视觉美景+智能呈现  只留精彩，不留遗憾");//
+        content.SetFilePath(path);
+        content.SetTitle("AR游");//AR游
+ 
+        content.SetShareType(ContentType.File);
+        content.SetTitleUrl("http://download.vszapp.com");
+        content.SetUrl("http://download.vszapp.com");
+
+        //通过分享菜单分享
+        ssdk.ShowPlatformList(plats, content, 100, 100);
+
+        return true;
+    }
+
+    public void QQShare(string path)
+    {
+
+        ShareContent content = new ShareContent();
+        content.SetImagePath(path);
+        content.SetShareType(ContentType.Image);
+        ssdk.ShareContent(PlatformType.QQ, content);
+    }
+    public void WEShare(string path)
+    {
+
+        ShareContent content = new ShareContent();
+        content.SetText("this is a test string.");
+        content.SetTitle("test title");
+        content.SetImagePath(path);
+        content.SetShareType(ContentType.Image);
+        ssdk.ShareContent(PlatformType.WeChat, content);
+    }
+    public void WeMomentShare(string path)
+    {
+
+        ShareContent content = new ShareContent();
+        content.SetText("this is a test string.");
+        content.SetTitle("test title");
+        content.SetImagePath(path);
+        content.SetShareType(ContentType.Image);
+        ssdk.ShareContent(PlatformType.WeChatMoments, content);
+    }
+
+    public void SinaWeiboShare(string path)
+    {
+
+        ShareContent content = new ShareContent();
+        content.SetText("this is a test string.");
+        content.SetTitle("test title");
+        content.SetImagePath(path);
+        content.SetShareType(ContentType.Image);
+        ssdk.ShareContent(PlatformType.SinaWeibo, content);
+    }
+
+
+
 }

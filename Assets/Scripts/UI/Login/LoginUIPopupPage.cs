@@ -8,7 +8,9 @@ public class LoginUIPopupPage : MonoBehaviour
 {
     public GameObject SingleTipGo;
     public GameObject TwiceTipGo;
+    public GameObject UpdateTipGo;
     public Button ColliderBtn1,ColliderBtn2;
+    public Button UpdateCancelBtn,UpdateSureBtn;
     public Text TitleText;
     public Text ContentTextSingle,ContentTextTwice;
 
@@ -17,6 +19,8 @@ public class LoginUIPopupPage : MonoBehaviour
         Hide();
         ColliderBtn1.onClick.AddListener(Hide);
         ColliderBtn2.onClick.AddListener(Hide);
+        UpdateCancelBtn.onClick.AddListener(Hide);
+        UpdateSureBtn.onClick.AddListener(toAppDownloadPage);
     }
 
     /// <summary>
@@ -31,29 +35,39 @@ public class LoginUIPopupPage : MonoBehaviour
 
         if (string.IsNullOrEmpty(title) && content != null)
         {
-        ContentTextSingle.text = content;
+            ContentTextSingle.text = content;
             SingleTipGo.SetActive(true);
             if (content.Length<14)
             {
-                  ContentTextSingle.alignment = TextAnchor.MiddleCenter;
+                ContentTextSingle.alignment = TextAnchor.MiddleCenter;
             }
             else
             {
                 ContentTextSingle.alignment = TextAnchor.MiddleLeft;
             }
-          
-
-
         }
         else
         {
             TitleText.text = title;
             ContentTextTwice.text = content;
             TwiceTipGo.SetActive(true);
-
+            if (content.Length<14)
+            {
+                ContentTextTwice.alignment = TextAnchor.MiddleCenter;
+            }
+            else
+            {
+                ContentTextTwice.alignment = TextAnchor.MiddleLeft;
+            }
         }
       CoroutineWrapper.EXES(4f, () => { Hide(); });
     }
+
+    public void ShowUpdatePP()
+    {
+        UpdateTipGo.SetActive(true);
+    }
+    
     /// <summary>
     /// 显示弹出窗并执行函数
     /// </summary>
@@ -84,10 +98,14 @@ public class LoginUIPopupPage : MonoBehaviour
         {
             TwiceTipGo.SetActive(false);
         }
+        if (UpdateTipGo!=null)
+        {
+            UpdateTipGo.SetActive(false);
+        }
     }
-    public void UpdateCheck()
+    public void toAppDownloadPage()
     {
-        ShowPopup("","当前版本已为最新版本");
+       Application.OpenURL(GlobalInfo.AppDownloadPage);
     }
   
 }

@@ -87,10 +87,7 @@ public class ScreenshotManager : MonoBehaviour {
 			Destroy(this.gameObject);
 		}
 
-        if (!Directory.Exists(Path.GetDirectoryName(PublicAttribute.LocalFilePath + "Web")))
-        {
-            Directory.CreateDirectory(Path.GetDirectoryName(PublicAttribute.LocalFilePath + "Web"));
-        }
+    
     }
 
     /// <summary>
@@ -101,7 +98,7 @@ public class ScreenshotManager : MonoBehaviour {
     /// <param name="fileType"></param>
     /// <param name="screenArea"></param>
     /// <param name="immediatelySave"></param>
-    public static void SaveScreenshot(string shotfileName, string albumName = "DownloadFile/Web", string fileType = "png", Rect screenArea = default(Rect),bool immediatelySave=true)
+    public static void SaveScreenshot(string shotfileName, string albumName = "sdcard/DCIM/Camera", string fileType = "jpg", Rect screenArea = default(Rect),bool immediatelySave=true)
 	{
 		Debug.Log("Save screenshot to gallery " + shotfileName);
 
@@ -162,13 +159,13 @@ public class ScreenshotManager : MonoBehaviour {
 
         if (Application.platform == RuntimePlatform.Android) 
 		{
-			string androidPath = Path.Combine(albumName, screenshotFilename);
-			path = Path.Combine(Application.persistentDataPath, androidPath);
-            savedPath = path;
+			 path = Path.Combine(albumName, screenshotFilename);
 
+            savedPath = path;
+            Debug.Log("androidPath==="+ path);
             string pathonly = Path.GetDirectoryName(path);
-			Directory.CreateDirectory(pathonly);
-		}
+            Directory.CreateDirectory(pathonly);
+        }
 
 #endif
 
@@ -257,7 +254,11 @@ public class ScreenshotManager : MonoBehaviour {
 				else
 					saved = (SaveStatus)obj.CallStatic<int>("addImageToGallery", path);
 				    File.WriteAllBytes(path, bytes);
-				yield return Instance.StartCoroutine(Instance.Wait(.5f));
+                AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+                AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+                jo.Call("refreshMediaStore",path);
+             //   refreshMediaStore(String filePath)
+                yield return Instance.StartCoroutine(Instance.Wait(.5f));
 			}
 		}
 

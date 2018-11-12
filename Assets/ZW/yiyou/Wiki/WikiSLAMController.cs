@@ -231,9 +231,10 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
         else
         {
             //Tracker.SetState(InstantTrackingState.Initializing);
+            YiyouStaticDataManager.Instance.OnDestroyGameObject();
+            YiyouStaticDataManager.Instance.OnSilenceGo = null;
             Destroy(showGameObject);
 
-            YiyouStaticDataManager.Instance.OnDestroyGameObject();
 
 
         }

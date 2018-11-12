@@ -473,7 +473,7 @@ public class PortClass : Singleton<PortClass>
     private string  thirdPartyLogin;
     /// <summary>
     /// 第三方登录接口  POST
-    /// http://192.168.30.22:9999/auth/thirdLogin?openId=111
+    /// http://192.168.30.22:9999/auth/thirdLogin
     /// </summary>
     public string ThirdPartyLogin
     {
@@ -592,7 +592,26 @@ public class PortClass : Singleton<PortClass>
         }
         set { fankui = value; }
     }
+    #endregion
+    
+    #region 版本号
 
+    private string appid;
+    /// <summary>
+    /// 反馈
+    /// </summary>
+    public string updateid
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(appid))
+            {
+                appid = PublicAttribute.URL + "app/info";
+            }
+            return appid;
+        }
+        set { appid = value; }
+    }
 
     #endregion
 
@@ -630,7 +649,7 @@ public class PortClass : Singleton<PortClass>
         {
             if (string.IsNullOrEmpty(getAllPanorama))
             {
-                getAllPanorama = PublicAttribute.URL + "vsz-more-change/all?platform=1"; // + PublicAttribute.PlatformInt;
+                getAllPanorama = PublicAttribute.URL + "vsz-more-change/all?platform=" + PublicAttribute.PlatformInt;
             }
             return getAllPanorama;
         }
@@ -692,7 +711,7 @@ public class PortClass : Singleton<PortClass>
         {
             if (string.IsNullOrEmpty(getAllProduct))
             {
-                getAllProduct = PublicAttribute.URL + "vsz-scan-native-product/all?platform=1"; // + PublicAttribute.PlatformInt;
+                getAllProduct = PublicAttribute.URL + "vsz-scan-native-product/all?platform=" + PublicAttribute.PlatformInt;
             }
             return getAllProduct;
         }
@@ -732,7 +751,7 @@ public class PortClass : Singleton<PortClass>
         {
             if (string.IsNullOrEmpty(getAllTicket))
             {
-                getAllTicket = PublicAttribute.URL + "vsz-scan-ticket/all?platform=1"; // + PublicAttribute.PlatformInt;
+                getAllTicket = PublicAttribute.URL + "vsz-scan-ticket/all?platform=" + PublicAttribute.PlatformInt;
             }
             return getAllTicket;
         }
@@ -771,7 +790,7 @@ public class PortClass : Singleton<PortClass>
         {
             if (string.IsNullOrEmpty(getAllConjure))
             {
-                getAllConjure = PublicAttribute.URL + "vsz-scan-conjure/all?platform=1"; // + PublicAttribute.PlatformInt;
+                getAllConjure = PublicAttribute.URL + "vsz-scan-conjure/all?platform=" + PublicAttribute.PlatformInt;
             }
             return getAllConjure;
         }
@@ -813,7 +832,7 @@ public class PortClass : Singleton<PortClass>
         {
             if (string.IsNullOrEmpty(getAllScan))
             {
-                getAllScan = PublicAttribute.URL + "vsz-scan-more/all?platform=1"; // + PublicAttribute.PlatformInt;
+                getAllScan = PublicAttribute.URL + "vsz-scan-more/all?platform=" + PublicAttribute.PlatformInt;
             }
             return getAllScan;
         }
@@ -871,7 +890,7 @@ public class PortClass : Singleton<PortClass>
     /// 1：启动页，2：广告页，3：引导页，4：Banner
     /// </summary>
     public string Advertisement = PublicAttribute.URL + "vsz-advertisement/listByType?type=";
-
+    public string PushContent = PublicAttribute.URL + "vsz-scenery-area/list";
     #endregion
 
 }

@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using LitJson;
+using mainpage;
 
 public class ChangeItem : MonoBehaviour {
     [DllImport("__Internal")]
@@ -64,8 +65,14 @@ public class ChangeItem : MonoBehaviour {
 
 
     public GameObject loadingImg;
+    private float limitdistance;
     public void Start()
     {
+        #if UNITY_EDITOR
+        limitdistance = 999999999;
+        #elif UNITY_ANDROID ||UNITY_IPHONE ||UNITY_IOS
+        limitdistance = 40;
+        #endif
         web = GameObject.Find(GlobalInfo.websiterequest).GetComponent<webrequest>();
         info.text = content;
         title.text = name;
@@ -112,13 +119,13 @@ public class ChangeItem : MonoBehaviour {
         return true;
     }
 
-    public void BtnOnClick(GameObject obj)
+    public void BtnOnClick()
     {
         Vector3 point = getLocation();
         GPS = new Vector2(point.x,point.y);
         
         Debug.Log("当前距离：：："+ GlobalInfo.Distance(GPS.y,GPS.x, float.Parse(locationY), float.Parse(locationX))*1000);
-        if (GlobalInfo.Distance(GPS.y,GPS.x, float.Parse(locationY), float.Parse(locationX)) * 1000 < 40)
+        if (GlobalInfo.Distance(GPS.y,GPS.x, float.Parse(locationY), float.Parse(locationX)) * 1000 < limitdistance)
         {
             foreach (var item in VersionFilesItems.Where(item => item.extName == "mp4"))
             {
@@ -143,7 +150,7 @@ public class ChangeItem : MonoBehaviour {
         }
         else
         {
-            obj.SetActive(true);
+            mainUISet._inst.ShowUI(mainUISet.UIname.change,1);
         } 
     }
 
@@ -163,15 +170,8 @@ public class ChangeItem : MonoBehaviour {
         int index2 = path.LastIndexOf(".");
         string suffix = path.Substring(index1 + 1, index2 - index1 - 1);
 
-        //string FileBrower= path.Substring(0, index1);
-        //int index3 = FileBrower.LastIndexOf("/");
-        //string FileBrowername = FileBrower.Substring(0, index3);
-
-        //path = Application.persistentDataPath + "/DownloadFile/Panorama/" + FileBrowername+"/"+ suffix+".vsz";
-        //path = Application.persistentDataPath + "/DownloadFile/Panorama/1/shajin.vsz";
-
         Debug.Log(File.Exists(path));
-        WWW bundle = new WWW("file:///" + path);
+        WWW bundle = WWW.LoadFromCacheOrDownload("file:///" + path,4);
         yield return bundle;
         if (bundle.error!=null  || bundle.size <= 0)
         {
@@ -183,21 +183,12 @@ public class ChangeItem : MonoBehaviour {
             SceneManager.LoadScene(suffix);               
         }
     }
-    private IEnumerator LoadAssets2()
-    {
-        string path = Application.dataPath + "/DownloadFile/Panorama/1/qionghai.vsz";
-        Debug.Log(path);
-        Debug.Log(File.Exists(path));
-        WWW bundle =new WWW("file:///" + path);
-        yield return bundle;
-        Debug.Log(bundle.bytesDownloaded);
-        var data = bundle.assetBundle;
-        SceneManager.LoadScene("qionghai");
-    }
     
     public Vector3 getLocation()
     {
-#if UNITY_ANDROID
+#if UNITY_EDITOR
+        return new Vector3(104.07f,30.67f,500);
+#elif UNITY_ANDROID
 
         AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");

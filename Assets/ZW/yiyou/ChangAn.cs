@@ -8,7 +8,7 @@ public class ChangAn : MonoBehaviour
     /// <summary>
     ///按钮长按录像 
     /// </summary>
-     float timer = 3f;
+     float timer = 1f;
     float lastTime = 0f;
     bool isLongPress = false;
 
@@ -44,9 +44,9 @@ public class ChangAn : MonoBehaviour
 
     private void CaptureStart()
     {
-        //Debug.Log("录像开始");
-        //ButtonPanelUI.Instance.ShotCaptureClick();
-        ButtonPanelUI.Instance.ShotShotClick();
+        Debug.Log("录像开始");
+        ButtonPanelUI.Instance.ShotCaptureClick();
+        //ButtonPanelUI.Instance.ShotShotClick();
     }
 
     private void Shot()

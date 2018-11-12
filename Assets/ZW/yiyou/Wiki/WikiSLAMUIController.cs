@@ -1,4 +1,5 @@
 ﻿using ElviraFrame.AB;
+using ElviraFrame.ScrollView;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,7 +17,6 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
 
 
 
-    private PlaneMode planeMode = PlaneMode.None;
 
     protected GameObject selectModelPanel;
     protected GameObject effectPanel;
@@ -195,6 +195,7 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
         {
             //  WikiSLAMUIController.Instance.BackBtnClick();
             WikiSLAMUIController.Instance.InitializeUI();
+            ButtonPanelGo.SetActive(false);
         }
 
         else if (SceneManager.GetActiveScene().name == "yiyou")
@@ -291,6 +292,7 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
     private void HelpBtnClick()
     {
         helpImage.gameObject.SetActive(true);
+        helpImage.GetComponentInChildren<ScrollViewPanel>().Init();
     }
 
     private void ZujiBtnClick()
