@@ -53,8 +53,10 @@ public class ImagePrefabs : MonoBehaviour {
         else
         {
             txt2D = TextureUtility.ScalePoint(www.texture, 290, 250);
-           Sprite sp = Sprite.Create(txt2D, new Rect(0, 0, txt2D.width, txt2D.height), new Vector2(0.5f, 0.5f));
-           // Sprite sp = Sprite.Create(txt2D, new Rect(0, 0, 250f, 250f), new Vector2(0.5f, 0.5f));
+         Sprite sp = Sprite.Create(txt2D, new Rect(0, 0, txt2D.width, txt2D.height), new Vector2(0.5f, 0.5f));
+            // Sprite sp = Sprite.Create(txt2D, new Rect(0, 0, 250f, 250f), new Vector2(0.5f, 0.5f));
+
+      //      Sprite sp = Sprite.Create(txt2D, new Rect(txt2D.width / 2 - 500, txt2D.height / 2 - 500, 1000f, 1000f), new Vector2(0.5f, 0.5f));
             sprite = sp;
             icon.sprite = sp;
             TrackUIManager.Instance.AddChildSprite(iconName);

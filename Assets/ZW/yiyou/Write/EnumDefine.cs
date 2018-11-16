@@ -39,3 +39,18 @@ public enum LoginUIState
     ProtocolPanel,
     BinDingPhonePanel
 }
+
+
+
+
+
+
+public enum TipType
+{
+    ChooseModelTip,
+    WriteTip,
+    EffectTip,
+    ShotTip,
+    ShareTip
+
+}

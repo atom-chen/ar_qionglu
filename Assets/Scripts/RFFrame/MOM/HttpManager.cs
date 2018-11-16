@@ -1,21 +1,9 @@
 ﻿using LitJson;
-
-/**
- *Copyright(C) 2015 by DefaultCompany
- *All rights reserved.
- *FileName:     HttpManager.cs
- *Author:       若飞
- *Version:      1.0
- *UnityVersion：5.3.2f1
- *Date:         2017-04-27
- *Description:
- *History:
-*/
-
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using mainpage;
 using UnityEngine;
 
 public class HttpManager : Singleton<HttpManager>
@@ -42,6 +30,7 @@ public class HttpManager : Singleton<HttpManager>
 
     #region 获取静态资源
 
+    private string add;
     /// <summary>
     /// 获取景点信息
     /// </summary>
@@ -93,7 +82,13 @@ public class HttpManager : Singleton<HttpManager>
                         extName = tempthumb["extName"].ToString(),
                         size = tempthumb["size"].ToString(),
                         endPoint = "vsz-scenery-dot",
-                        address = "vsz-scenery-dot" + PublicAttribute.OSSUri + tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString(),
+                        
+                        address = PublicAttribute.OSSUri + "scenery-dot/" +  tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString()
+                        +"?auth_key="+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                        GlobalInfo.GetMD5("/scenery-dot/"+tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString()
+                                          +"-"+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                          PublicAttribute.OSSKey),
+                        
                         localPath = PublicAttribute.ThumbPath + tempthumb["id"].ToString() + "." + tempthumb["extName"].ToString()
                     };
                     //Download(ssi.thumbnail);
@@ -169,12 +164,21 @@ public class HttpManager : Singleton<HttpManager>
                     ssi.id = int.Parse(date[i]["id"].ToString());
                     ssi.name = date[i]["name"].ToString();
                     ssi.description = date[i]["description"].ToString();
-
+                    if (date[i]["dynamicFlag"] != null)
+                    {
+                        ssi.dynamicFlag = date[i]["dynamicFlag"].ToString();
+                    }
+                    
                     var tempthumb = date[i]["thumbnail"];
                     ssi.thumbnail = new Thumbnail()
                     {
                         endPoint = "vsz-special-scenery",
-                        address = "vsz-special-scenery" + PublicAttribute.OSSUri + tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString(),
+                        
+                        address =  PublicAttribute.OSSUri +"special-scenery/" + tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString()
+                                  +"?auth_key="+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                  GlobalInfo.GetMD5("/special-scenery/"+tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString()
+                                                    +"-"+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                                    PublicAttribute.OSSKey),
 
                         id = tempthumb["id"].ToString(),
                         md5 = tempthumb["md5"].ToString(),
@@ -254,12 +258,21 @@ public class HttpManager : Singleton<HttpManager>
                     ssi.id = int.Parse(date[i]["id"].ToString());
                     ssi.name = date[i]["name"].ToString();
                     ssi.description = date[i]["description"].ToString();
+                    if (date[i]["dynamicFlag"] != null)
+                    {
+                        ssi.dynamicFlag = date[i]["dynamicFlag"].ToString();
+                    }
 
                     var tempthumb = date[i]["thumbnail"];
                     ssi.thumbnail = new Thumbnail()
                     {
                         endPoint = "vsz-restaurant",
-                        address = "vsz-restaurant" + PublicAttribute.OSSUri + tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString(),
+                        
+                        address =  PublicAttribute.OSSUri +"restaurant/" + tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString()
+                                  +"?auth_key="+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                  GlobalInfo.GetMD5("/restaurant/"+tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString()
+                                                    +"-"+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                                    PublicAttribute.OSSKey), 
 
                         id = tempthumb["id"].ToString(),
                         md5 = tempthumb["md5"].ToString(),
@@ -337,12 +350,20 @@ public class HttpManager : Singleton<HttpManager>
                     ssi.id = int.Parse(date[i]["id"].ToString());
                     ssi.name = date[i]["name"].ToString();
                     ssi.description = date[i]["description"].ToString();
+                    if (date[i]["dynamicFlag"] != null)
+                    {
+                        ssi.dynamicFlag = date[i]["dynamicFlag"].ToString();
+                    }
 
                     var tempthumb = date[i]["thumbnail"];
                     ssi.thumbnail = new Thumbnail()
                     {
                         endPoint = "vsz-hotel",
-                        address = "vsz-hotel" + PublicAttribute.OSSUri + tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString(),
+                        address = PublicAttribute.OSSUri + "hotel/" + tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString()
+                                  +"?auth_key="+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                  GlobalInfo.GetMD5("/hotel/"+tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString()
+                                                    +"-"+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                                    PublicAttribute.OSSKey), 
 
                         id = tempthumb["id"].ToString(),
                         md5 = tempthumb["md5"].ToString(),
@@ -424,13 +445,23 @@ public class HttpManager : Singleton<HttpManager>
                     ssi.id = int.Parse(date[i]["id"].ToString());
                     ssi.name = date[i]["name"].ToString();
                     ssi.description = date[i]["description"].ToString();
+                    if (date[i]["dynamicFlag"] != null)
+                    {
+                        ssi.dynamicFlag = date[i]["dynamicFlag"].ToString();
+                    }
 
                     var tempthumb = date[i]["thumbnail"];
                     ssi.thumbnail = new Thumbnail()
                     {
                         endPoint = "vsz-special-product",
-                        address = "vsz-special-product" + PublicAttribute.OSSUri + tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString(),
+                        
+                        address =  PublicAttribute.OSSUri +"special-product/" + tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString()
+                                  +"?auth_key="+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                  GlobalInfo.GetMD5("/special-product/"+tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString()
+                                                    +"-"+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                                    PublicAttribute.OSSKey), 
 
+                        
                         id = tempthumb["id"].ToString(),
                         md5 = tempthumb["md5"].ToString(),
                         extName = tempthumb["extName"].ToString(),
@@ -622,7 +653,7 @@ public class HttpManager : Singleton<HttpManager>
 
             foreach (var RIF in DIs.ResourcesInfos)
             {
-                if (RIF.ResourcesKey == "vsz-scenery-guide")
+                if (RIF.ResourcesKey == "scenery-guide")
                 {
                     Debug.Log(RIF.GetAll + "&areaId=" + areaId);
                 }
@@ -651,7 +682,8 @@ public class HttpManager : Singleton<HttpManager>
                         return;
                     }
                     JsonData content = JsonMapper.ToObject(response.DataAsText.Trim());
-                    Debug.Log(response.DataAsText.Trim());
+                    
+                    Debug.Log(RIF.ResourcesKey+"::::"+response.DataAsText.Trim());
                     if (content["status"].ToString() != "200")
                     {
                         return;
@@ -675,7 +707,7 @@ public class HttpManager : Singleton<HttpManager>
                                 versionName = item["versionName"].ToString(),
                                 type = item["type"].ToString()
                             };
-                            pi.description = RIF.ResourcesKey == "vsz-more-change" ? item["description"].ToString() : "";
+                            pi.description = RIF.ResourcesKey == "more-change" ? item["description"].ToString() : "";
                             var baseEntity = item["baseEntity"];
                             pi.baseEntity = new BaseEntity
                             {
@@ -692,7 +724,13 @@ public class HttpManager : Singleton<HttpManager>
                                     id = pageThumbnail["id"].ToString(),
 
                                     endPoint = RIF.ResourcesKey,
-                                    address = RIF.ResourcesKey + PublicAttribute.OSSUri + pageThumbnail["md5"].ToString() + "." + pageThumbnail["extName"].ToString(),
+                                    
+                                    address =  PublicAttribute.OSSUri + RIF.ResourcesKey + "/" + pageThumbnail["md5"].ToString() + "." + pageThumbnail["extName"].ToString()
+                                              +"?auth_key="+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                              GlobalInfo.GetMD5("/"+ RIF.ResourcesKey + "/"+pageThumbnail["md5"].ToString() + "." + pageThumbnail["extName"].ToString()
+                                                                +"-"+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                                                PublicAttribute.OSSKey), 
+                                    
                                     extName = pageThumbnail["extName"].ToString(),
                                     size = pageThumbnail["size"].ToString(),
                                     localPath = RIF.LocalPath + "/" + pageThumbnail["md5"].ToString() + "." + pageThumbnail["extName"].ToString(),
@@ -700,18 +738,26 @@ public class HttpManager : Singleton<HttpManager>
                                 };
                             }
 
+                            
+                            
                             var tempthumb = baseEntity["thumbnail"];
                             pi.baseEntity.thumbnail = new Thumbnail()
                             {
-                                endPoint = item["type"].ToString(),
-                                address = item["type"].ToString() + PublicAttribute.OSSUri + tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString(),
+                                endPoint = GlobalInfo.stringSub(item["type"].ToString()),
+                                
+                                address =  PublicAttribute.OSSUri + GlobalInfo.stringSub(item["type"].ToString()) +"/"+ tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString()
+                                          +"?auth_key="+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                          GlobalInfo.GetMD5("/"+ GlobalInfo.stringSub(item["type"].ToString()) +"/"+tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString()
+                                                            +"-"+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                                            PublicAttribute.OSSKey), 
+                                
                                 id = tempthumb["id"].ToString(),
                                 md5 = tempthumb["md5"].ToString(),
                                 extName = tempthumb["extName"].ToString(),
                                 size = tempthumb["size"].ToString(),
                                 localPath = PublicAttribute.ThumbPath + tempthumb["id"].ToString() + "." + tempthumb["extName"].ToString()
                             };
-
+                            
                             var tempscenery = baseEntity["sceneryArea"];
                             pi.baseEntity.sceneryArea = new SceneryArea()
                             {
@@ -726,6 +772,10 @@ public class HttpManager : Singleton<HttpManager>
                                     for (int j = 0; j < versionFiles.Count; j++)
                                     {
                                         var tempversion = versionFiles[j];
+
+                         
+                                       
+                                        
                                         VersionFilesItem vfi = new VersionFilesItem()
                                         {
                                             md5 = tempversion["md5"].ToString(),
@@ -733,9 +783,19 @@ public class HttpManager : Singleton<HttpManager>
                                             extName = tempversion["extName"].ToString(),
                                             size = tempversion["size"].ToString(),
                                             endPoint = RIF.ResourcesKey,
-                                            address = RIF.ResourcesKey + PublicAttribute.OSSUri + tempversion["md5"].ToString() + "." + tempversion["extName"].ToString(),
+                                            
+                                           
+                                            address = PublicAttribute.OSSUri +RIF.ResourcesKey + "/" + tempversion["md5"].ToString() + "." + tempversion["extName"].ToString()
+                                                      +"?auth_key="+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                                      GlobalInfo.GetMD5("/" +RIF.ResourcesKey + "/"+tempversion["md5"].ToString() + "." + tempversion["extName"].ToString()
+                                                                        +"-"+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                                                        PublicAttribute.OSSKey), 
+                                                      
+                                                      
                                             localPath = RIF.LocalPath + "/" + tempversion["filename"].ToString() //+ "." + tempversion["extName"].ToString()
                                         };
+             
+
                                         pi.VersionFilesItems.Add(vfi);
                                     }
                                 }
@@ -792,6 +852,7 @@ public class HttpManager : Singleton<HttpManager>
     /// </summary>
     public void DynamicCheekUpdateByArea(string areaID)
     {
+        batchlist.Clear();
         List<DynamicResourcesInfo> dis = new List<DynamicResourcesInfo>();
         foreach (var resourcesInfo in from info in PublicAttribute.AreaResoucesDic.Where(infose => infose.Key == areaID) from resourcesInfo in info.Value.ResourcesInfos let SPI = new ServerPanoramaInfo() select resourcesInfo)
         {
@@ -813,16 +874,16 @@ public class HttpManager : Singleton<HttpManager>
                                 batchlist.Add(new Downloader.DownloadUnit(fileItem.address, Path.GetDirectoryName(fileItem.localPath), fileItem.filename, fileItem.md5, fileItem.size), new Downloader.OSSFile(fileItem.endPoint, fileItem.md5 + "." + fileItem.extName));
                             }
                         }
-                        if (item.PageThumbnail != null)
-                        {
-                            batchlist.Add(new Downloader.DownloadUnit(item.PageThumbnail.address, Path.GetDirectoryName(item.PageThumbnail.localPath), item.PageThumbnail.md5 + "." + item.PageThumbnail.extName, item.PageThumbnail.md5, item.PageThumbnail.size), new Downloader.OSSFile(item.PageThumbnail.endPoint, item.PageThumbnail.md5 + "." + item.PageThumbnail.extName));
-                        }
+                        // if (item.PageThumbnail != null)
+                        // {
+                        //     batchlist.Add(new Downloader.DownloadUnit(item.PageThumbnail.address, Path.GetDirectoryName(item.PageThumbnail.localPath), item.PageThumbnail.md5 + "." + item.PageThumbnail.extName, item.PageThumbnail.md5, item.PageThumbnail.size), new Downloader.OSSFile(item.PageThumbnail.endPoint, item.PageThumbnail.md5 + "." + item.PageThumbnail.extName));
+                        // }
                     }
-                    foreach (var filesItem in resourcesInfo.DIS.Where(filesItem => !string.IsNullOrEmpty(filesItem.baseEntity.thumbnail.address)))
-                    {
-                        var temp = filesItem.baseEntity.thumbnail;
-                        batchlist.Add(new Downloader.DownloadUnit(temp.address, Path.GetDirectoryName(temp.localPath).Replace(@"\", "/"), Path.GetFileName(temp.localPath), temp.md5, temp.size), new Downloader.OSSFile(temp.endPoint, temp.md5 + "." + temp.extName));
-                    }
+                    // foreach (var filesItem in resourcesInfo.DIS.Where(filesItem => !string.IsNullOrEmpty(filesItem.baseEntity.thumbnail.address)))
+                    // {
+                    //     var temp = filesItem.baseEntity.thumbnail;
+                    //     batchlist.Add(new Downloader.DownloadUnit(temp.address, Path.GetDirectoryName(temp.localPath).Replace(@"\", "/"), Path.GetFileName(temp.localPath), temp.md5, temp.size), new Downloader.OSSFile(temp.endPoint, temp.md5 + "." + temp.extName));
+                    // }
                     break;
 
                 case UpdateType.update:
@@ -833,10 +894,17 @@ public class HttpManager : Singleton<HttpManager>
                     foreach (var item in from item in lpi.PIS let temp = resourcesInfo.DIS.SingleOrDefault(t => t.typeId + "_" + t.baseEntity.id == item.typeId + "_" + item.baseEntity.id) where temp == null select item)
                     {
                         Debug.Log(item.typeId + "_" + item.baseEntity.id);
-                        File.Delete(item.baseEntity.thumbnail.localPath);
+                        if (File.Exists(item.baseEntity.thumbnail.localPath))
+                        {
+                            // Debug.Log(item.baseEntity.thumbnail.localPath);
+                            // File.Delete(item.baseEntity.thumbnail.localPath);
+                        }
                         foreach (var itemm in item.VersionFilesItems)
                         {
-                            File.Delete(itemm.localPath);
+                            if (File.Exists(itemm.localPath))
+                            {
+                                File.Delete(itemm.localPath);
+                            }
                         }
                     }
                     //实景导览 不需要更新文件 接口中pageThumbnail/versionFiles为空
@@ -1074,8 +1142,14 @@ public class HttpManager : Singleton<HttpManager>
                         md5 = tempthumb["md5"].ToString(),
                         extName = tempthumb["extName"].ToString(),
                         size = tempthumb["size"].ToString(),
-                        endPoint = ni.type,
-                        address = ni.type + PublicAttribute.OSSUri + tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString(),
+                        endPoint = GlobalInfo.stringSub(ni.type),
+                        
+                        address =  PublicAttribute.OSSUri + GlobalInfo.stringSub(ni.type) +"/" + tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString()
+                                  +"?auth_key="+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                  GlobalInfo.GetMD5("/"+GlobalInfo.stringSub(ni.type) +"/" + tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString()
+                                                    +"-"+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                                    PublicAttribute.OSSKey), 
+                                  
                         localPath = PublicAttribute.ThumbPath + tempthumb["id"].ToString() + "." + tempthumb["extName"].ToString()
                     };
 
@@ -1434,9 +1508,6 @@ public class HttpManager : Singleton<HttpManager>
             new KeyValuePair<string, string>("openId", openID)
         }, (request, response) =>
         {
-            Debug.Log("TTTTTTTTTTTTT=" + PortClass.Instance.ThirdPartyLogin);
-            Debug.Log("TTTTTTTTTTTTT=" + openID);
-            Debug.Log("TTTTTTTTTTTTT=" + response.DataAsText.Trim());
             if (response == null)
             {
                 if (callback != null)
@@ -1578,14 +1649,6 @@ public class HttpManager : Singleton<HttpManager>
     {
         HttpBase.GET(PortClass.Instance.UserInfoByToken, ((request, response) =>
         {
-            if (response==null || !response.IsSuccess)
-            {
-                if (callback != null)
-                {
-                    callback(false);
-                }
-                return;
-            }
             if (response.IsSuccess)
             {
                 if (callback != null)
@@ -1617,7 +1680,7 @@ public class HttpManager : Singleton<HttpManager>
                     
                   
                     
-                    if (rolename == "SUGGEST")
+           if (rolename == "SUGGEST")
                     {
                         GlobalParameter.isVisitor = true;
                         callback(true);
@@ -1690,15 +1753,6 @@ public class HttpManager : Singleton<HttpManager>
             new KeyValuePair<string, string>("token", PublicAttribute.Token),
         }, ((request, response) =>
         {
-            if (response==null || !response.IsSuccess)
-            {
-                if (callback != null)
-                {
-                    callback(false);
-                }
-                return;
-            }
-            
             if (response.IsSuccess)
             {
                 if (callback != null)
@@ -1727,15 +1781,6 @@ public class HttpManager : Singleton<HttpManager>
             new KeyValuePair<string, string>("content", message),
         }, ((request, response) =>
         {
-            if (response==null || !response.IsSuccess)
-            {
-                if (callback != null)
-                {
-                    callback(false);
-                }
-                return;
-            }
-            
             if (response.IsSuccess)
             {
                 if (callback != null)
@@ -1995,8 +2040,14 @@ public class HttpManager : Singleton<HttpManager>
                              var thumbnail = item[i]["thumbnail"];
                              vi.Thumbnail = new Thumbnail()
                              {
-                                 endPoint = "vsz-to-here",
-                                 address = "vsz-to-here" + PublicAttribute.OSSUri + thumbnail["md5"].ToString() + "." + thumbnail["extName"].ToString(),
+                                 endPoint = "to-here",
+                                 
+                                 address = PublicAttribute.OSSUri +"to-here/" +  thumbnail["md5"].ToString() + "." + thumbnail["extName"].ToString()
+                                           +"?auth_key="+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                           GlobalInfo.GetMD5("/to-here/"+thumbnail["md5"].ToString() + "." + thumbnail["extName"].ToString()
+                                                             +"-"+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                                             PublicAttribute.OSSKey), 
+                                           
                                  id = thumbnail["id"].ToString(),
                                  extName = thumbnail["extName"].ToString(),
                                  size = thumbnail["size"].ToString(),
@@ -2006,9 +2057,16 @@ public class HttpManager : Singleton<HttpManager>
                              var pageThumbnail = item[i]["pageThumbnail"];
                              vi.PageThumbnail = new Thumbnail()
                              {
-                                 endPoint = "vsz-to-here",
-                                 address = "vsz-to-here" + PublicAttribute.OSSUri + pageThumbnail["md5"].ToString() + "." + pageThumbnail["extName"].ToString(),
+                                 endPoint = "to-here",
+                                 
+                                 
+                                 address = PublicAttribute.OSSUri +"to-here/" +  pageThumbnail["md5"].ToString() + "." + pageThumbnail["extName"].ToString()
+                                           +"?auth_key="+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                           GlobalInfo.GetMD5("/to-here/"+thumbnail["md5"].ToString() + "." + thumbnail["extName"].ToString()
+                                                             +"-"+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                                             PublicAttribute.OSSKey), 
 
+                                 
                                  id = pageThumbnail["id"].ToString(),
                                  extName = pageThumbnail["extName"].ToString(),
                                  size = pageThumbnail["size"].ToString(),
@@ -2021,8 +2079,13 @@ public class HttpManager : Singleton<HttpManager>
                                  var tempversion = versionFiles[j];
                                  VersionFilesItem vfi = new VersionFilesItem()
                                  {
-                                     endPoint = "vsz-to-here",
-                                     address = "vsz-to-here" + PublicAttribute.OSSUri + tempversion["md5"].ToString() + "." + tempversion["extName"].ToString(),
+                                     endPoint = "to-here",
+                                     
+                                     address = PublicAttribute.OSSUri +"to-here/" + tempversion["md5"].ToString() + "." + tempversion["extName"].ToString()
+                                               +"?auth_key="+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                               GlobalInfo.GetMD5("/to-here/"+thumbnail["md5"].ToString() + "." + thumbnail["extName"].ToString()
+                                                                 +"-"+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                                                 PublicAttribute.OSSKey), 
 
                                      md5 = tempversion["md5"].ToString(),
                                      filename = tempversion["filename"].ToString(),
@@ -2245,7 +2308,6 @@ public class HttpManager : Singleton<HttpManager>
     /// <param name="callback"></param>
     private void GetAdsItem(string id, List<Ads> lists, Action<bool> callback)
     {
-        Debug.Log(PortClass.Instance.Advertisement + id);
         HttpBase.GET(PortClass.Instance.Advertisement + id, ((request, response) =>
         {
             if (response == null || !response.IsSuccess)
@@ -2281,27 +2343,67 @@ public class HttpManager : Singleton<HttpManager>
                 for (int i = 0; i < date.Count; i++)
                 {
                     var item = date[i];
-                    Ads ads = new Ads
+                    if (id == "4" )
                     {
-                        id = item["id"].ToString(),
-                        order = item["order"].ToString(),
-                        content = item["content"].ToString(),
-                        type = item["type"].ToString(),
-                        address = item["address"].ToString()
-                    };
-                    var tempthumb = item["thumbnail"];
-                    ads.Thumbnail = new Thumbnail()
-                    {
-                        endPoint = "vsz-advertisement",
-                        address = "vsz-advertisement" + PublicAttribute.OSSUri + tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString(),
+                        Ads ads = new Ads
+                        {
+                            id = item["id"].ToString(),
+                            order = item["order"].ToString(),
+                            content = item["content"].ToString(),
+                            type = item["type"].ToString(),
+                            address = item["address"].ToString(),
+                            title = item["title"].ToString()
+                        };
+                        var tempthumb = item["thumbnail"];
+                        ads.Thumbnail = new Thumbnail()
+                        {
+                            endPoint = "advertisement",
+                        
+                            address =  PublicAttribute.OSSUri +"advertisement/" + tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString()
+                                       +"?auth_key="+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                       GlobalInfo.GetMD5("/advertisement/"+tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString()
+                                                         +"-"+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                                         PublicAttribute.OSSKey), 
 
-                        id = tempthumb["id"].ToString(),
-                        md5 = tempthumb["md5"].ToString(),
-                        extName = tempthumb["extName"].ToString(),
-                        size = tempthumb["size"].ToString(),
-                        localPath = PublicAttribute.AdsPath + tempthumb["id"].ToString() + "." + tempthumb["extName"].ToString()
-                    };
-                    lists.Add(ads);
+                            id = tempthumb["id"].ToString(),
+                            md5 = tempthumb["md5"].ToString(),
+                            extName = tempthumb["extName"].ToString(),
+                            size = tempthumb["size"].ToString(),
+                            localPath = PublicAttribute.AdsPath + tempthumb["id"].ToString() + "." + tempthumb["extName"].ToString()
+                        };
+
+                        lists.Add(ads);
+                    }
+                    else
+                    {
+                        Ads ads = new Ads
+                        {
+                            id = item["id"].ToString(),
+                            order = item["order"].ToString(),
+                            content = item["content"].ToString(),
+                            type = item["type"].ToString(),
+                            address = item["address"].ToString()
+                        };
+                        var tempthumb = item["thumbnail"];
+                        ads.Thumbnail = new Thumbnail()
+                        {
+                            endPoint = "advertisement",
+                        
+                            address =  PublicAttribute.OSSUri +"advertisement/" + tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString()
+                                       +"?auth_key="+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                       GlobalInfo.GetMD5("/advertisement/"+tempthumb["md5"].ToString() + "." + tempthumb["extName"].ToString()
+                                                         +"-"+GlobalInfo.requestTime().ToString()+"-0-0-"+
+                                                         PublicAttribute.OSSKey), 
+
+                            id = tempthumb["id"].ToString(),
+                            md5 = tempthumb["md5"].ToString(),
+                            extName = tempthumb["extName"].ToString(),
+                            size = tempthumb["size"].ToString(),
+                            localPath = PublicAttribute.AdsPath + tempthumb["id"].ToString() + "." + tempthumb["extName"].ToString()
+                        };
+
+                        lists.Add(ads);
+                    }
                 }
                 if (callback != null)
                 {
@@ -2400,6 +2502,7 @@ public class HttpManager : Singleton<HttpManager>
     private Downloader downloader;
 
     private Dictionary<Downloader.DownloadUnit, Downloader.OSSFile> batchlist = new Dictionary<Downloader.DownloadUnit, Downloader.OSSFile>();
+    private Dictionary<Downloader.DownloadUnit, Downloader.OSSFile> faillist = new Dictionary<Downloader.DownloadUnit, Downloader.OSSFile>();
     private Downloader batchDownloader;
 
     Dictionary<Downloader.DownloadUnit, Downloader.OSSFile> VisitBatchlist = new Dictionary<Downloader.DownloadUnit, Downloader.OSSFile>();
@@ -2488,6 +2591,12 @@ public class HttpManager : Singleton<HttpManager>
     {
         if (batchlist.Count == 0)
         {
+            if (mainUISet._inst!=null)
+            {                
+                Debug.Log("动态资源无新内容");
+                mainUISet.ResisDown = true;
+            }
+            
             if (DownloadPercent != null)
             {
                 DownloadPercent(1);
@@ -2500,20 +2609,33 @@ public class HttpManager : Singleton<HttpManager>
             file.Key.downUrl = "http://" + file.Key.downUrl;
             //DownLoadtotalSize += float.Parse(file.Key.size);
         }
-        batchDownloader.BatchOSSDownload(batchlist, (() =>
+        batchDownloader.BatchOSSDownload(batchlist, ((b) =>
          {
-             Debug.Log("动态资源下载完成");
-             DownloadPercent(1);
-             //所有下载成功之后将本地版本号 改为 服务器版本
-             Loom.QueueOnMainThread(() =>
+             if (b)
              {
-                 ServerPanoramaInfo spi = new ServerPanoramaInfo();
-                 foreach (var di in dis)
-                 {
-                     spi.PIS = di.DIS;
-                     File.WriteAllText(di.JsonLocalPath, JsonMapper.ToJson(spi));
+                 Debug.Log("动态资源下载完成");
+                 DownloadPercent(1);
+                 if (mainUISet._inst!=null)
+                 {                
+                     Debug.Log("动态资源下载完成");
+                     mainUISet.ResisDown = true;
                  }
-             });
+                 //所有下载成功之后将本地版本号 改为 服务器版本
+                 Loom.QueueOnMainThread(() =>
+                 {
+                     ServerPanoramaInfo spi = new ServerPanoramaInfo();
+                     foreach (var di in dis)
+                     {
+                         spi.PIS = di.DIS;
+                         File.WriteAllText(di.JsonLocalPath, JsonMapper.ToJson(spi));
+                     }
+                 });
+             }
+             else
+             {
+                 Debug.Log("部分资源下载失败");
+                 DownloadPercent(1);
+             }
          }));
     }
 
@@ -2551,7 +2673,7 @@ public class HttpManager : Singleton<HttpManager>
             file.Key.downUrl = "http://" + file.Key.downUrl;
         }
 
-        _visitDownloader.BatchOSSDownload(VisitBatchlist,(() =>
+        _visitDownloader.BatchOSSDownload(VisitBatchlist,((b) =>
         {
             if (Percent != null)
             {

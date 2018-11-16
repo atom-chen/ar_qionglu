@@ -30,14 +30,17 @@ public class LoadTrackData : SingletonMono<LoadTrackData>
             AddToMapList(pointData);
             //2、读取到相册点位的集合
             AddToGallery(pointData);
-            //3、生成Web
-            WebView.Instance.CreateWebView();
+        
         }
         else
         {
             Debug.Log("reader为空=====" + reader);
 
         }
+
+    //3、生成Web
+            WebView.Instance.CreateWebView();
+
     }
     /// <summary>
     /// 读取对应到地图上的点位集合

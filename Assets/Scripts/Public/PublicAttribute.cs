@@ -41,9 +41,14 @@ public class PublicAttribute
     /// OSS 链接
     /// </summary>
     //public static string OSSUri = ".oss-cn-beijing.aliyuncs.com/";
-    public static string OSSUri = ".vszapp.com/";
+    public static string OSSUri = "vsz-ar-test.vszapp.com/";
+    public static string OSSKey = "VszArTest001";
 
-
+    /// <summary>
+    /// 公共访问URL   ;  "http://192.168.30.49:7070/"；"http://192.168.20.2:9090/";http://115.28.222.129:7070/   "http://ar.vszapp.com:7070/";
+    /// </summary>
+    public static string URL = "http://ar.vszapp.com:7080/";
+    
     #region 缩略图本地存储路径
     private static string thumbPath ;
     /// <summary>
@@ -163,7 +168,7 @@ public class PublicAttribute
         {
             if (Application.platform == RuntimePlatform.WindowsEditor)
             {
-                platform = "android";
+                platform = "ios";
             }
             else if (Application.platform == RuntimePlatform.Android)
             {
@@ -190,7 +195,7 @@ public class PublicAttribute
             switch (Application.platform)
             {
                 case RuntimePlatform.WindowsEditor:
-                    platformInt = "1";
+                    platformInt = "2";
                     break;
                 
                 case RuntimePlatform.Android:
@@ -205,14 +210,7 @@ public class PublicAttribute
         }
         set { platformInt = value; }
     }
-
-    /// <summary>
-    /// 公共访问URL   ;  "http://192.168.30.49:7070/"；"http://192.168.20.2:9090/";http://115.28.222.129:7070/   "http://ar.vszapp.com:7070/";
-    /// </summary>
-    public static string URL = "http://ar.vszapp.com:7070/";
     
-    
-    public static string URL2 = "http://ar.vszapp.com:7070/";
 
     /// <summary>
     /// 经度
@@ -494,7 +492,7 @@ public class DynamicResoucesInfos
                 CheckUpdate = PortClass.Instance.PanoramaCheck,
                 LocalPath = PublicAttribute.PanoramaPath,
                 DIS = new List<DynamicItem>(),
-                ResourcesKey= "vsz-more-change"
+                ResourcesKey= "more-change"
             },
             new DynamicResourcesInfo()
             {
@@ -502,7 +500,7 @@ public class DynamicResoucesInfos
                 CheckUpdate = PortClass.Instance.ConjureCheck,
                 LocalPath = PublicAttribute.Scan_Conjure,
                 DIS = new List<DynamicItem>(),
-                ResourcesKey= "vsz-scan-conjure"
+                ResourcesKey= "scan-conjure"
             },
             //new DynamicResourcesInfo()
             //{
@@ -517,8 +515,8 @@ public class DynamicResoucesInfos
                 GetAll =  PortClass.Instance.GetAllProduct,
                 CheckUpdate = PortClass.Instance.ProductCheck,
                 LocalPath = PublicAttribute.Scan_ProductPath,
-                 DIS = new List<DynamicItem>(),
-                ResourcesKey = "vsz-scan-native-product"
+                DIS = new List<DynamicItem>(),
+                ResourcesKey = "scan-native-product"
             },
             new DynamicResourcesInfo()
             {
@@ -526,7 +524,7 @@ public class DynamicResoucesInfos
                 CheckUpdate = PortClass.Instance.ScanMoreCheck,
                 LocalPath = PublicAttribute.Scan_More,
                 DIS = new List<DynamicItem>(),
-                ResourcesKey = "vsz-scan-more"
+                ResourcesKey = "scan-more"
             },
             new DynamicResourcesInfo()
             {
@@ -534,7 +532,7 @@ public class DynamicResoucesInfos
                 CheckUpdate = PortClass.Instance.TicketCheck,
                 LocalPath = PublicAttribute.Scan_Ticket,
                 DIS = new List<DynamicItem>(),
-                ResourcesKey = "vsz-scan-ticket"
+                ResourcesKey = "scan-ticket"
             }
     };
 }

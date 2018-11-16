@@ -104,26 +104,13 @@ public class LoginPanelUI : UIWindowsBase
         //账号密码登录按钮
         AccountsUserPwdLogin.onClick.AddListener((() =>
         {
-            if (LoginUIController.Instance.VerifyAgreeToggle() == false)
-            {
-                LoginUIController.Instance.ShowPopup("", GlobalParameter.AgrrToggle);
-                return;
-            }
-            if (string.IsNullOrEmpty(AccountsphoneInput.text) || AccountsphoneInput.text.Length != 11)
-            {
-                LoginUIController.Instance.ShowPopup("",GlobalParameter.InputPhoneNumber);
-                return;
-            }
-             if (string.IsNullOrEmpty(AccountsPwInpPut.text) || AccountsPwInpPut.text.Length < 6)
-            {
-                LoginUIController.Instance.ShowPopup("", GlobalParameter.InputPassword);
-                return;
-            }
-             if (LoginUIController.Instance.VerifyPhoneNo(AccountsphoneInput.text) && LoginUIController.Instance.VerifyPwd(AccountsPwInpPut.text))
-            {
+            if (LoginUIController.Instance.CheckInpuFormat(AccountsphoneInput.text, AccountsPwInpPut.text,    ""))
                 HttpManager.Instance.Login_UserPwd(AccountsphoneInput.text, AccountsPwInpPut.text, (LoginUIController.Instance.PopupInfo));
-            }
-         
+
+           
+
+
+
         }));
 
         UserType.onValueChanged.AddListener((bool args) =>
@@ -156,42 +143,30 @@ public class LoginPanelUI : UIWindowsBase
 
         SMSSUserSMSSLogin.onClick.AddListener((() =>
         {
-            if (LoginUIController.Instance.VerifyAgreeToggle() == false)
-            {
-                LoginUIController.Instance.ShowPopup("", GlobalParameter.AgrrToggle);
-                return;
-            }
-            if (string.IsNullOrEmpty(SMSSphoneInput.text)|| SMSSphoneInput.text.Length!=11)
-            {
-                LoginUIController.Instance.ShowPopup("", GlobalParameter.InputPhoneNumber);
-                return;
-            }
-             if (string.IsNullOrEmpty(SMSSPwInpPut.text) || SMSSPwInpPut.text.Length != 6)
-            {
-                LoginUIController.Instance.ShowPopup("", GlobalParameter.InputSMSS);
-                return;
-            }
-            if (LoginUIController.Instance.VerifyPhoneNo(SMSSphoneInput.text) && LoginUIController.Instance.VerifySMSCode(SMSSPwInpPut.text))
-            {
+            if (LoginUIController.Instance.CheckInpuFormat(SMSSphoneInput.text, SMSSPwInpPut.text, ""))
                 HttpManager.Instance.Login_SMSS(SMSSphoneInput.text, SMSSPwInpPut.text, (LoginUIController.Instance.PopupInfo));
-            }
+          
            
         }));
         SMSSgetSMSSBtn.onClick.AddListener((() =>
         {
-            if (string.IsNullOrEmpty(SMSSphoneInput.text) || SMSSphoneInput.text.Length != 11)
-            {
-                LoginUIController.Instance.ShowPopup("", GlobalParameter.InputPhoneNumber);
-                return;
-            }
+         
             if (LoginUIController.Instance.VerifyPhoneNo(SMSSphoneInput.text))
             {
-             LoginUIController.Instance.FreezeButton(SMSSgetSMSSBtn);
+                LoginUIController.Instance.FreezeButton(SMSSgetSMSSBtn);
                 HttpManager.Instance.GetSMSS(SMSSphoneInput.text, (b =>
                 {
                     Debug.Log("获取短信验证码 " + b);
                 }));
             }
+            else
+            {
+                LoginUIController.Instance.ShowPopup(GlobalParameter.WrongFormat, GlobalParameter.InputPhoneNumber);
+                return;
+            }
+           
+
+            
       
         }));
         SMSSType.onValueChanged.AddListener((bool args) =>
@@ -223,7 +198,12 @@ public class LoginPanelUI : UIWindowsBase
 
 
         visitorBtn.onClick.AddListener(()=> {
-       
+            if (LoginUIController.Instance.CheckNetWork() == false)
+            {
+
+                LoginUIController.Instance.ShowPopup("网络错误", "请检查是否连接到网络");
+                return;
+            }
             GlobalParameter.isVisitor = true;
             HttpManager.Instance.VisitorLogin(VisitorSuccess);
 

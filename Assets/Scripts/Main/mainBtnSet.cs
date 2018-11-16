@@ -32,6 +32,9 @@ namespace mainpage
 		public Button btn_centertofoot;
 		public Button btn_centertoabout;
 		public Button btn_centertoset;
+		public Button btn_centertoabout2;
+		public Button btn_centertoset2;
+		
 		public Button btn_centerlogout;
 		public Button btn_centertoeditor;
 		public Button btn_centerenter;
@@ -163,6 +166,15 @@ namespace mainpage
 			 {
 				 mainui.ShowUI(mainUISet.UIname.user_set,0);
 			 });
+			btn_centertoabout2.onClick.AddListener(delegate
+			{
+				mainui.ShowUI(mainUISet.UIname.user_about,0);
+			});
+			btn_centertoset2.onClick.AddListener(delegate
+			{
+				mainui.ShowUI(mainUISet.UIname.user_set,0);
+			});
+			
 			 btn_centerlogout.onClick.AddListener(delegate
 			 {
 				 LogOut();
@@ -340,23 +352,36 @@ namespace mainpage
 			#region 编辑手机号
 			BindingPage_BindingBtn.onClick.AddListener((() =>
 			{
-				if (VerifyPhoneNo(BindingPage_PhoneNoInputField.text) && VerifySMSCode(BindingPage_SmsCodeInputField.text))
+				if (VerifyPhoneNo(BindingPage_PhoneNoInputField.text))
 				{
-					if (!isHit)
+					if (VerifySMSCode(BindingPage_SmsCodeInputField.text))
 					{
-						isHit = true;
-						HttpManager.Instance.ChangePhoneNo(BindingPage_PhoneNoInputField.text, BindingPage_SmsCodeInputField.text, (PopupInfo));
+						if (!isHit)
+						{
+							isHit = true;
+							HttpManager.Instance.ChangePhoneNo(BindingPage_PhoneNoInputField.text, BindingPage_SmsCodeInputField.text, (PopupInfo));
+						}
+              
+					}
+					else
+					{
+						PP.ShowPopup("", "请输入正确的验证码");
 					}
               
 				}
 				else
 				{
-					PP.ShowPopup("格式不正确", "请输入正确的格式");
+					PP.ShowPopup("", "请输入正确的手机号");
 				}
 			}));
 
 			BindingPage_GetSMSBtn.onClick.AddListener((() =>
 			{
+				if (BindingPage_PhoneNoInputField.text == PublicAttribute.UserInfo.PhoneNo)
+				{
+					PP.ShowPopup("", "请输入其他手机号");
+					return;
+				}
 				if (VerifyPhoneNo(BindingPage_PhoneNoInputField.text))
 				{
 					FreezeButton(BindingPage_GetSMSBtn);

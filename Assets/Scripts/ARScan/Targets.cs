@@ -331,9 +331,10 @@ public class Targets : MonoBehaviour
     }
 
     IEnumerator womenSpeak()
-    {
+    {     
+        yield return new WaitForSeconds(1.5f);
         women.Play("speak");
-        yield return new WaitForSeconds(videoTime);
+        yield return new WaitForSeconds(11f);
         women.Play("Idle");
     }
     

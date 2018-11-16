@@ -10,6 +10,7 @@ public class BananrItem : MonoBehaviour {
     public RawImage png;
     public VideoPlayer mp4;
     public string address;
+    public string title;
     webrequest web;
     // Use this for initialization
     public void _init(string assetpath)
@@ -53,6 +54,6 @@ public class BananrItem : MonoBehaviour {
     public void OpenWeb()
     {
         Debug.Log(address);
-        web.LoadWebSetTitle(address,"详情");
+        web.LoadWebSetTitle(address,title);
     }
 }

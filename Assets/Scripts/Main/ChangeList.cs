@@ -61,7 +61,7 @@ public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {
 #if UNITY_EDITOR
         return new Vector3(104.07f,30.67f,500);
-#elif UNITY_ANDROID
+#elif UNITY_ANDROID 
 
         AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
@@ -196,7 +196,7 @@ public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {
         foreach (var ChangeInfo in mainUISet.curScenicInfo.ResourcesInfos)
         {
-            if (ChangeInfo.ResourcesKey == "vsz-more-change")
+            if (ChangeInfo.ResourcesKey == "more-change")
             {
                 if (ChangeInfo.DIS.Count <= 0)
                 {
@@ -217,7 +217,7 @@ public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                                 item.transform.localScale = Vector3.one;
                                 item.transform.localPosition = Vector3.zero;
 
-                                item.id = fileitem.baseEntity.id;
+                                item.id = fileitem.id.ToString();
                                 item.name = fileitem.baseEntity.name;
                                 item.thumbnail = fileitem.PageThumbnail;
                                 item.locationX = fileitem.baseEntity.locationX;
@@ -242,9 +242,12 @@ public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     //offsetMax 是vector2(right, top)
     void SetContent(int Count)
     {
-        if (Count * 750 > 1800)
-            Content.sizeDelta = new Vector2(1080, Count * 750);
-        Content.anchoredPosition = new Vector2(-540, 0);
+        if (Content != null)
+        {
+            if (Count * 750 > 1800)
+                Content.sizeDelta = new Vector2(1080, Count * 750);
+            Content.anchoredPosition = new Vector2(-540, 0);
+        }
     }
     public void EnterMain()
     {
@@ -256,7 +259,7 @@ public class ChangeList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         mainUISet._inst.ShowUI(mainUISet.UIname.change,0);
         foreach (var item in itemObj)
         {
-            if (item.GetComponent<ChangeItem>().id == id)
+            if (item.GetComponent<ChangeItem>().name == id)
             {
                 item.GetComponent<ChangeItem>().BtnOnClick();
                 break;

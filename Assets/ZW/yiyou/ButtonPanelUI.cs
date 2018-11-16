@@ -8,7 +8,9 @@ using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
 using ElviraFrame;
-#if  UNITY_IOS||UNITY_IPHONE
+using System.IO;
+using UnityEngine.Video;
+#if UNITY_IOS || UNITY_IPHONE
 using com.mob;
 #endif
 
@@ -40,11 +42,12 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     Sandcastle castale;
     [HideInInspector]
     public ShareSDK ssdk;
+
     #region Get/Set
 
- 
 
- 
+
+
 
     public UnityEngine.GameObject ButtonPanelGo
     {
@@ -102,7 +105,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
             if (saveBtn == null)
             {
                 saveBtn = ButtonPanelGo.transform.Find("SaveBtn").GetComponent<Button>();
-   
+
             }
             return saveBtn;
         }
@@ -135,7 +138,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
             {
                 reshotBtn = ButtonPanelGo.transform.Find("ReshotBtn").GetComponent<Button>();
 
-  
+
             }
 
             return reshotBtn;
@@ -151,7 +154,8 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
         ShareBtn.gameObject.SetActive(false);
         ResultTipText.gameObject.SetActive(false);
         ShowShotImage.gameObject.SetActive(false);
-      
+        ShareScriptsBase.Instance.ShowThirdSharePanelGo(false);
+        YiyouStaticDataManager.Instance.OnSilenceGameObject(0.5f);
     }
 
     public RawImage ShowShotImage
@@ -179,15 +183,32 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     private void ReShotBtnClick()
     {
         Debug.Log("ReShotBtnClick");
+        if (isShareVideo == true)
+        {
+            if (File.Exists(movieSavePath))
+            {
+                File.Delete(movieSavePath);
+            }
+            Destroy(ShowShotImage.GetComponent<VideoPlayer>());
+        }
+        else
+        {
+            if (File.Exists(imageSavePath))
+            {
+                File.Delete(imageSavePath);
+            }
+        }
+
+
         ShotBtn.gameObject.SetActive(true);
         SaveBtn.gameObject.SetActive(false);
         ReshotBtn.gameObject.SetActive(false);
         ShareBtn.gameObject.SetActive(false);
         ResultTipText.gameObject.SetActive(false);
-       
+
         ShowShotImage.texture = null;
         ShowShotImage.gameObject.SetActive(false);
-        FingerTouchEL.Instance.targetGameObject = YiyouStaticDataManager.Instance.ShowModel;
+        //FingerTouchEL.Instance.targetGameObject = YiyouStaticDataManager.Instance.ShowModel;
         YiyouStaticDataManager.Instance.OnSilenceGameObject(0.5f);
         EffectPanelUI.Instance.EffectPanelGo.gameObject.SetActive(true);
 #if UNITY_IOS || UNITY_IPHONE
@@ -205,6 +226,11 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
             WikiSLAMUIController.Instance.ShouZujiBtn(false);
         }
 #endif
+
+        isRec = false;
+        isShareVideo = false;
+        ChangAn.Instance.Init();
+        RecordManager.Instance.ShowCanvas(false);
     }
 
     /// <summary>
@@ -213,12 +239,29 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     private void SaveBtnClick()
     {
         Debug.Log("SaveBtnClick");
-        ScreenshotManager.Instance.SaveImage();
+
+        string tipText = string.Empty;
+        string path = string.Empty;
+        if (isShareVideo == true)
+        {
+
+            //  Destroy(ShowShotImage.GetComponent<VideoPlayer>());
+            tipText = "视频已经保存";
+        }
+        else
+        {
+            tipText = "图片已经保存";
+            ScreenshotManager.Instance.SaveImage();
+            TrackDataManager.Instance.AddPoint(imageSaveName);
+        }
+        ResultTipText.gameObject.SetActive(true);
+        ResultTipText.text = tipText;
+        ResultTipText.gameObject.GetComponent<DOTweenAnimation>().DOPlayForward();
         ShotBtn.gameObject.SetActive(false);
         SaveBtn.gameObject.SetActive(false);
         ReshotBtn.gameObject.SetActive(false);
         ShareBtn.gameObject.SetActive(true);
-        TrackDataManager.Instance.AddPoint(imageSaveName);
+
 #if UNITY_IOS || UNITY_IPHONE
         GroundPlaneUI.Instance.ShouZujiBtn(true);
 
@@ -234,6 +277,10 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
             WikiSLAMUIController.Instance.ShouZujiBtn(true);
         }
 #endif
+        FirstUseTipManager.Instance.ShowNextTip(TipType.ShareTip);
+        AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+        jo.Call("refreshMediaStore", movieSavePath);
     }
 
     /// <summary>
@@ -241,14 +288,16 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     /// </summary>
     private void ShareBtnClick()
     {
-        if (isShareVideo==true)
+        Debug.Log("isShareVideo====" + isShareVideo);
+        if (isShareVideo == true)
         {
-            ShareScriptsBase.Instance.ShareVideo(movieSavePath);
+            ShareScriptsBase.Instance.Share(movieSavePath, false);
+
         }
         else
         {
-            ShareScriptsBase.Instance.Share(ScreenshotManager.Instance.savedPath);
-
+            // ShareScriptsBase.Instance.Share(ScreenshotManager.Instance.savedPath);
+            ShareScriptsBase.Instance.Share(ScreenshotManager.Instance.savedPath, true);
         }
     }
 
@@ -263,8 +312,8 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     public void ShotShotClick()
     {
 
-        if (isRec==false)
-        StartCoroutine(ShotBtnClick());
+        if (isRec == false)
+            StartCoroutine(ShotBtnClick());
 
     }
     /// <summary>
@@ -274,10 +323,10 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     {
         isShareVideo = false;
         ShowShotImage.texture = null;
-       // EffectPanelUI.Instance.EffectPanelGo.gameObject.SetActive(false);
+        // EffectPanelUI.Instance.EffectPanelGo.gameObject.SetActive(false);
         uiCanvas.alpha = 0;
-        RecordManager.Instance.ShowCanvas(false);;
-        FingerTouchEL.Instance.targetGameObject = null;
+        RecordManager.Instance.ShowCanvas(false);
+        //    FingerTouchEL.Instance.targetGameObject = null;
         YiyouStaticDataManager.Instance.OnSilenceGameObject(0f);
         yield return new WaitForSeconds(0.1f);
         ScreenshotManager.SaveScreenshot("yiyou");
@@ -287,7 +336,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
 
     public void ShotCaptureClick()
     {
-        if (isRec==false)
+        if (isRec == false)
         {
             StartCoroutine(StartRecoding());
         }
@@ -311,12 +360,21 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
         yield return new WaitForSeconds(0.01f);
 #if UNITY_ANDROID
 
+
+        if (SceneManager.GetActiveScene().name == "wikiSLAM")
+        {
+            WikiSLAMController.Instance.SetGridState(false);
+        }
+
+
+
         AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
         string date = System.DateTime.Now.ToString("hh-mm-ss_dd_MM_yyyy");
-         movieSavePath = "/sdcard/DCIM/AR游/" + date + ".mp4";
+
         date = date.Replace("-", "");
         date = date.Replace("_", "");
+        movieSavePath = "/sdcard/" + date + ".mp4";
         jo.Call("startCaptureRecode", movieSavePath);
 
 
@@ -334,16 +392,24 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     public void stopRecoding()
     {
         uiCanvas.alpha = 1;
-        Debug.Log("Rec::::::::::::::Stop");
         RecordManager.Instance.ShowCanvas(false);
-        isRec = false;
+        Debug.Log("Rec::::::::::::::Stop");
 
+        isRec = false;
+        YiyouStaticDataManager.Instance.OnSilenceGameObject(0f);
 #if UNITY_ANDROID
+
+
+        if (SceneManager.GetActiveScene().name == "wikiSLAM")
+        {
+            WikiSLAMController.Instance.SetGridState(true);
+        }
+
         AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
         jo.Call("stopCaptureRecoding");
 
-       
+        OnShowRecord(movieSavePath);
 
 #elif UNITY_IOS || UNITY_IPHONE
         
@@ -353,6 +419,9 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
 
 
 #endif
+
+
+
     }
     /// <summary>
     /// 录屏开始回调
@@ -385,7 +454,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
 
 #endif
 
-#endregion
+    #endregion
 
 
     private void OnEnable()
@@ -406,7 +475,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
         ShareBtn.gameObject.SetActive(false);
         ResultTipText.gameObject.SetActive(false);
         ShowShotImage.gameObject.SetActive(false);
-      
+
     }
 
     private void OnScreenshotFinished(string obj)
@@ -415,7 +484,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
         SaveBtn.gameObject.SetActive(true);
         ReshotBtn.gameObject.SetActive(true);
         ShareBtn.gameObject.SetActive(false);
-       
+
     }
 
     private void CheckKongmingdeng()
@@ -438,20 +507,20 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
             ShareBtn.gameObject.SetActive(false);
         }
     }
-  
 
- 
+
+
     private void Start()
     {
 
         CheckKongmingdeng();
-     
-      
+
+
         ResultTipText.gameObject.SetActive(false);
         ShowShotImage.gameObject.SetActive(false);
         if (ssdk == null)
         {
-            
+
             ssdk = GameObject.FindObjectOfType<ShareSDK>();
         }
 
@@ -460,10 +529,10 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
         ReshotBtn.onClick.AddListener(ReShotBtnClick);
         SaveBtn.onClick.AddListener(SaveBtnClick);
         ShareBtn.onClick.AddListener(ShareBtnClick);
-      
+
 
     }
- 
+
 
     private void OnImageSavedName(string obj)
     {
@@ -487,6 +556,7 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
     /// <param name="txt2D"></param>
     private void OnScreenshotTaken(Texture2D txt2D)
     {
+        YiyouStaticDataManager.Instance.OnSilenceGameObject(0f);
         uiCanvas = GameObject.Find("Canvas").GetComponent<CanvasGroup>();
         uiCanvas.alpha = 1;
         Debug.Log("截图之后回调");
@@ -494,14 +564,31 @@ public class ButtonPanelUI : SingletonMono<ButtonPanelUI>
         {
             ShowShotImage.gameObject.SetActive(true);
             ShowShotImage.texture = (Texture)txt2D;
+            ShowShotImage.transform.Find("PlayButton").gameObject.SetActive(false);
+
         }
-    
 
-        ResultTipText.gameObject.SetActive(true);
 
-        ResultTipText.text = "图片已经保存";
-        ResultTipText.gameObject.GetComponent<DOTweenAnimation>().DOPlayForward();
 
+        ShotBtn.gameObject.SetActive(false);
+        SaveBtn.gameObject.SetActive(true);
+        ReshotBtn.gameObject.SetActive(true);
+        ShareBtn.gameObject.SetActive(false);
+
+    }
+
+    /// <summary>
+    /// 录像完之后显示
+    /// </summary>
+    /// <param name="txt2D"></param>
+    public void OnShowRecord(string videoPath)
+    {
+        Debug.Log("videoPath=======" + videoPath);
+        uiCanvas = GameObject.Find("Canvas").GetComponent<CanvasGroup>();
+        uiCanvas.alpha = 1;
+        ShowShotImage.gameObject.SetActive(true);
+        ShowShotImage.color = new UnityEngine.Color(1, 1, 1, 0);
+        ShowShotImage.GetComponent<VideoPlay>().Init(videoPath);
         ShotBtn.gameObject.SetActive(false);
         SaveBtn.gameObject.SetActive(true);
         ReshotBtn.gameObject.SetActive(true);

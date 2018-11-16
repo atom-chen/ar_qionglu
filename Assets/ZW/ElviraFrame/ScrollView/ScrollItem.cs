@@ -39,8 +39,8 @@ namespace ElviraFrame.ScrollView
                 Sprite sp = Sprite.Create(txt2D, new Rect(0, 0, txt2D.width, txt2D.height), new Vector2(0.5f, 0.5f));
 
                 this.GetComponent<Image>().sprite = sp;
-              
-                
+
+
             }
         }
     }

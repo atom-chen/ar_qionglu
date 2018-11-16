@@ -10,17 +10,20 @@ using ElviraFrame;
 using UnityEngine.SceneManagement;
 
 
-public class CopyFileSystem : SingletonMono<CopyFileSystem>
+public class CopyFileSystem : MonoBehaviour
 {
 
 
-    public override void Awake()
+    public void Awake()
     {
-        base.Awake();
 
-    CreateFileDirectory(PublicAttribute.LocalFilePath + "Push/"+PublicAttribute.AreaId+"/a.txt");
-        CreateFileDirectory(PublicAttribute.LocalFilePath + "Web/PointMap.json");
+
+        CreateFileDirectory(PublicAttribute.LocalFilePath + "Push/" + PublicAttribute.AreaId + "/a.txt");
+        CreateFileDirectory(PublicAttribute.LocalFilePath + "Web/a.txt");
+#if UNITY_ANDROID
         CreateFileDirectory("/sdcard/DCIM/AR游/a.txt");
+#endif
+
         CopyFile();
         GetPushResources();
     }
@@ -89,15 +92,25 @@ public class CopyFileSystem : SingletonMono<CopyFileSystem>
 
     private void CopyFile()
     {
-        string htmlDirectoryPath = UnityHelper.LocalFilePath + "Web/";
-        string pushDirectoryPath = UnityHelper.LocalFilePath + "Push/";
+        string htmlDirectoryPath = PublicAttribute.LocalFilePath + "Web/";
+        string pushDirectoryPath = PublicAttribute.LocalFilePath + "Push/";
 
 #if UNITY_ANDROID
-        StartCoroutine(Load(htmlDirectoryPath + "CustomOverlay.html", "CustomOverlay.html", "Web"));
-        StartCoroutine(Load(htmlDirectoryPath + "jquery-1.12.2.min.js", "jquery-1.12.2.min.txt", "Web"));
-  //      StartCoroutine(Load(htmlDirectoryPath + "PointMap.json", "PointMap.json", "Web"));
+      if (File.Exists(htmlDirectoryPath + "CustomOverlay.html")==false)
+        {
+            StartCoroutine(Load(htmlDirectoryPath + "CustomOverlay.html", "CustomOverlay.html", "Web"));
 
+        }
+        if (File.Exists(htmlDirectoryPath + "jquery-1.12.2.min.js") == false)
+        {
+            StartCoroutine(Load(htmlDirectoryPath + "jquery-1.12.2.min.js", "jquery-1.12.2.min.txt", "Web"));
 
+        }
+        if (File.Exists(htmlDirectoryPath + "PointMap.json") == false)
+        {
+            StartCoroutine(Load(htmlDirectoryPath + "PointMap.json", "PointMap.json", "Web"));
+
+        }
         //       WebView.Instance.CreateWebView();
         string htmlsourceFile = Application.streamingAssetsPath + "/Web/CustomOverlay.html";
         //   File.Copy(htmlDirectoryPath + "CustomOverlay.html", htmlDirectoryPath + "CustomOverlay.html", true);
@@ -106,7 +119,8 @@ public class CopyFileSystem : SingletonMono<CopyFileSystem>
    
         File.Copy(Application.streamingAssetsPath + "/Web/CustomOverlay.html",PublicAttribute.LocalFilePath + "Web/CustomOverlay.html",true);
         File.Copy(Application.streamingAssetsPath + "/Web/jquery-1.12.2.min.txt", PublicAttribute.LocalFilePath + "Web/jquery-1.12.2.min.js", true);
-        File.Copy(Application.streamingAssetsPath + "/Web/PointMap.json", PublicAttribute.LocalFilePath + "Web/PointMap.json", true);
+        Debug.Log("asdasfdsfdsg");
+      //  File.Copy(Application.streamingAssetsPath + "/Web/PointMap.json", PublicAttribute.LocalFilePath + "Web/PointMap.json", true);
              //File.Copy(pushjsonsourceFile,pushjsontargetFile,true);
 #endif
 

@@ -28,7 +28,8 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     public static bool isdown;
     // Use this for initialization
     void Start()
-    {
+    {        
+        OnPageChanged += ScrollPageMark.instance.OnScrollPageChanged;
         pageItemPrefab.GetComponent<RectTransform>().sizeDelta = new Vector2(1080, 550);
         //GetImageList();
         if (!isdown)
@@ -48,7 +49,8 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                         item.transform.localPosition = Vector3.zero;
                         item.gameObject.SetActive(true);
                         HttpManager.Instance.Download(page.Thumbnail, (() =>
-                        {
+                        {          
+                            item.title = page.title;
                             item.address = page.address;
                             item._init(page.Thumbnail.localPath);
                         }));
@@ -69,6 +71,7 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                 item.gameObject.SetActive(true);
                 HttpManager.Instance.Download(page.Thumbnail, (() =>
                 {
+                    item.title = page.title;
                     item.address = page.address;
                     item._init(page.Thumbnail.localPath);
                 }));
@@ -77,7 +80,6 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
         rect = transform.GetComponent<ScrollRect>();
         startime = Time.time;
-        OnPageChanged += ScrollPageMark.instance.OnScrollPageChanged;
     }
     private float autoChangeTime = 10;
     private float waiteTime = 3;
@@ -109,7 +111,11 @@ public class ScrollBananr : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
             lastpage = index;
             currentPageIndex = index;
-            OnPageChanged(pages.Count, currentPageIndex);
+            if (OnPageChanged != null)
+            {
+                OnPageChanged(pages.Count, currentPageIndex);
+            }
+          
             targethorizontal = pages[index];
         }
     }

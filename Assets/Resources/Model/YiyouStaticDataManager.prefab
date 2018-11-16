@@ -51,9 +51,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 331e0d56c0161e94094449fd555950d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tipImageList:
+  - {fileID: 21300000, guid: dfc3a56271b8b324ea51646352556a44, type: 3}
+  - {fileID: 21300000, guid: 3b33c2570458c654392aca74de8f56ed, type: 3}
+  - {fileID: 21300000, guid: 6c84666f9c8a386479e50cda82a3ef78, type: 3}
+  - {fileID: 21300000, guid: c591b08e42a85764da1156a570d3230a, type: 3}
+  - {fileID: 21300000, guid: 7b036dcada4d9b441a7c9d3f2199b804, type: 3}
   hupoSprite:
-  - {fileID: 21300000, guid: d876e4403fe30f646aed6d338666a0d6, type: 3}
   - {fileID: 21300000, guid: 16daf769e5399fc448de3c2ca092a6aa, type: 3}
+  - {fileID: 21300000, guid: d876e4403fe30f646aed6d338666a0d6, type: 3}
   senlinSprite:
   - {fileID: 21300000, guid: 16daf769e5399fc448de3c2ca092a6aa, type: 3}
   shatanSprite:

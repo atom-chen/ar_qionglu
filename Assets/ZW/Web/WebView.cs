@@ -17,10 +17,7 @@ public class WebView : SingletonMono<WebView>
 
     string lastId = string.Empty;
 
-    private void Start()
-    {
-        CreateWebView();
-    }
+
     /// <summary>
     /// 加载并显示WEB UI
     /// </summary>
@@ -161,6 +158,11 @@ public class WebView : SingletonMono<WebView>
             string longitude = node.longitude;
             string latitude = node.latitude;
             string path = node.path;
+#if   UNITY_ANDROID
+            path = "/sdcard/DCIM/Camera/" + path;
+#elif UNITY_IOS || UNITY_IPHONE
+                path = "/"+Application.persistentDataPath+"/" + path;
+#endif
             string count = node.count;
             string id = node.id;
             string jsString = @"PointOverlap(" + longitude + "," + latitude + "," + "\"" + path + "\"" + "," + count + "," + id + ");";

@@ -314,7 +314,10 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
 
     public virtual void BackBtnClick()
     {
-
+        if (FirstUseTipManager.Instance.isTipTour)
+        {
+            return;
+        }
 
         if (ButtonPanelGo.gameObject.activeSelf)
         {
@@ -323,6 +326,8 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
             {
                 ButtonPanelGo.transform.Find("ShowShotImage").gameObject.SetActive(false);
                 ButtonPanelUI.Instance.Init();
+        
+             
                 Debug.Log("111");
             }
             else
@@ -396,6 +401,7 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
             WikiSLAMUIController.Instance.ShouZujiBtn(true);
         }
 #endif
+        FirstUseTipManager.Instance.ShowNextTip(TipType.ShotTip);
     }
     public void SetIntroductionText(string ssss, bool flag = true)
     {
@@ -408,8 +414,8 @@ public class WikiSLAMUIController : SingletonMono<WikiSLAMUIController>
     {
    
             EffectPanelGo.gameObject.SetActive(v);
-            EffectPanelUI.Instance.HideToggle();
-       
+  //          EffectPanelUI.Instance.HideToggle();
+        EffectPanelUI.Instance.ShowToggle();
 
     }
     internal void ShowButtonPanel(bool v = true)

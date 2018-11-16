@@ -20,6 +20,12 @@ public class YiyouStaticDataManager : SingletonMono<YiyouStaticDataManager>
     //定义委托
     public OnSilenceHandle OnSilenceGo;
 
+    [Header("到此一游的使用提示图片List")]
+    public List<Sprite> tipImageList = new List<Sprite>();
+
+
+
+
     [Header("湖泊Sprites")]
     public List<Sprite> hupoSprite = new List<Sprite>();
     [Header("森林Sprites")]
@@ -49,6 +55,10 @@ public class YiyouStaticDataManager : SingletonMono<YiyouStaticDataManager>
     [Header("海鸥材质球Sprites")]
     [SerializeField]
     private List<Material> haiouMaterialsList = new List<Material>();
+
+
+
+
     public Dictionary<string, List<Sprite>> spriteDic = new Dictionary<string, List<Sprite>>();
     internal Font currentFont;
 

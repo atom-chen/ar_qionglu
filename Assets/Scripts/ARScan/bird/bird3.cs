@@ -27,6 +27,8 @@ public class bird3 : MonoBehaviour
     private bool canEat;
 
     public AudioSource audFX;
+
+    public AudioSource[] aud;
     // Use this for initialization
     void Start ()
     {
@@ -39,7 +41,7 @@ public class bird3 : MonoBehaviour
     public void OnTrackerFound()
     {
         if (isLost)
-        {       
+        {                
             food.SetActive(false);
             food2.SetActive(false);
             hand.SetActive(false);
@@ -80,13 +82,15 @@ public class bird3 : MonoBehaviour
             StopCoroutine(pr1);
         }
 
-
+        aud[0].Stop();
+        aud[1].Stop();
+        aud[2].Stop();
         women.Play("idle");
         FX.SetActive(false);
         women.gameObject.SetActive(false);
         
         vp.Stop();
-        
+        vp.gameObject.SetActive(false);
         videoPanel.DOKill();
         videoPanel.localPosition=new Vector3(-0.061f,0.01f,-0.197f);
         videoPanel.localScale=new Vector3(0.3f,0.3f,0.3f);
@@ -107,8 +111,12 @@ public class bird3 : MonoBehaviour
         audFX.Play();
         yield return new WaitForSeconds(2.0f);
         women.Play("speak");
+        aud[0].Play();
+        yield return new WaitForSeconds(3.8f);
+        aud[1].Play();
+        yield return new WaitForSeconds(2.8f);
         
-        videoPanel.gameObject.SetActive(true);
+        vp.gameObject.SetActive(true);
         vp.url = ARScanManager.scan_Conjure_Path + "/hongzuiou.mp4";
         
         Debug.Log(vp.url);
@@ -128,11 +136,12 @@ public class bird3 : MonoBehaviour
         
         yield return new WaitForSeconds(2.0f);
         FX.SetActive(false);
-        yield return new WaitForSeconds(18.0f);
+        yield return new WaitForSeconds(19.2f);
         videoPanel.gameObject.SetActive(false);
         women.Play("Idle");
         canEat = true;
         hand.SetActive(true);
+        aud[2].Play();
     }
     
     IEnumerator playBird1()

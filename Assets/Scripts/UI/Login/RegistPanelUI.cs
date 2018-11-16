@@ -47,35 +47,9 @@ public class RegistPanelUI : UIWindowsBase
 
         registerBtn.onClick.AddListener((() =>
         {
-            if (LoginUIController.Instance.VerifyAgreeToggle() == false)
-            {
-
-                LoginUIController.Instance.ShowPopup("", GlobalParameter.AgrrToggle);
-                return;
-            }
-
-            if (string.IsNullOrEmpty(phoneNoInput.text)||phoneNoInput.text.Length!=11)
-            {
-    
-                LoginUIController.Instance.ShowPopup("", GlobalParameter.InputPhoneNumber);
-                return;
-            }
-             if (string.IsNullOrEmpty(pwInput.text))
-            {
-                LoginUIController.Instance.ShowPopup("", GlobalParameter.InputPassword);
-              
-                return;
-            }
-             if (string.IsNullOrEmpty(smssInput.text)||smssInput.text.Length!=6)
-            {
-             
-                LoginUIController.Instance.ShowPopup("", GlobalParameter.InputSMSS);
-                return;
-            }
-                 if (LoginUIController.Instance.VerifyPhoneNo(phoneNoInput.text) && LoginUIController.Instance.VerifyPwd(pwInput.text) && LoginUIController.Instance.VerifySMSCode(smssInput.text))
-            {
+            if (LoginUIController.Instance.CheckInpuFormat(phoneNoInput.text, pwInput.text, smssInput.text))
                 HttpManager.Instance.Register(phoneNoInput.text, pwInput.text, smssInput.text, (LoginUIController.Instance.PopupInfo));
-            }
+           
    
         }));
 

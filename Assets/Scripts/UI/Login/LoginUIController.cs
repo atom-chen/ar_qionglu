@@ -21,6 +21,35 @@ public class LoginUIController : SingletonMono<LoginUIController>
 
     public Toggle AgreeToggle;
     public LoginUIPopupPage tipPanel;
+
+
+
+    public override void Awake()
+    {
+        base.Awake();
+
+        AgreeToggle.isOn = PlayerPrefs.HasKey(GlobalParameter.isHasRegister);
+
+        if (CheckNetWork() ==false)
+      {
+            tipPanel.ShowPopup("网络错误", "请检查是否连接到网络");
+
+        }
+
+
+    }
+
+    public bool CheckNetWork()
+    {
+        if (Application.internetReachability==NetworkReachability.NotReachable)
+        {
+            return false;
+        }
+        else
+            return true;
+    
+    }
+
     /// <summary>
     /// 设置下一个要显示的UIPanel所在的LoginUIState
     /// </summary>
@@ -167,6 +196,8 @@ public class LoginUIController : SingletonMono<LoginUIController>
             UserIcon = null,
         };
 
+    
+        PlayerPrefs.SetInt(GlobalParameter.isHasRegister, 6666);
     }
     /// <summary>
     /// 弹框提示信息，分两类
@@ -218,30 +249,15 @@ public class LoginUIController : SingletonMono<LoginUIController>
     /// </summary>
  public   bool VerifyPhoneNo(string str)
     {
-        if (string.IsNullOrEmpty(str))
-        {
-            return false;
-        }
-        if (str.Length != 11)
-        {
-            return false;
-        }
-        return true;
+ return     System.Text.RegularExpressions.Regex.IsMatch(str, @"^[1]+[3,5,7,8]+\d{9}");
     }
     /// <summary>
     /// 验证密码是否符合格式
     /// </summary>
   public  bool VerifyPwd(string str)
     {
-        if (string.IsNullOrEmpty(str))
-        {
-            return false;
-        }
-        if (str.Length < 6 || str.Length > 21)
-        {
-            return false;
-        }
-        return true;
+    return    System.Text.RegularExpressions.Regex.IsMatch(str,@"^\d{6,21}$");
+      
     }
 
     /// <summary>
@@ -251,15 +267,71 @@ public class LoginUIController : SingletonMono<LoginUIController>
     /// <returns></returns>
  public   bool VerifySMSCode(string str)
     {
-        if (string.IsNullOrEmpty(str))
+            return System.Text.RegularExpressions.Regex.IsMatch(str, @"^\d{6}");
+
+    }
+    /// <summary>
+    /// 验证输入的格式是否正确
+    /// -2、验证网络
+    /// -1、验证协议
+    /// 1、phoneNum=手机号 ；
+    /// 2、password=密码；
+    /// 3、password=短信验证码
+    /// </summary>
+    /// <param name="phoneNum"></param>
+    /// <param name="password"></param>
+    /// <param name="password"></param>
+    /// <returns></returns>
+    public bool CheckInpuFormat(string  phoneNum,string   password=null,string   smssCode=null)
+    {
+        if (CheckNetWork() == false)
         {
+
+           ShowPopup("网络错误", "请检查是否连接到网络");
             return false;
         }
-        if (str.Length != 6)
+        if (VerifyAgreeToggle() == false)
         {
+
+           ShowPopup("", GlobalParameter.AgrrToggle);
             return false;
         }
+
+        if (VerifyPhoneNo(phoneNum) == false)
+        {
+     ShowPopup(GlobalParameter.WrongFormat, GlobalParameter.InputPhoneNumber);
+            return false;
+        }
+        if (!string.IsNullOrEmpty(password))
+        {
+            if (VerifyPwd(password) == false)
+            {
+                ShowPopup(GlobalParameter.WrongFormat, GlobalParameter.InputPassword);
+                return false;
+            }
+        }
+
+
+        if (!string.IsNullOrEmpty(smssCode))
+        {
+            if (VerifySMSCode(smssCode) == false)
+            {
+                ShowPopup(GlobalParameter.WrongFormat, GlobalParameter.InputSMSS);
+                return false;
+            }
+        }
+  
         return true;
     }
+
+
+
+
+
+
+
     #endregion
+
+
+
 }

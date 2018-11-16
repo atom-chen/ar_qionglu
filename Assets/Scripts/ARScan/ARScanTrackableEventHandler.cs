@@ -8,10 +8,14 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
     #region PROTECTED_MEMBER_VARIABLES
 
     protected TrackableBehaviour mTrackableBehaviour;
-    private bool isLoading;
+    public bool isLoading;
     public GameObject loadingImg;
     string name;
-    GameObject child;
+    public GameObject child;
+    [HideInInspector]
+    public WWW wwwTarget;
+    [HideInInspector]
+    public AssetBundle abtarget;
     #endregion // PROTECTED_MEMBER_VARIABLES
 
     #region UNITY_MONOBEHAVIOUR_METHODS
@@ -39,6 +43,8 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
 
     #region PUBLIC_METHODS
     public  bool istracking,isloaded;
+    public static int curCount = 0;
+    private bool addcount;
     /// <summary>
     ///     Implementation of the ITrackableEventHandler function called when the
     ///     tracking state changes.
@@ -51,13 +57,16 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
             newStatus == TrackableBehaviour.Status.TRACKED )
         {
             OnTrackingFound();
+            ARScanManager.instance.waittime = 0;
             istracking = true;
+            unloadtime = 5;
             name = mTrackableBehaviour.TrackableName;
             transform.name = name;
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
             if (!isLoading && !isloaded && !ARScanManager.instance.isGuide)
             {
-                loadingImg.transform.localScale = Vector3.one *0.03f;
+                 ARScanManager.instance.showtoast("扫描成功，精彩里面呈现...");
+                loadingImg.transform.localScale = Vector3.one * 0.03f;
                 LoadAssetbundle();
                 isLoading = true;
             }
@@ -65,6 +74,21 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
             {
                 ARScanManager.instance.isScan = true;
                 ShowInfo();
+            }
+
+            if (!addcount)
+            {
+                addcount = true;
+                curCount++;
+                CoroutineWrapper.EXES(2, () =>
+                {
+                    curCount--;
+                    addcount = false;
+                });
+            }
+            if (curCount >= 3)
+            {
+                ARScanManager.instance.showtoast("扫描太快啦~请慢点操作哦~");
             }
             // ARScanManager.instance.ShowShotBtn();
         }
@@ -96,6 +120,49 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
                 }
 
             // ARScanManager.instance.HideShotBtn();
+        }
+    }
+
+    private float unloadtime = 5;
+    private void Update()
+    {
+        // if (istracking && !isloaded)
+        // {
+        //     if (!isLoading)
+        //     {
+        //         if (!ARScanManager.instance.isGuide)
+        //         {
+        //             ARScanManager.instance.showtoast("扫描成功，精彩里面呈现...");
+        //             loadingImg.transform.localScale = Vector3.one * 0.03f;
+        //             LoadAssetbundle();
+        //             isLoading = true;
+        //         }
+        //     }
+        // }
+
+        if (!istracking && isloaded)
+        {
+            unloadtime -= Time.deltaTime;
+            if (unloadtime < 0)
+            {
+                isloaded = false;
+                Destroy(child);
+                wwwTarget.Dispose();
+                abtarget.Unload(false);
+                Resources.UnloadUnusedAssets();
+            }
+        }
+
+        if (curCount >= 3)
+        {
+            if (!istracking && isloaded)
+            {
+                isloaded = false;
+                Destroy(child);
+                wwwTarget.Dispose();
+                abtarget.Unload(false);
+                Resources.UnloadUnusedAssets();
+            }
         }
     }
 
@@ -155,13 +222,16 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
                 break;
 
         }
-        WWW bundle = WWW.LoadFromCacheOrDownload("file:///" + path,0);
-        yield return bundle;
-        Debug.Log(bundle.bytesDownloaded);
+        wwwTarget = new WWW("file:///" + path);
+        yield return wwwTarget;
         Debug.Log("Target" + name);
-        var data = bundle.assetBundle;
+        abtarget= wwwTarget.assetBundle;
         yield return new WaitForEndOfFrame();
-        Object obj = data.LoadAsset("Target"+ name);
+        Object obj = abtarget.LoadAsset("Target"+ name);
+        if (child == null)
+        {
+            child = new GameObject();
+        }
         child = GameObject.Instantiate(obj) as GameObject;
         child.transform.SetParent(transform);
         child.transform.localEulerAngles = Vector3.zero;
@@ -169,15 +239,35 @@ public class ARScanTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
         child.transform.localScale = Vector3.one;
         loadingImg.transform.localScale = Vector3.zero;
         isLoading = false;
-        isloaded = true;
         if (transform.name=="zhaohuan")
         {
             transform.GetComponent<VirtualButtonEventHandler>().bbb = child.GetComponent<bird3>();
         }
         yield return new WaitForEndOfFrame();
         if (istracking)
+        {
             ShowInfo();
+        }
+        else
+        {
+            OnTrackingLost();
+        }
+        isloaded = true;
     }
+
+    public void UnloadAB()
+    {
+        if (isloaded)
+        {
+            Debug.Log("unload");
+            isloaded = false;
+            Destroy(child);
+            wwwTarget.Dispose();
+            abtarget.Unload(false);
+            Resources.UnloadUnusedAssets();
+        }
+    }
+    
     public void ShowInfo()
     {
         if (child != null)

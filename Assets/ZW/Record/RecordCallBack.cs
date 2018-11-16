@@ -19,4 +19,20 @@ public class RecordCallBack : MonoBehaviour {
     {
         ButtonPanelUI.Instance.onCaptureRecodeFailed(msg);
     }
+    /// <summary>
+    /// 录屏结束(保存之后)
+    /// </summary>
+    /// <param name="msg"></param>
+    public void onCaptureRecodeStop()
+    {
+      //  ButtonPanelUI.Instance.onCaptureRecodeFailed(msg);
+    }
+    /// <summary>
+    /// 录屏(取消保存)
+    /// </summary>
+    /// <param name="msg"></param>
+    public void onCaptureRecodeSave()
+    {
+        //  ButtonPanelUI.Instance.onCaptureRecodeFailed(msg);
+    }
 }

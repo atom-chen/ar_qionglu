@@ -546,6 +546,8 @@ namespace mainpage
 		[HideInInspector]
 		public bool isChangeScene;
 		
+		public static bool ResisDown;
+		
 		[Header("个人中心电话和姓名")]
 		public Text[] photonTxt, UserName;
 		
@@ -556,6 +558,8 @@ namespace mainpage
 		}
 
 		public bool isTip;
+		public GameObject quitTip;
+		private int hit = 0;
 		#endregion
 
 		private void Awake()
@@ -566,6 +570,9 @@ namespace mainpage
 
 		private void Start()
 		{
+			AssetBundle.UnloadAllAssetBundles(false);
+			Resources.UnloadUnusedAssets();
+			
 			mainbtn = GetComponent<mainBtnSet>();
 			scale = (((float) Screen.height / (float)Screen.width) * 1080f)/1920f;
 			for (int i = 0; i < ChildPanel.Length; i++)
@@ -610,28 +617,39 @@ namespace mainpage
 					}
 				}));
 			}
-			
-			//获取动态资源信息
-			CoroutineWrapper.EXES(1.5f, () =>
+
+			if (ResisDown)
 			{
-				PublicAttribute.AreaResoucesDic.TryGetValue(SceneID.id, out curScenicInfo);
-				ChangeList.instance.GetImageList();
-			});
-			//自动下载动态资源
-			CoroutineWrapper.EXES(5f, () =>
-			{
-				if (!ischecking)
+				fillamount = 1;
+				CoroutineWrapper.EXES(0.5f, () =>
 				{
-					Debug.LogError("自动下载");
-					ischecking = true;
-					HttpManager.Instance.DynamicCheekUpdateByArea(SceneID.id);
-				}
-			});
-			HttpManager.Instance.DownloadPercent = f =>
+					ChangeList.instance.GetImageList();
+				});
+			}
+			else
 			{
-				Debug.LogError("进度: " + f.ToString("#0.000"));
-				fillamount = f;
-			};
+				//获取动态资源信息
+				CoroutineWrapper.EXES(1.5f, () =>
+				{
+					PublicAttribute.AreaResoucesDic.TryGetValue(SceneID.id, out curScenicInfo);
+					ChangeList.instance.GetImageList();
+				});
+				//自动下载动态资源
+				CoroutineWrapper.EXES(5f, () =>
+				{
+					if (!ischecking)
+					{
+						Debug.LogError("自动下载");
+						ischecking = true;
+						HttpManager.Instance.DynamicCheekUpdateByArea(SceneID.id);
+					}
+				});
+				HttpManager.Instance.DownloadPercent = f =>
+				{
+					Debug.LogError("进度: " + f.ToString("#0.000"));
+					fillamount = f;
+				};
+			}
 
 			ReLoadPage();
 		}
@@ -665,6 +683,21 @@ namespace mainpage
 					{
 						lastpageid = 0;
 					}
+				}
+				else if (lastpagename == UIname.main)
+				{
+					hit++;
+					quitTip.SetActive(true);
+					CoroutineWrapper.EXES(1f, () =>
+					{
+						hit = 0;
+						quitTip.SetActive(false);
+					});
+				}
+				
+				if (hit >= 2)
+				{
+					Application.Quit();
 				}
 			}
 		}

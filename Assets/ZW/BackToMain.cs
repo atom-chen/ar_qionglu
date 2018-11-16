@@ -19,16 +19,23 @@ public class BackToMain : MonoBehaviour {
 
     public  void BackBtnClick()
     {
-  
+        //if (FirstUseTipManager.Instance.isTipTour==true)
+        //{
+        //    return;
+        //}
         switch (SceneManager.GetActiveScene().name)
         {
             case "yiyou":
                 GroundPlaneUI.Instance.BackBtnClick();
                 break;
-            case   "wikiSLAM":
+#if UNITY_ANDROID
+            case "wikiSLAM":
                 WikiSLAMUIController.Instance.BackBtnClick();
-          
+
                 break;
+
+#endif
+
             case "Track":
                 TrackUIManager.Instance.BackBtnClick();
        

@@ -9,11 +9,11 @@ EditorBuildSettings:
     path: Assets/Scenes/init.unity
     guid: 1947568dadeefd94092b14def22996c6
   - enabled: 1
-    path: Assets/Scenes/main.unity
-    guid: b23c22d8e746598489739a9ae8a9d87a
-  - enabled: 1
     path: Assets/Scenes/ARScan.unity
     guid: 5c1b12266def22f4bba56d201611cfbb
+  - enabled: 1
+    path: Assets/Scenes/main.unity
+    guid: b23c22d8e746598489739a9ae8a9d87a
   - enabled: 1
     path: Assets/Scenes/gpsConvert.unity
     guid: e8312173f8c629f428d9ec8177fc35af
@@ -35,7 +35,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Loading.unity
     guid: ad5d01d4a3413224987cb7eddf0ca917
-  - enabled: 1
-    path: Assets/ZW/Test/ModelTest.unity
-    guid: b06d24f50d8937745877950bd809bdc4
   m_configObjects: {}

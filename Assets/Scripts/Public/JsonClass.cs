@@ -764,6 +764,10 @@ public class ScenicSpotItem
     /// 景点资源描述
     /// </summary>
     public string description { get; set; }
+    /// <summary>
+    /// 图标
+    /// </summary>
+    public string dynamicFlag { get; set; }
 
 }
 
@@ -1094,6 +1098,11 @@ public class Ads
     /// 缩略图
     /// </summary>
     public Thumbnail Thumbnail { get; set; }
+    
+    /// <summary>
+    /// 标题
+    /// </summary>
+    public string title { get; set; }
 }
 
 #endregion

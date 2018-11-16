@@ -176,7 +176,8 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                 item.name = JsonClass.Instance.TraitScenicSpotInfoS[i].name;
                 item.thumbnail = JsonClass.Instance.TraitScenicSpotInfoS[i].thumbnail;
                 item.address = JsonClass.Instance.TraitScenicSpotInfoS[i].address;
-
+                item.dynamicFlag = JsonClass.Instance.TraitScenicSpotInfoS[i].dynamicFlag;
+                
                 HttpManager.Instance.Download(item.thumbnail, (() =>
                 {
                     Loom.QueueOnMainThread((() =>
@@ -217,7 +218,9 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                 item.name = JsonClass.Instance.LocalSpecialtyS[i].name;
                 item.thumbnail = JsonClass.Instance.LocalSpecialtyS[i].thumbnail;
                 item.address = JsonClass.Instance.LocalSpecialtyS[i].address;
-
+                item.dynamicFlag = JsonClass.Instance.LocalSpecialtyS[i].dynamicFlag;
+                
+                
                 HttpManager.Instance.Download(item.thumbnail, (() =>
                 {
                     Loom.QueueOnMainThread((() =>
@@ -260,6 +263,9 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                 item.name = JsonClass.Instance.ShopInfoS[i].name;
                 item.thumbnail = JsonClass.Instance.ShopInfoS[i].thumbnail;
                 item.address = JsonClass.Instance.ShopInfoS[i].address;
+                item.dynamicFlag = JsonClass.Instance.ShopInfoS[i].dynamicFlag;
+                
+                
                 HttpManager.Instance.Download(item.thumbnail, (() =>
                 {
                     Loom.QueueOnMainThread((() =>
@@ -301,6 +307,8 @@ public class ScrollList : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                 item.name = JsonClass.Instance.HotelInfoS[i].name;
                 item.thumbnail = JsonClass.Instance.HotelInfoS[i].thumbnail;
                 item.address = JsonClass.Instance.HotelInfoS[i].address;
+                item.dynamicFlag = JsonClass.Instance.HotelInfoS[i].dynamicFlag;
+                
                 HttpManager.Instance.Download(item.thumbnail, (() =>
                 {
                     Loom.QueueOnMainThread((() =>

@@ -45,6 +45,7 @@ public class RecordManager : SingletonMono<RecordManager>
 
     public void ShowCanvas(bool flag)
     {
+        StopProcess();
         thisUI.gameObject.SetActive(flag);
       
     }
@@ -52,7 +53,7 @@ public class RecordManager : SingletonMono<RecordManager>
     // Use this for initialization
     void Start ()
     {
-        RecordButton.onClick.AddListener(RecordClick);
+     //   RecordButton.onClick.AddListener(RecordClick);
     
         ShowCanvas(false);
 
@@ -66,6 +67,17 @@ public class RecordManager : SingletonMono<RecordManager>
     public void StartProcess()
     {
         isRec = true;
+
+        timer = 0f;
+
+        time = 10f;
+        ProcessImage.fillAmount = 0f;
+    }
+
+
+    public void StopProcess()
+    {
+        isRec = false;
 
         timer = 0f;
 

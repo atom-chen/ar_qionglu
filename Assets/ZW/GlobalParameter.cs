@@ -69,7 +69,7 @@ public class GlobalParameter
     internal static string thirdToken = string.Empty;
     internal static string isHasSaw= "本宝宝看过了";
 
-
+    internal static string isHasRegister = "本宝宝注册过了";
 
 
     #endregion

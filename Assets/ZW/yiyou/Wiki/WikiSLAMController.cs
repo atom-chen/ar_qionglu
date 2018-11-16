@@ -238,8 +238,9 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
 
 
         }
+  
         LoadComplete(showGameObjectName);
- 
+     
 
     }
 
@@ -298,8 +299,8 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
         SetMterials(showGameObject.GetComponent<WriteItem>().goodsEnum);
         showGameObject.gameObject.SetActive(false);
         WikiSLAMUIController.Instance.SelectModelPanel.gameObject.SetActive(false);
-        //WikiSLAMUIController.Instance.SetIntroductionText("点击屏幕进行物体摆放");
         PlaceModel();
+
     }
     protected virtual void SetMterials(GoodsWriteEnum goodsWriteEnum)
     {
@@ -462,6 +463,13 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
         Debug.Log("active======="+ active);
     }
 
+    public void SetGridState(bool  isShow)
+    {
+        _gridRenderer.enabled = isShow;
+    }
+  
+
+
     public void PlaceModel()
     {
        
@@ -479,23 +487,22 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
                 showGameObject.GetComponentInChildren<Cloth>().enabled = true;
             }
             showGameObject.transform.localEulerAngles = Vector3.zero;
-         YiyouStaticDataManager.Instance.ShowModel = showGameObject;
+      //   YiyouStaticDataManager.Instance.ShowModel = showGameObject;
                 WriteItem writeItem = showGameObject.GetComponent<WriteItem>();
                 if (writeItem != null && writeItem.goodsEnum != GoodsWriteEnum.None)
                 {
                     WriteManager.Instance.ShowInputPanel(true);
                     WikiSLAMUIController.Instance.SetIntroductionText("请选择字体并且输入文字");
-                }
+                FirstUseTipManager.Instance.ShowNextTip(TipType.WriteTip);
+            }
                 else
                 {
                     WikiSLAMUIController.Instance.SetIntroductionText("", false);
                     WikiSLAMUIController.Instance.ShowButtonPanel(true);
-                }
+                FirstUseTipManager.Instance.ShowNextTip(TipType.EffectTip);
+            }
+         
             WikiSLAMUIController.Instance.ShowEffectPanel(true);
-
-
-
-
             FingerTouchEL.Instance.targetGameObject = showGameObject;
             WriteManager.Instance.SetGoodsEnum(showGameObject.GetComponent<WriteItem>().goodsEnum);
                 _activeModels.Add(showGameObject);
@@ -509,8 +516,6 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
             else
             {
                 UnityHelper.RotateTowardCameraWiki(GameObject.FindGameObjectWithTag(Tags.MainCamera).gameObject, showGameObject);
-                
-
             }
 
         }
@@ -554,7 +559,7 @@ public class WikiSLAMController : SingletonMono<WikiSLAMController>
                     FingerTouchEL.Instance.targetGameObject = showGameObject;
 
                 }
-                YiyouStaticDataManager.Instance.ShowModel = showGameObject;
+             //   YiyouStaticDataManager.Instance.ShowModel = showGameObject;
                 WriteManager.Instance.SetGoodsEnum(showGameObject.GetComponent<WriteItem>().goodsEnum);
                 _activeModels.Add(showGameObject);
             }

@@ -22,11 +22,7 @@ public class BinDingPhonePanel : UIWindowsBase {
         });
         getsmssBtn.onClick.AddListener((() =>
         {
-            if (string.IsNullOrEmpty(phoneInput.text) || phoneInput.text.Length != 11)
-            {
-                LoginUIController.Instance.ShowPopup("", GlobalParameter.InputPhoneNumber);
-                return;
-            }
+        
             if (LoginUIController.Instance.VerifyPhoneNo(phoneInput.text))
             {
                 LoginUIController.Instance.FreezeButton(getsmssBtn);
@@ -35,11 +31,16 @@ public class BinDingPhonePanel : UIWindowsBase {
                     Debug.Log("获取短信验证码 " + b);
                 }));
             }
+            else
+            {
+                LoginUIController.Instance.ShowPopup("", GlobalParameter.InputPhoneNumber);
+                return;
+            }
         
         }));
         SetPhoneBtn.onClick.AddListener((() =>
         {
-            if (LoginUIController.Instance.VerifyPhoneNo(phoneInput.text) && LoginUIController.Instance.VerifySMSCode(smssInpPut.text))
+            if (LoginUIController.Instance.CheckInpuFormat(phoneInput.text, "", smssInpPut.text))
             {
                 HttpManager.Instance.DownloadTexture(GlobalParameter.UserIcon, "UserIcon.png", PublicAttribute.LocalFilePath + "APP/", (bytes
                         =>
@@ -48,6 +49,9 @@ public class BinDingPhonePanel : UIWindowsBase {
                     HttpManager.Instance.BindingPhoneNo(phoneInput.text, smssInpPut.text, GlobalParameter.ThirduserID, bytes, GlobalParameter.UserName, (LoginUIController.Instance.PopupInfo));
                 }));
             }
+          
+
+            
       
         }));
 

@@ -214,8 +214,8 @@ public    Light mainLight;
                     showGameObject.GetComponentInChildren<Cloth>().enabled = true;
                 }
                 UtilityHelper.RotateTowardCameraVuforia(showGameObject);
-                YiyouStaticDataManager.Instance.ShowModel = showGameObject;
-
+                // YiyouStaticDataManager.Instance.ShowModel = showGameObject;
+                FirstUseTipManager.Instance.ShowNextTip(TipType.WriteTip);
                 WriteItem writeItem = showGameObject.GetComponent<WriteItem>();
                 if (writeItem != null && writeItem.goodsEnum != GoodsWriteEnum.None)
                 {
@@ -325,7 +325,7 @@ public    Light mainLight;
         showGameObjectName = goName;
 
         YiyouStaticDataManager.Instance.modelName = goName;
-
+      
 
         LoadComplete(showGameObjectName);
     }

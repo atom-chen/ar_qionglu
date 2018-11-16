@@ -6,42 +6,66 @@ using UnityEngine.Video;
 
 public class ListItem : MonoBehaviour {
     public RawImage jpg;
+    public GameObject[] icons;
     /// <summary>
-    /// ¾°µãID
+    /// æ™¯ç‚¹ID
     /// </summary>
     public int id { get; set; }
     /// <summary>
-    /// ¾°µãÃû³Æ
+    /// æ™¯ç‚¹åç§°
     /// </summary>
     public string name { get; set; }
     /// <summary>
-    /// ¾°µãËõÂÔÍ¼ĞÅÏ¢
+    /// æ™¯ç‚¹ç¼©ç•¥å›¾ä¿¡æ¯
     /// </summary>
     public Thumbnail thumbnail { get; set; }
     /// <summary>
-    /// ¾°µã¾­¶È
+    /// æ™¯ç‚¹ç»åº¦
     /// </summary>
     public string locationX { get; set; }
     /// <summary>
-    /// ¾°µãÎ³¶È
+    /// æ™¯ç‚¹çº¬åº¦
     /// </summary>
     public string locationY { get; set; }
     /// <summary>
-    /// ¾°µãº£°Î
+    /// æ™¯ç‚¹æµ·æ‹”
     /// </summary>
     public string height { get; set; }
     /// <summary>
-    /// ËùÊôµÄ¾°Çø
+    /// æ‰€å±çš„æ™¯åŒº
     /// </summary>
     public SceneryArea sceneryArea { get; set; }
     /// <summary>
-    /// ÍøÒ³ÏêÇéµØÖ·
+    /// ç½‘é¡µè¯¦æƒ…åœ°å€
     /// </summary>
     public string address { get; set; }
+    
+    /// <summary>
+    /// å›¾æ ‡
+    /// </summary>
+    public string dynamicFlag { get; set; }
+    
     webrequest web;
     private void Start()
     {
         web = GameObject.Find(GlobalInfo.websiterequest).GetComponent<webrequest>();
+        if (dynamicFlag.Contains("1"))
+        {
+            icons[2].SetActive(true);
+        }
+        if (dynamicFlag.Contains("2"))
+        {
+            icons[3].SetActive(true);
+        }
+        if (dynamicFlag.Contains("3"))
+        {
+            icons[0].SetActive(true);
+        }
+        if (dynamicFlag.Contains("4"))
+        {
+            icons[1].SetActive(true);
+        }
+        
         //Debug.Log(thumbnail.localPath);
 
         //HttpManager.Instance.Download(thumbnail, (() =>
@@ -65,11 +89,15 @@ public class ListItem : MonoBehaviour {
             {
                 if (response == null || !response.IsSuccess)
                 {
-                    DebugManager.Instance.LogError("ÇëÇóÊ§°Ü£¡");
+                    DebugManager.Instance.LogError("è¯·æ±‚å¤±è´¥ï¼");
                     return;
                 }
                 tex.LoadImage(response.Data);
+                request.Dispose();
+                response.Dispose();
             }));
+            yield return new WaitForEndOfFrame();
+            
         }
         else
         {
@@ -77,7 +105,7 @@ public class ListItem : MonoBehaviour {
         }
     }
     /// <summary>
-    /// ¼ì²éÎÄ¼şÊÇ·ñ´æÔÚ
+    /// æ£€æŸ¥æ–‡ä»¶æ˜¯å¦å­˜åœ¨
     /// </summary>
     /// <param name="imgURl"></param>
     /// <returns></returns>

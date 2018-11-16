@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using LitJson;
 using mainpage;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -19,26 +19,6 @@ public class webrequest : MonoBehaviour {
 
     private Scene sc;
 	// Use this for initialization
-	void Start () { 
-
-    }
-
-    private void Update()
-    {
-        // if (Input.GetKeyDown(KeyCode.Escape))
-        // {
-        //     if (isLoadedWeb)
-        //     {
-        //         isLoadedWeb = false;
-        //         if (GameObject.Find("webpage") != null)
-        //         {                
-        //             web.Stop();
-        //             web = null;
-        //             Destroy(GameObject.Find("webpage"));
-        //         }
-        //     }
-        // } 
-    }
 
     public void LoadWebSetTitle(string url,string name)
     {
@@ -83,6 +63,11 @@ public class webrequest : MonoBehaviour {
             }
         }
     }
+    public class Info
+    {
+        public int platform { get; set; }
+        public int id { get; set; }
+    }
     private void _view_OnMessageReceived(UniWebView webView, UniWebViewMessage message)
     {
         Debug.Log("OnMessageReceived :" + message.RawMessage);
@@ -90,19 +75,55 @@ public class webrequest : MonoBehaviour {
         {
             var action = message.Args["action"];
             var id = message.Args["id"];
-            Debug.Log("收到了消息    " + action + "      id :" + id);
-            MessageHandler(action, id);
+            string data = message.Args["data"];
+            MessageHandler(action, id, data);
+            
+            
+//             string AndroidID = "", IosID = "";
+//             
+//             if (data.Contains("platform"))
+//             {
+//                 List<Info> InfoList = JsonMapper.ToObject<List<Info>>(data);
+//                 if (InfoList != null && InfoList.Count > 0)
+//                 {
+//                     for (int i = 0; i < InfoList.Count; i++)
+//                     {
+//                         var item = InfoList[i];
+//                         if (item.platform == 1)
+//                         {
+//                             AndroidID = item.id.ToString();
+//                         }
+//                         else
+//                         {
+//                             IosID = item.id.ToString();
+//                         }
+//                     }
+//                 }
+//                 else
+//                 {
+//
+//                 }
+//             }
+// #if UNITY_EDITOR ||UNITY_ANDROID
+//             MessageHandler(action, id,AndroidID);
+// #elif UNITY_IOS ||UNITY_IPHONE
+//             MessageHandler(action, id,IosID);
+// #endif
+
         }
     }
 
-    private void MessageHandler(string action,string id)
+    private void MessageHandler(string action,string id,string PanoramaID)
     {
+        Debug.Log("收到了消息:" + action + " id:" + id + " PanoramaID:"+PanoramaID);
         if (GameObject.Find("webpage") != null)
         {
             Destroy(GameObject.Find("webpage"));
             web.Stop();
             web = null;
         }
+
+        isLoadedWeb = false;
         sc = SceneManager.GetActiveScene();
         if (action=="ARScan")
         {
@@ -117,11 +138,11 @@ public class webrequest : MonoBehaviour {
         {
             if (sc.name=="main")
             {
-                ChangeList.instance.ShowCurPanorama(id);
+                ChangeList.instance.ShowCurPanorama(PanoramaID);
             }
             else if (sc.name=="gpsConvert")
             {
-                GpsConvert.instance.TurnChangeScene(id);
+                GpsConvert.instance.TurnChangeScene(PanoramaID);
             }
            
         }
@@ -171,3 +192,4 @@ public class webrequest : MonoBehaviour {
         LoadWebSetTitle(lastUri,lastTitle);
     }
 }
+

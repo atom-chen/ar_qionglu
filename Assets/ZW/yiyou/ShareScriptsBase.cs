@@ -15,20 +15,31 @@ public class ShareScriptsBase : SingletonMono<ShareScriptsBase>
     [HideInInspector]
     public ShareSDK ssdk;
 
+
+    private void AddShareCallBack()
+    {
+        ssdk.authHandler = OnAuthResultHandler;
+        ssdk.shareHandler = OnShareResultHandler;
+        ssdk.showUserHandler = OnGetUserInfoResultHandler;
+    }
+
+    public GameObject ThirdSharePanelGo;
     // Use this for initialization
     void Start()
     {
-        if (ssdk==null)
+        if (ssdk == null)
         {
             ssdk = transform.GetComponent<ShareSDK>();
 
         }
-        ssdk.authHandler = OnAuthResultHandler;
-        ssdk.shareHandler = OnShareResultHandler;
-        ssdk.showUserHandler = OnGetUserInfoResultHandler;
+        AddShareCallBack();
 
+        ShowThirdSharePanelGo(false);
     }
-
+    public void ShowThirdSharePanelGo(bool flag = true)
+    {
+        ThirdSharePanelGo.gameObject.SetActive(flag);
+    }
     /// <summary>
     /// 回调获得类是Token的信息
     /// </summary>
@@ -67,7 +78,7 @@ public class ShareScriptsBase : SingletonMono<ShareScriptsBase>
         if (state == ResponseState.Success)
         {
             print("get user info result :");
-        
+
             print("Get userInfo success !Platform :" + type);
         }
         else if (state == ResponseState.Fail)
@@ -95,6 +106,7 @@ public class ShareScriptsBase : SingletonMono<ShareScriptsBase>
         if (state == ResponseState.Success)
         {
             print("share successfully - share result :");
+            ShowThirdSharePanelGo(false);
         }
         else if (state == ResponseState.Fail)
         {
@@ -121,14 +133,14 @@ public class ShareScriptsBase : SingletonMono<ShareScriptsBase>
     ///  
     /// 
     /// </summary>
-    private  bool ShareLink(string imagURL)
+    private bool ShareLink(string imagURL)
     {
         if (imagURL == null) return false; ;
 
 
 
 
-        MobLinkScene scene = new MobLinkScene("","",YiyouStaticDataManager.Instance.GetHashtable());
+        MobLinkScene scene = new MobLinkScene("", "", YiyouStaticDataManager.Instance.GetHashtable());
         MobLink.getMobId(scene, (mobid) =>
         {
             if (mobid != null && mobid.Length > 0)
@@ -159,7 +171,7 @@ public class ShareScriptsBase : SingletonMono<ShareScriptsBase>
     /// <param name="path"></param>
     private bool ShareImage(string path)
     {
-        if (path == null) return  false;
+        if (path == null) return false;
         PlatformType[] plats = new PlatformType[4];
         plats[0] = PlatformType.WeChat;
         plats[1] = PlatformType.WeChatMoments;
@@ -202,20 +214,12 @@ public class ShareScriptsBase : SingletonMono<ShareScriptsBase>
         return true;
     }
 
-    internal bool Share(string savedPath  )
+    internal void Share(string filePath = "", bool isShareImage = true)
     {
-       
-   
-            if (GlobalParameter.isNeedRestore)
-            {
-                return ShareLink(savedPath);
 
-            }
-            else
-            {
-                return ShareImage(savedPath);
-            }
-        
+        ThirdSharePanelGo.gameObject.SetActive(true);
+        ThirdSharePanelGo.GetComponent<ThirdSharePanel>().Init(filePath, isShareImage);
+
     }
 
 
@@ -226,76 +230,118 @@ public class ShareScriptsBase : SingletonMono<ShareScriptsBase>
     /// <param name="path"></param>
     public bool ShareVideo(string path)
     {
-        if (path == null) return  false;
+        if (path == null) return false;
         Debug.Log("path===" + path);
-
-
-        PlatformType[] plats = new PlatformType[1];
-        //plats[0] = PlatformType.WeChat;
-        //plats[1] = PlatformType.WeChatMoments;
-
-        plats[0] = PlatformType.SinaWeibo;
-        ShareContent content = new ShareContent();
-
         ssdk.DisableSSO(false);
-        if (ssdk.IsClientValid(PlatformType.SinaWeibo)==false)
+        if (ssdk.IsClientValid(PlatformType.SinaWeibo) == false)
         {
             return false;
         }
-        content.SetText("视觉美景+智能呈现  只留精彩，不留遗憾");//
+        ShareContent content = new ShareContent();
+        content.SetText("视觉美景+智能呈现  只留精彩，不留遗憾");
         content.SetFilePath(path);
-        content.SetTitle("AR游");//AR游
- 
+        content.SetTitle("AR游");
         content.SetShareType(ContentType.File);
         content.SetTitleUrl("http://download.vszapp.com");
         content.SetUrl("http://download.vszapp.com");
 
+
+
+#if UNITY_ANDROID
+        String[] plats = new String[3];
+        plats[0] = PlatformType.QQ.ToString();
+        plats[1] = PlatformType.WeChat.ToString();
+        plats[2] = PlatformType.WeChatMoments.ToString();
+        content.SetHidePlatforms(plats);
+
+
+#elif UNITY_IOS || UNITY_IPHONE
+        
+     PlatformType[] plats = new PlatformType[1];
+        plats[0] = PlatformType.SinaWeibo;
+       
+#endif
+
+
+
+        ShareContent SinaShareParams = new ShareContent();
+        SinaShareParams.SetText("视觉美景+智能呈现  只留精彩，不留遗憾");
+
+        SinaShareParams.SetTitle("AR游");
+        SinaShareParams.SetShareType(ContentType.File);
+
+
+        SinaShareParams.SetFilePath(path);
+        SinaShareParams.SetShareContentCustomize(PlatformType.SinaWeibo, SinaShareParams);
+#if UNITY_ANDROID
+
         //通过分享菜单分享
+        ssdk.ShowPlatformList(null, content, 100, 100);
+#elif UNITY_IOS || UNITY_IPHONE
+      
+           //通过分享菜单分享
         ssdk.ShowPlatformList(plats, content, 100, 100);
+       
+#endif
+
 
         return true;
     }
 
-    public void QQShare(string path)
+    public void QQShare()
     {
-
+        AddShareCallBack();
         ShareContent content = new ShareContent();
-        content.SetImagePath(path);
+        content.SetImagePath(ScreenshotManager.Instance.savedPath);
         content.SetShareType(ContentType.Image);
         ssdk.ShareContent(PlatformType.QQ, content);
     }
-    public void WEShare(string path)
+    public void WEShare()
     {
-
+        AddShareCallBack();
         ShareContent content = new ShareContent();
-        content.SetText("this is a test string.");
-        content.SetTitle("test title");
-        content.SetImagePath(path);
+
+        content.SetText("视觉美景+智能呈现  只留精彩，不留遗憾");//
+        content.SetTitle("AR游");//AR游
+        content.SetImagePath(ScreenshotManager.Instance.savedPath);
         content.SetShareType(ContentType.Image);
         ssdk.ShareContent(PlatformType.WeChat, content);
     }
-    public void WeMomentShare(string path)
+    public void WeMomentShare()
     {
-
+        AddShareCallBack();
         ShareContent content = new ShareContent();
-        content.SetText("this is a test string.");
-        content.SetTitle("test title");
-        content.SetImagePath(path);
+
+        content.SetText("视觉美景+智能呈现  只留精彩，不留遗憾");//
+        content.SetTitle("AR游");//AR游
+        content.SetImagePath(ScreenshotManager.Instance.savedPath);
         content.SetShareType(ContentType.Image);
         ssdk.ShareContent(PlatformType.WeChatMoments, content);
     }
 
-    public void SinaWeiboShare(string path)
+    public void SinaWeiboShare()
     {
+        AddShareCallBack();
 
         ShareContent content = new ShareContent();
-        content.SetText("this is a test string.");
-        content.SetTitle("test title");
-        content.SetImagePath(path);
+
+        content.SetText("视觉美景+智能呈现  只留精彩，不留遗憾");//
+        content.SetTitle("AR游");//AR游
+        content.SetImagePath(ScreenshotManager.Instance.savedPath);
         content.SetShareType(ContentType.Image);
         ssdk.ShareContent(PlatformType.SinaWeibo, content);
     }
+    public void SinaWeiboShareVideo(string path)
+    {
+        Debug.Log("videopath====" + path);
+        AddShareCallBack();
 
+        ShareContent sina = new ShareContent();
+   //     sina.SetShareType(ContentType.File);
+        sina.SetFilePath("/sdcard/test.mp4");
+
+        ssdk.ShareContent(PlatformType.SinaWeibo, sina);
+    }
 
 
 }

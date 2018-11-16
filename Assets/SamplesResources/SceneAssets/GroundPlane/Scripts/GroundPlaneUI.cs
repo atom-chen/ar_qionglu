@@ -299,6 +299,10 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
 
     public virtual void BackBtnClick()
     {
+        if (FirstUseTipManager.Instance.isTipTour)
+        {
+            return;
+        }
         if (ButtonPanelGo.gameObject.activeSelf)
         {
 
@@ -306,6 +310,7 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
             {
                 ButtonPanelGo.transform.Find("ShowShotImage").gameObject.SetActive(false);
                 ButtonPanelUI.Instance.Init();
+
             }
             else
             {
@@ -352,7 +357,7 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
 
        ShouZujiBtn(true);
 
-
+        FirstUseTipManager.Instance.ShowNextTip(TipType.ShotTip);
     }
 
 
@@ -478,7 +483,8 @@ public class GroundPlaneUI : SingletonMono<GroundPlaneUI>
     internal void ShowEffectPanel(bool  flag=true)
     {
             EffectPanelGo.gameObject.SetActive(flag);
-            EffectPanelUI.Instance.HideToggle();
+          //  EffectPanelUI.Instance.HideToggle();
+        EffectPanelUI.Instance.ShowToggle();
     }
 
     internal void ShowButtonPanel()

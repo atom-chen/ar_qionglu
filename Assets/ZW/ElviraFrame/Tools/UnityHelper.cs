@@ -159,7 +159,7 @@ public static   class UnityHelper
             {
                 localFilePath = Application.persistentDataPath + "/DownloadFile/";
             }
-            else if (Application.platform == RuntimePlatform.WindowsEditor)
+            else if (Application.platform == RuntimePlatform.WindowsEditor|| Application.platform == RuntimePlatform.OSXEditor|| Application.platform == RuntimePlatform.OSXPlayer)
             {
                 localFilePath = Application.dataPath + "/DownloadFile/";
             }

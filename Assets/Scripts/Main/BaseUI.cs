@@ -63,7 +63,7 @@ namespace mainpage
 
 		public void Debuger(string message)
 		{
-			Debug.Log(message);
+			// Debug.Log(message);
 		}
 		
 		/// <summary>

@@ -13,11 +13,11 @@ public class ARScanManager : MonoBehaviour
 
     public RawImage ScanGuideImg;
     public Texture[] ScanGuideTex;
-    public GameObject ARScanGuide,btnPanel;
+    public GameObject ARScanGuide,btnPanel,helpPanel;
 
     public EdgeDetection ed;
     public DOTweenAnimation scanImg;
-    public GameObject toastObj;
+    public Text toastObj;
     public GameObject ShotBtn;
 
     public static string scan_more_Path = "";
@@ -36,22 +36,22 @@ public class ARScanManager : MonoBehaviour
 
         foreach (var ChangeInfo in mainUISet.curScenicInfo.ResourcesInfos)
         {
-            if (ChangeInfo.ResourcesKey == "vsz-scan-more")
+            if (ChangeInfo.ResourcesKey == "scan-more")
             {
                 scan_more_Path = ChangeInfo.LocalPath;
                 Debug.Log(scan_more_Path);
             }
-            else if (ChangeInfo.ResourcesKey == "vsz-scan-ticket")
+            else if (ChangeInfo.ResourcesKey == "scan-ticket")
             {
                 scan_ticket_Path = ChangeInfo.LocalPath;
                 Debug.Log(scan_ticket_Path);
             }
-            else if (ChangeInfo.ResourcesKey == "vsz-scan-native-product")
+            else if (ChangeInfo.ResourcesKey == "scan-native-product")
             {
                 scan_native_product_Path = ChangeInfo.LocalPath;
                 Debug.Log(scan_native_product_Path);
             }
-            else if (ChangeInfo.ResourcesKey == "vsz-scan-conjure")
+            else if (ChangeInfo.ResourcesKey == "scan-conjure")
             {
                 scan_Conjure_Path = ChangeInfo.LocalPath;
                 Debug.Log(scan_Conjure_Path);
@@ -74,13 +74,45 @@ public class ARScanManager : MonoBehaviour
         Invoke("GetImageList", 1);
     }
 
+    // private bool showtip;
+    public float waittime;
     private void Update()
     {
+        waittime += Time.deltaTime;
+        if (waittime>30)
+        {
+            waittime = 0;
+            showtoast("扫描未成功？点击右上角按钮获取帮助");
+        }
         if (Input.GetKeyUp(KeyCode.Escape))
         {
-            UnityHelper.LoadNextScene("main");
+            if (isShowHelp)
+            {
+                isShowHelp = false;
+                ShowHelpPanel(false);
+            }
+            else
+            {
+                for (int i = 0; i < trackerList.Count; i++)
+                {
+                    trackerList[i].UnloadAB();
+                }
+                CoroutineWrapper.EXES(0.2f, () => 
+                {
+                    UnityHelper.LoadNextScene("main");
+                });
+            }
         }
 
+        // if (ARScanTrackableEventHandler.curCount >= 3 && !showtip)
+        // {
+        //     showtip = true;
+        //     showtoast("扫描太快啦~");
+        //     CoroutineWrapper.EXES(2, () =>
+        //     {
+        //         showtip = false;
+        //     });
+        // }
         ShowBtn();
     }
 
@@ -163,7 +195,7 @@ public class ARScanManager : MonoBehaviour
     {
         foreach (var ChangeInfo in mainUISet.curScenicInfo.ResourcesInfos)
         {
-            if (ChangeInfo.ResourcesKey == "vsz-scan-ticket" || ChangeInfo.ResourcesKey == "vsz-scan-native-product" || ChangeInfo.ResourcesKey == "vsz-scan-more" || ChangeInfo.ResourcesKey == "vsz-scan-conjure")
+            if (ChangeInfo.ResourcesKey == "scan-ticket" || ChangeInfo.ResourcesKey == "scan-native-product" || ChangeInfo.ResourcesKey == "scan-more" || ChangeInfo.ResourcesKey == "scan-conjure")
             {
                 string LocalPath = ChangeInfo.LocalPath;
                 Debug.Log(LocalPath);
@@ -222,14 +254,30 @@ public class ARScanManager : MonoBehaviour
     }
     public void LoadScene(string scenename)
     {
-        UnityHelper.LoadNextScene(scenename);
+        for (int i = 0; i < trackerList.Count; i++)
+        {
+            trackerList[i].UnloadAB();
+        }
+        CoroutineWrapper.EXES(0.2f, () => 
+        {
+            UnityHelper.LoadNextScene(scenename);
+        });
+       
     }
+
 
     public void ShowGameObject(GameObject obj)
     {
         obj.SetActive(!obj.activeSelf);
     }
-
+    
+    private bool isShowHelp;
+    public void ShowHelpPanel(bool value)
+    {      
+        isShowHelp = value;
+        helpPanel.SetActive(value);
+    }
+    
     public void ShowScanGuide()
     {
         for (int i = 0; i < trackerList.Count; i++)
@@ -264,15 +312,23 @@ public class ARScanManager : MonoBehaviour
             ScreenshotManager.SaveScreenshot("Scan");
             CoroutineWrapper.EXES(1.5f, () =>
             {
-                toastObj.SetActive(true);
+                showtoast("照片已保存");
                 CoroutineWrapper.EXES(1.5f, () =>
                 {
                     isShooting = false;
                     btnPanel.SetActive(true);
-                    toastObj.SetActive(false);
                 });
             });
         }
     }
-    
+
+    public void showtoast(string content)
+    {
+        toastObj.text = content;
+        toastObj.gameObject.SetActive(true);
+        CoroutineWrapper.EXES(1.5f, () =>
+        {
+            toastObj.gameObject.SetActive(false);
+        });
+    }
 } 

@@ -143,10 +143,10 @@ public class GpsConvert : MonoBehaviour
                     totalCount = JsonClass.Instance.NavigationInfos.Count;
                     foreach (var info in JsonClass.Instance.NavigationInfos)
                     {
-                        Debug.Log(info.type);
+                        // Debug.Log(info.type);
                         HttpManager.Instance.Download(info.baseEntity.thumbnail, (() =>
                         {
-                            Debug.Log("下载实景导览图片");
+                            // Debug.Log("下载实景导览图片");
                             GPSItem item = GameObject.Instantiate<GPSItem>(obj);
                             item.id = info.baseEntity.id;
                             item.locationX = info.baseEntity.locationX;
@@ -557,9 +557,9 @@ public class GpsConvert : MonoBehaviour
     {
         foreach (var ChangeInfo in mainUISet.curScenicInfo.ResourcesInfos)
         {
-            if (ChangeInfo.ResourcesKey == "vsz-more-change")
+            if (ChangeInfo.ResourcesKey == "more-change")
                 foreach (var gpsitem in ChangeInfo.DIS)
-                    if (gpsitem.id.ToString() == id)
+                    if (gpsitem.baseEntity.name == id)
                     {
                         if (!isChangeScene)
                         {

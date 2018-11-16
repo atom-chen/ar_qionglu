@@ -376,7 +376,7 @@ public class Downloader
     /// </summary>
     /// <param name="list"></param>
     /// <param name="callback"></param>
-    public void BatchOSSDownload(Dictionary<DownloadUnit, OSSFile> list, Action callback)
+    public void BatchOSSDownload(Dictionary<DownloadUnit, OSSFile> list, Action<bool> callback)
     {
         Dictionary<DownloadUnit, OSSFile> faillist = new Dictionary<DownloadUnit, OSSFile>();
         int cureentDownCount = 0;
@@ -403,7 +403,6 @@ public class Downloader
             {
                 OSSdownload(file.Key, file.Value, (b =>
                 {
-                    cureentDownCount++;
                     if (b)
                     {
 
@@ -412,50 +411,47 @@ public class Downloader
                             WriteIntoTxt(j + "DownloadSuccess::::" + file.Key.downUrl + "    " + file.Value.endpoint + "    " + file.Key.fileName + "    " + file.Key.size, "down");
                             j++;
                         }));
-
-
-                        Debug.Log("DownloadSuccess::::" + file.Key.downUrl + "    " + file.Value.endpoint + "    " + file.Key.fileName + "    " + file.Key.size);
+                        
+                        // Debug.Log("DownloadSuccess::::" + file.Key.downUrl + "    " + file.Value.endpoint + "    " + file.Key.fileName + "    " + file.Key.size);
                         //HttpManager.Instance.DownLoadcurSize += float.Parse(file.Key.size);
-                        if (cureentDownCount == list.Count)
-                        {
-                            if (callback != null)
-                            {
-                                callback();
-                            }
-                        }
+                        
                     }
                     else
                     {
+                        fallCount++;
+                        faillist.Add(file.Key, file.Value);
+                        Debug.LogError("失败:::::::" + file.Key.downUrl + "    " + file.Value.endpoint + "    " + file.Key.fileName + "    " + file.Key.size);
+                        
                         Loom.QueueOnMainThread((() =>
                         {
                             WriteIntoTxt(j + "DownloadFail::::" + file.Key.downUrl + "    " + file.Value.endpoint + "    " + file.Key.fileName + "    " + file.Key.size, "down");
                             j++;
                         }));
 
-                        if (float.Parse(file.Key.size) <= 0 || file.Key.size == null)
-                        {
-                            //HttpManager.Instance.DownLoadcurSize += float.Parse(file.Key.size);
-                            if (cureentDownCount == list.Count)
-                            {
-                                if (callback != null)
-                                {
-                                    callback();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            fallCount++;
-                            faillist.Add(file.Key, file.Value);
-                            Debug.LogError("失败:::::::" + file.Key.downUrl + "    " + file.Value.endpoint + "    " + file.Key.fileName + "    " + file.Key.size);
-                        }
+                        // if (float.Parse(file.Key.size) <= 0 || file.Key.size == null)
+                        // {
+                        //     //HttpManager.Instance.DownLoadcurSize += float.Parse(file.Key.size);
+                        //     if (cureentDownCount == list.Count)
+                        //     {
+                        //         if (callback != null)
+                        //         {
+                        //             callback(fallCount <= 0);
+                        //         }
+                        //     }
+                        // }
+                        // else
+                        // {
+                        //     fallCount++;
+                        //     faillist.Add(file.Key, file.Value);
+                        //     Debug.LogError("失败:::::::" + file.Key.downUrl + "    " + file.Value.endpoint + "    " + file.Key.fileName + "    " + file.Key.size);
+                        // }
                     }
-
+                    cureentDownCount++;
                     Debug.LogWarning("总共  " + list.Count + "    当前  " + cureentDownCount);
                     HttpManager.Instance.DownloadPercent((float)cureentDownCount / (float)list.Count);
                     if (cureentDownCount == list.Count)
                     {
-                        callback();
+                        callback(fallCount <= 0);
                     }
                     et.Stop();
                 }));
@@ -561,8 +557,7 @@ public class Downloader
             FileStream fs = null;
             if (response == null)
             {
-                Debug.Log("请求为空"+response.StatusCode);
-                //Debug.Log("请求为空" +downUnit.downUrl);
+                // Debug.Log("请求为空" +downUnit.downUrl +" "+ downUnit.fileName);
                 if (fs != null)
                 {
                     fs.Flush();
@@ -579,7 +574,7 @@ public class Downloader
             }
             if (!response.IsSuccess)
             {
-               // Debug.Log("请求失败！" + response.StatusCode + " "+downUnit.downUrl);
+                // Debug.Log("请求失败！" + response.StatusCode + " "+downUnit.downUrl+" "+ downUnit.fileName);
                 if (fs != null)
                 {
                     fs.Flush();

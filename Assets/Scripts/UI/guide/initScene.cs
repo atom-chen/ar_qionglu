@@ -9,39 +9,17 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class Ports
-{
-    public string address; //地址
-    public string portnum; //端口号
-}
-public class PortsStatus
-{
-    public connect[] allports;
-}
-
-public class connect
-{
-    public connect()
-    {
-        address = "";
-        portnum = "";
-    }
-    public string address; //地址
-    public string portnum; //端口号
-}
 public class initScene : MonoBehaviour
 {
     public static initScene instance;
-    private List<Ports> allport = new List<Ports>();
-    public GameObject guide,ads;
-
-    public RectTransform splash;
-    public static string localFilePath;
+    public GameObject ads;
 
     public GameObject root;
     public webrequest web;
 
     public RectTransform[] pages;
+
+    public GameObject zipPanel;
     public static string FirstEnter
     {
         set {PlayerPrefs.SetString("FirstEnter", value);}
@@ -58,8 +36,30 @@ public class initScene : MonoBehaviour
     }
 
     public bool isLookingAds;
+    private static string isUnzipOver
+    {
+        set {PlayerPrefs.SetString("isUnzipOver", value);}
+        get { return PlayerPrefs.GetString("isUnzipOver");}
+    }
     IEnumerator Start()
     {
+#if UNITY_IOS || UNITY_IPHONE
+        if (isUnzipOver != "true" && FirstEnter != GlobalInfo.APPversion)
+        {
+            unzip._inst.unzipres((b =>
+            {
+                if (b)
+                {
+                    isUnzipOver = "true";
+                }
+                else
+                {
+                    isUnzipOver = "false";
+                }
+            }));
+        }
+#endif
+        
         //屏幕常亮
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
@@ -129,10 +129,8 @@ public class initScene : MonoBehaviour
         }
         yield return new WaitForEndOfFrame();
         root.SetActive(true);
-        yield return new WaitForEndOfFrame();
-        // guide.SetActive(true);
-        // splash.gameObject.SetActive(false);
-
+        
+#if UNITY_ANDROID || UNITY_EDITOR
         yield return new WaitForSeconds(3);
         if (FirstEnter != GlobalInfo.APPversion)
         {
@@ -143,7 +141,39 @@ public class initScene : MonoBehaviour
             
             EnterMain();
         }
+#elif UNITY_IOS || UNITY_IPHONE
+        if (isUnzipOver=="true")
+        {
+            yield return new WaitForSeconds(3);
+            if (FirstEnter != GlobalInfo.APPversion)
+            {
+                FirstEnter = GlobalInfo.APPversion;
+            }
+            else if (!isLookingAds)
+            {
+            
+                EnterMain();
+            }
+        }
+        else
+        {
+            zipPanel.SetActive(true);
+            canchange = true;
+        }
+#endif
+      
     }
+
+    private bool canchange = false;
+    private void Update()
+    {
+        if (isUnzipOver=="true" && canchange)
+        {
+            canchange = false;
+            EnterMain();
+        }
+    }
+
     public void EnterMain()
     {
         FirstEnter = GlobalInfo.APPversion;
@@ -161,12 +191,19 @@ public class initScene : MonoBehaviour
     }
     public void HideAds()
     {
+#if UNITY_ANDROID || UNITY_EDITOR
         EnterMain();
-    }
-
-    public void GetState()
-    {
-
+#elif UNITY_IOS || UNITY_IPHONE
+        if (isUnzipOver=="true")
+        {
+            EnterMain();
+        }
+        else
+        {
+            zipPanel.SetActive(true);
+            canchange = true;
+        }
+#endif
     }
 
     private IEnumerator LoadImgFromCache(string imgURl, RawImage img)
@@ -200,18 +237,4 @@ public class initScene : MonoBehaviour
     {
         return true;
     }
-    //private IEnumerator LoadAssets2()
-    //{
-    //    string path = Application.persistentDataPath + "/DownloadFile/Panorama/1/shajin.vsz";
-    //    Debug.Log(path);
-    //    Debug.Log(File.Exists(path));
-    //    int index1 = path.LastIndexOf("/");
-    //    int index2 = path.LastIndexOf(".");
-    //    string suffix = path.Substring(index1 + 1, index2 - index1 - 1);
-    //    WWW bundle = WWW.LoadFromCacheOrDownload("file:///" + path, 0);
-    //    yield return bundle;
-    //    Debug.Log(bundle.size);
-    //    var data = bundle.assetBundle;
-    //    SceneManager.LoadScene("shajin");
-    //}
 }

@@ -69,11 +69,7 @@ public class TrackDataManager : SingletonMono<TrackDataManager>
             AddPoint(jingdu, weidu, imagepath, count, id);
             UpdateImageShowClass(pointDataParams);
         }
-        if (SceneManager.GetActiveScene().name == "Track")
-        {
-            WebView.Instance.CreateWebView();
-
-        }
+  
     }
     /// <summary>
     /// 更新PointClass

@@ -34,7 +34,7 @@ namespace cn.sharesdk.unity3d
         public string AppKey = "1277214325";
         public string AppSecret = "48904ea6a3e667e5aa7253da4880888b";
         public string RedirectUrl = "http://www.visizen.com";
-        public bool ShareByAppClient = false;
+        public bool ShareByAppClient = true;
 #elif UNITY_IPHONE
 	public	 const int type = (int) PlatformType.SinaWeibo;
 	public	 string app_key = "1277214325";

@@ -74,6 +74,13 @@ public class ThirdPartyLogin : MonoBehaviour
         //Listeners
         wechatLoginBtn.onClick.AddListener(() =>
         {
+            if (LoginUIController.Instance.CheckNetWork() == false)
+            {
+
+                LoginUIController.Instance.ShowPopup("网络错误", "请检查是否连接到网络");
+                return;
+            }
+
             if (LoginUIController.Instance.VerifyAgreeToggle() == false)
             {
                 LoginUIController.Instance.ShowPopup("", GlobalParameter.AgrrToggle);
@@ -99,6 +106,13 @@ public class ThirdPartyLogin : MonoBehaviour
 
         qqLoginBtn.onClick.AddListener(() =>
         {
+            if (LoginUIController.Instance.CheckNetWork() == false)
+            {
+
+                LoginUIController.Instance.ShowPopup("网络错误", "请检查是否连接到网络");
+                return;
+            }
+
             if (LoginUIController.Instance.VerifyAgreeToggle() == false)
             {
                 LoginUIController.Instance.ShowPopup("", GlobalParameter.AgrrToggle);
@@ -123,7 +137,14 @@ public class ThirdPartyLogin : MonoBehaviour
 
         weiboLoginBtn.onClick.AddListener(() =>
         {
-        
+            if (LoginUIController.Instance.CheckNetWork() == false)
+            {
+
+                LoginUIController.Instance.ShowPopup("网络错误", "请检查是否连接到网络");
+                return;
+            }
+
+
             if (LoginUIController.Instance.VerifyAgreeToggle() == false)
             {
                 LoginUIController.Instance.ShowPopup("", GlobalParameter.AgrrToggle);

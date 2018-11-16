@@ -121,8 +121,8 @@ map.disablePinchToZoom();//禁止双指缩放
         var span = this._span = document.createElement("span");
         div.appendChild(span);
         span.appendChild(document.createTextNode(this._text));
-        span.style.fontSize = "20px";
         span.style.color = "#fff";
+		span.style.fontSize="24px";
         span.style.background="none";
         span.style.width="0";
         span.style.height="0";
@@ -130,9 +130,9 @@ map.disablePinchToZoom();//禁止双指缩放
         span.style.borderColor="transparent #da2423";
         span.style.borderWidth="0px 30px 30px 0px";
         span.style.borderStyle="solid";
-        span.style.textIndent="1.1em";
-        span.style.lineHeight="18px";
-        span.style.fontWeight="500";
+        span.style.textIndent="0.7em";
+        span.style.lineHeight="20px";
+        span.style.fontWeight="normal";
 
 
         if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
@@ -172,11 +172,12 @@ map.disablePinchToZoom();//禁止双指缩放
         this. _div.style.width =imagefactor;
         this._div.style.height = imagefactor;
         this._div.style.border = "4px #fff solid";
-        this._div.style.background = "url(" +"/sdcard/DCIM/Camera/"+ image+") no-repeat   0px 0px / 60px 60px ";
+       // this._div.style.background = "url(" +"/sdcard/DCIM/Camera/"+ image+") no-repeat   0px 0px / 60px 60px ";
+		        this._div.style.background = "url(" + image+") no-repeat   0px 0px / 60px 60px ";
         this._div.style.left = position.x  + "px";
         this._div.style.top = position.y  + "px";
         var  span=this._div.getElementsByTagName("span")[0];
-        span.innerHTML =  this._count;
+     span.innerHTML =  this._count;
         span.style.fontSize = "16px";
 		
     }
@@ -203,7 +204,7 @@ map.disablePinchToZoom();//禁止双指缩放
 
     //以下为测试
     // 添加自定义覆盖物
- // AddOverLay();
+  AddOverLay();
 	
     //最简单的用法，生成一个marker数组，然后调用markerClusterer类即可。
     //var markerClusterer = new BMapLib.MarkerClusterer(map, {markers:CustomOverlayArray,styles:myStyles});

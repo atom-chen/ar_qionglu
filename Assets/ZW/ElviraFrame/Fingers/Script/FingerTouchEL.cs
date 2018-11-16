@@ -180,8 +180,8 @@ namespace ElviraFrame
             if (gesture.State == GestureRecognizerState.Executing&&targetGameObject!=null)
             {
 
-                float deltaX = panGesture.DeltaX / moveSpeedDelta*1f;
-                float deltaZ = panGesture.DeltaY / moveSpeedDelta * 1f;
+                float deltaX = panGesture.DeltaX / moveSpeedDelta*-1f;
+                float deltaZ = panGesture.DeltaY / moveSpeedDelta * -1f;
                 Vector3 pos = targetGameObject.transform.position;
                 pos.x += deltaX;
                 pos.z+= deltaZ;

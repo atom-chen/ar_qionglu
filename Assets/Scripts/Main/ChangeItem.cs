@@ -63,14 +63,16 @@ public class ChangeItem : MonoBehaviour {
 
     private string VideoURL;
 
+    public static WWW loadchange;
+    public static AssetBundle loadab;
 
     public GameObject loadingImg;
     private float limitdistance;
     public void Start()
     {
-        #if UNITY_EDITOR
-        limitdistance = 999999999;
-        #elif UNITY_ANDROID ||UNITY_IPHONE ||UNITY_IOS
+        #if UNITY_EDITOR || UNITY_IPHONE || UNITY_IOS || UNITY_ANDROID
+        limitdistance = 999999999999;
+        #elif UNITY_ANDROID
         limitdistance = 40;
         #endif
         web = GameObject.Find(GlobalInfo.websiterequest).GetComponent<webrequest>();
@@ -160,6 +162,16 @@ public class ChangeItem : MonoBehaviour {
     }
     private IEnumerator LoadAssets(string path)
     {
+        if (loadchange!=null)
+        {
+            loadchange.Dispose();
+            loadchange = null;
+        }
+
+        if (loadab!=null)
+        {
+            loadab.Unload(false);
+        }
         loadingImg.SetActive(true);
         if (VideoURL != null)
         {
@@ -171,17 +183,52 @@ public class ChangeItem : MonoBehaviour {
         string suffix = path.Substring(index1 + 1, index2 - index1 - 1);
 
         Debug.Log(File.Exists(path));
-        WWW bundle = WWW.LoadFromCacheOrDownload("file:///" + path,4);
-        yield return bundle;
-        if (bundle.error!=null  || bundle.size <= 0)
+        yield return new WaitForEndOfFrame();
+        loadchange = new WWW("file:///" + path);
+        Debug.Log("file:///" + path);
+        yield return loadchange;
+        if (loadchange.error!=null  || loadchange.size <= 0)
         {
+            Debug.Log(loadchange.error);
+            Debug.Log(loadchange.size);
             loadingImg.SetActive(false);
         }
         else
         {
-            var data = bundle.assetBundle;
+            loadab = loadchange.assetBundle;
             SceneManager.LoadScene(suffix);               
         }
+        
+        
+        // AssetBundle ab = AssetBundle.LoadFromFile(path);
+        // yield return ab;
+        // if (ab.GetAllScenePaths()!=null)
+        // {
+        //     for (int i = 0; i < ab.GetAllScenePaths().Length; i++)
+        //     {
+        //         Debug.Log(ab.GetAllScenePaths()[i]);
+        //     }
+        //     SceneManager.LoadScene(suffix); 
+        // }
+        // else
+        // {
+        //     Debug.Log("加载出错");
+        //     loadingImg.SetActive(false);
+        // }
+        // WWW bundle = new WWW("file:///" + path);
+        // Debug.Log("file:///" + path);
+        // yield return bundle;
+        // if (bundle.error!=null  || bundle.size <= 0)
+        // {
+        //     Debug.Log(bundle.error);
+        //     Debug.Log(bundle.size);
+        //     loadingImg.SetActive(false);
+        // }
+        // else
+        // {
+        //     var data = bundle.assetBundle;
+        //     SceneManager.LoadScene(suffix);               
+        // }
     }
     
     public Vector3 getLocation()
